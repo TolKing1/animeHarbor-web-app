@@ -1,10 +1,11 @@
 | Table Progress report |
 
-| Stage                                        | Definition of the stage                               | Start date | End date | Comment                                     |
-|----------------------------------------------|-------------------------------------------------------|------------|----------|---------------------------------------------|
-| Stage 1. Capstone Project Creation and Setup | Created .doc file with overview of 2 project          | 25.05.2024 | ---      |                                             | 
-| Stage 1. Capstone Project Creation and Setup | Got feedbacks from mentor and project has been chosen | 26.05.2024 | ---      | AnimeHarbour - anime search web application | 
-| Stage 1. Capstone Project Creation and Setup | Created repository with track                         | 28.05.2024 | ---      |                                             | 
-|                                              |                                                       |            |          |                                             | 
-|                                              |                                                       |            |          |                                             | 
-|                                              |                                                       |            |          |                                             |
+| **Stage**                                       | **Definition of the stage**                                                                                                | **Start date** | **End date** | **Comment**                                                  |
+|-------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|----------------|--------------|--------------------------------------------------------------|
+| Stage 1. Capstone Project Creation and Setup    | Created .doc file with overview of 2 project                                                                               | 25.04.2024     | ---          |                                                              | 
+| Stage 1. Capstone Project Creation and Setup    | Got feedbacks from mentor and project has been chosen                                                                      | 26.04.2024     | ---          | AnimeHarbour - anime search web application                  | 
+| Stage 1. Capstone Project Creation and Setup    | Created repository with track                                                                                              | 28.04.2024     | ---          |                                                              | 
+| **---**                                         | **---**                                                                                                                    | **---**        | **---**      | **---**                                                      | 
+| Stage 2. Capstone Project Use Cases             | Created .doc file that include requirements(functional and non-functional), use cases, objects, classes, and relationships | 30.04.2024     | ---          |                                                              | 
+| **---**                                         | **---**                                                                                                                    | **---**        | **---**      | **---**                                                      |
+| Stage 3. Capstone Project Database Layer Design | Designed simple ER diagram for web application                                                                             | 01.05.2024     | ---          | ERD that defines entities like anime,user,genre,view and etc |
