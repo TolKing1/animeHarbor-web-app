@@ -2,11 +2,13 @@ package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.tolking.animeharbor.entities.enums.AnimeStatus;
 import org.tolking.animeharbor.entities.enums.AnimeType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -28,17 +30,20 @@ public class Anime {
 
     private String director;
 
-    @Column(columnDefinition = "timestamp(6) DEFAULT now()")
-    private LocalDateTime insert_date;
+    @CreationTimestamp
+    private LocalDateTime creation;
 
     @Enumerated(EnumType.STRING)
     private AnimeStatus status;
 
-    @OneToOne(mappedBy = "anime")
-    private Views views;
+    @OneToMany(mappedBy = "anime")
+    private List<Views> views = new ArrayList<>();
 
     @ManyToMany(mappedBy = "animeList")
-    private List<Genre> genre;
+    private List<Genre> genre = new ArrayList<>();
+
+    @OneToMany(mappedBy = "anime")
+    private List<Rating> ratings = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn

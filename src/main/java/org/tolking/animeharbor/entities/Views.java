@@ -2,6 +2,9 @@ package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -10,9 +13,10 @@ public class Views {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn
     private Anime anime;
 
-    private long view_count;
+    @CreationTimestamp
+    private LocalDateTime viewDate;
 }
