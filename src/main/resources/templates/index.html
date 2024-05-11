@@ -9,32 +9,7 @@
     <div class="loader"></div>
 </div>
 <!-- Header Section Begin -->
-<header class="header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-2">
-                <div class="header__logo">
-                    <a th:href="@{/}">
-                        <img alt="" th:src="@{img/logo.png}">
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <div class="header__nav">
-                    <nav class="header__menu mobile-menu">
-                        <ul th:replace="~{fragments/general :: navLinks}"></ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="header__right">
-                    <a class="search-switch" href="#"><span class="icon_search"></span></a>
-                    <a th:href="@{/login}"><span class="icon_profile"></span></a>
-                </div>
-            </div>
-        </div>
-        <div id="mobile-menu-wrap"></div>
-    </div>
+<header class="header" th:replace="~{fragments/general :: header}">
 </header>
 <!-- Header End -->
 
@@ -102,13 +77,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6" th:each="anime : ${animeByPopular}">
+                        <div th:each="anime : ${animeByPopular}" class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item d-flex flex-column justify-content-between">
-                                <div class="product__item__pic set-bg"
-                                     th:attr="data-setbg=@{img/popular/popular-1.jpg}">
+                                <div th:attr="data-setbg=@{img/popular/popular-1.jpg}" class="product__item__pic set-bg">
                                     <!--                                    <div class="comment"><i class="fa fa-comments"></i></div>-->
-                                    <div class="view" th:if="${anime.views.size() > 0}"><i class="fa fa-eye"></i> <span
-                                            th:text="${anime.views.size()}"></span></div>
+                                    <div th:if="${anime.views.size() > 0}" class="view">
+                                        <i class="fa fa-eye"></i>
+                                        <span th:text="${anime.views.size()}"></span>
+                                    </div>
                                 </div>
                                 <div class="product__item__text">
                                     <ul>
@@ -180,36 +156,11 @@
 <!-- Product Section End -->
 
 <!-- Footer Section Begin -->
-<footer class="footer">
-    <div class="page-up">
-        <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="footer__logo">
-                    <a href="./index.html"><img alt="" th:src="@{img/logo.png}"></a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="footer__nav">
-                    <ul th:replace="~{fragments/general :: navLinks}"></ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+<footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
 <!-- Footer Section End -->
 
 <!-- Search model Begin -->
-<div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch"><i class="icon_close"></i></div>
-        <form class="search-model-form">
-            <input id="search-input" placeholder="Search here....." type="text">
-        </form>
-    </div>
-</div>
+<div class="search-model" th:replace="~{fragments/general :: search}"></div>
 <!-- Search model end -->
 
 <div th:replace="~{fragments/general :: scripts}"></div>

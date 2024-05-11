@@ -1,8 +1,11 @@
 package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.hibernate.validator.constraints.UniqueElements;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -12,8 +15,10 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @UniqueElements(message = "Title must be unique")
     private String title;
 
+    @NotBlank(message = "Description can not be blank")
     private String description;
     @ManyToMany
     @JoinTable(
@@ -21,5 +26,10 @@ public class Genre {
             joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name = "anime_id")
     )
-    private List<Anime> animeList;
+    private List<Anime> animeList = new ArrayList<Anime>();
+
+    @Transient
+    public boolean isEmpty(){
+        return animeList.isEmpty();
+    }
 }

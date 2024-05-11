@@ -16,7 +16,7 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
     @Query(value =
             "SELECT a.*,COUNT(v.anime_id) as view_count " +
             "FROM anime a " +
-            "JOIN public.views v ON a.id = v.anime_id " +
+            "JOIN views v ON a.id = v.anime_id " +
             "WHERE v.view_date >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL '3 month') " +
             "GROUP BY a.id " +
             "ORDER BY view_count DESC;",
@@ -31,4 +31,6 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "ORDER BY view_count DESC",
             nativeQuery = true)
     List<Anime> getAllByOrderByViewsDesc(Pageable pageable);
+
+    List<Anime> findByGenreId(long id, Pageable pageable);
 }

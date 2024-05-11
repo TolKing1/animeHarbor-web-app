@@ -18,14 +18,25 @@ public class AnimeServiceImpl implements AnimeService {
         this.animeRepository = animeRepository;
     }
 
-    @Override
-    public List<Anime> getAllAnimeWithPage(Pageable pageable) {
-        return animeRepository.getAllBy(pageable);
-    }
+
+
+
+
     @Override
     public List<Anime> getAllForRecentlyAddedPage() {
-        Pageable pageable = PageRequest.of(0, 6, Sort.by("creation").descending());
-        return getAllAnimeWithPage(pageable);
+        return getAllAnime(0,6,"creation","desc");
+    }
+
+    @Override
+    public List<Anime> getAllAnime(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        return animeRepository.getAllBy(pageable);
+    }
+
+    @Override
+    public List<Anime> getAllAnimeByGenreId(long id, int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection),sortField));
+        return animeRepository.findByGenreId(id, pageable);
     }
 
     @Override
@@ -41,4 +52,5 @@ public class AnimeServiceImpl implements AnimeService {
 
         return animeRepository.getAllByOrderByViewsDesc(pageable);
     }
+
 }

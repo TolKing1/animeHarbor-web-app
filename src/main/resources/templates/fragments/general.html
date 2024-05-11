@@ -13,14 +13,14 @@
           rel="stylesheet">
 
     <!-- Common styles and scripts -->
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/font-awesome.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/elegant-icons.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/plyr.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/nice-select.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/owl.carousel.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/slicknav.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/elegant-icons.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/plyr.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/slicknav.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
 
 </head>
 <body>
@@ -32,17 +32,77 @@
     </ul>
 
     <div th:fragment="scripts">
-        <script th:src="@{js/jquery-3.3.1.min.js}"></script>
-        <script th:src="@{js/bootstrap.min.js}"></script>
-        <script th:src="@{js/player.js}"></script>
-        <script th:src="@{js/jquery.nice-select.min.js}"></script>
-        <script th:src="@{js/mixitup.min.js}"></script>
-        <script th:src="@{js/jquery.slicknav.js}"></script>
-        <script th:src="@{js/owl.carousel.min.js}"></script>
-        <script th:src="@{js/main.js}"></script>
+        <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}" src="/js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/bootstrap.min.js}" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/player.js}" src="/js/player.js"></script>
+        <script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}" src="/js/jquery.nice-select.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/mixitup.min.js}" src="/js/mixitup.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/jquery.slicknav.js}" src="/js/jquery.slicknav.js"></script>
+        <script type="text/javascript" th:src="@{/js/owl.carousel.min.js}" src="/js/owl.carousel.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/main.js}" src="/js/main.js"></script>
     </div>
 
+    <!-- Header Section Begin -->
+    <header class="header" th:fragment="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="header__logo">
+                        <a th:href="@{/}">
+                            <img alt="" th:src="@{/img/logo.png}">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="header__nav">
+                        <nav class="header__menu mobile-menu">
+                            <ul th:replace="~{fragments/general :: navLinks}"></ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="header__right">
+                        <a class="search-switch" href="#"><span class="icon_search"></span></a>
+                        <a th:href="@{/login}"><span class="icon_profile"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+        </div>
+    </header>
+    <!-- Header End -->
 
+    <!-- Footer Section Begin -->
+    <footer class="footer" th:fragment="footer">
+        <div class="page-up">
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer__logo">
+                        <a href="./index.html"><img alt="" th:src="@{/img/logo.png}"></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="footer__nav">
+                        <ul th:replace="~{fragments/general :: navLinks}"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
 
+    <!-- Search model Begin -->
+    <div class="search-model" th:fragment="search">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch"><i class="icon_close"></i></div>
+            <form class="search-model-form">
+                <input id="search-input" placeholder="Search here....." type="text">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
 </body>
 </html>
