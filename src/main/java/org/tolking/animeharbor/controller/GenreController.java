@@ -51,7 +51,7 @@ public class GenreController {
         Optional<Genre> genre = genreServiceImpl.getByGenre(id);
         if (genre.isPresent() && !genre.get().isEmpty()) {
             Genre g = genre.get();
-            List<Anime> animeList = animeService.getAllAnimeByGenreId(id, pageNo, pageSize, sortBy, sortDirection);
+            List<Anime> animeList = animeService.getAllAnimeByGenreId(id, pageNo - 1, pageSize, sortBy, sortDirection);
 
             model.addAttribute(GENRE_ID_ATTR, g.getId());
             model.addAttribute(GENRE_TITLE_ATTR, g.getTitle());
