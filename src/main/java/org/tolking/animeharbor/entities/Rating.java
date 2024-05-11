@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"anime_id", "user_id"}))
 public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,16 +14,22 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/genres")
 public class GenreController {
-    public static final String GENRE_VIEW = "genre";
-    public static final String GENRE_URL = "/genres";
-    public static final String GENRE_SELECTED_VIEW = "genre-selected";
-    public static final String GENRES_ATTR = "genres";
-    public static final String GENRE_ID_ATTR = "genreId";
-    public static final String GENRE_TITLE_ATTR = "genreTitle";
-    public static final String ANIME_VIEWS_ATTR = "animeByView";
-    public static final String ANIME_LIST_ATTR = "animeList";
+    private static final String GENRE_VIEW = "genre";
+    private static final String GENRE_URL = "/genres";
+    private static final String GENRE_SELECTED_VIEW = "genre-selected";
+
+    private static final String GENRES_ATTR = "genres";
+    private static final String GENRE_ID_ATTR = "genreId";
+    private static final String GENRE_TITLE_ATTR = "genreTitle";
+    private static final String ANIME_VIEWS_ATTR = "animeByView";
+    private static final String ANIME_LIST_ATTR = "animeList";
+    private static final String SORT_BY_ATTR = "sortBy";
+    private static final String SORT_DIRECTION_ATTR = "sortDirection";
+
     private final GenreServiceImpl genreServiceImpl;
     private final AnimeService animeService;
+
+    private final int pageSize = 6;
 
     public GenreController(GenreServiceImpl genreServiceImpl, AnimeService animeService) {
         this.genreServiceImpl = genreServiceImpl;
@@ -37,11 +43,10 @@ public class GenreController {
     }
 
 
-    @RequestMapping(value = "/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+    @GetMapping(value = "/{id}")
     public String getAllByGenre(
             @PathVariable("id") long id,
             @RequestParam(defaultValue = "1") int pageNo,
-            @RequestParam(defaultValue = "6") int pageSize,
             @RequestParam(defaultValue = "creation") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             Model model) {
@@ -54,6 +59,9 @@ public class GenreController {
             model.addAttribute(GENRE_TITLE_ATTR, g.getTitle());
             model.addAttribute(ANIME_LIST_ATTR, animeList.get());
             model.addAttribute(ANIME_VIEWS_ATTR, animeService.getAllForTopViewPage());
+
+            model.addAttribute(SORT_BY_ATTR, sortBy);
+            model.addAttribute(SORT_DIRECTION_ATTR, sortDirection);
             return GENRE_SELECTED_VIEW;
         } else {
             return "redirect:" + GENRE_URL;

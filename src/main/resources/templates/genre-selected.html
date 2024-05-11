@@ -40,16 +40,16 @@
                                     <h4 th:text="${genreTitle}"></h4>
                                 </div>
                             </div>
-                            <form th:id="pageAble" th:action="@{/genres/{id}(id = ${genreId})}" th:method="POST" class="col-lg-6 col-md-6 col-sm-6 d-flex flex-row">
+                            <form id="pageAble" th:action="@{/genres/{id}(id = ${genreId})}" th:method="GET" class="col-lg-6 col-md-6 col-sm-6 d-flex flex-row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="product__page__filter">
                                         <p>Order by:</p>
                                         <select th:name="sortBy">
-                                            <option th:selected="${sortBy == 'title'}" th:value="title">Name</option>
-                                            <option th:selected="${sortBy == 'views'}" th:value="views">View</option>
-                                            <option th:selected="${sortBy == 'rating'}" th:value="rating">Rating</option>
-                                            <option th:selected="${sortBy == 'date'}" th:value="date">Released date</option>
-                                            <option th:selected="${sortBy == 'creation'}" th:value="creation">Added date</option>
+                                            <option th:selected="${sortBy.equalsIgnoreCase('title')}" th:value="title">Name</option>
+                                            <option th:selected="${sortBy.equalsIgnoreCase('views')}" th:value="views">View</option>
+                                            <option th:selected="${sortBy.equalsIgnoreCase('rating')}" th:value="rating">Rating</option>
+                                            <option th:selected="${sortBy.equalsIgnoreCase('date')}" th:value="date">Released date</option>
+                                            <option th:selected="${sortBy.equalsIgnoreCase('creation')}" th:value="creation">Added date</option>
                                         </select>
                                     </div>
                                 </div>
@@ -57,11 +57,12 @@
                                     <div class="product__page__filter">
                                         <p>Sort By:</p>
                                         <select name="sortDirection">
-                                            <option th:selected="${sortDirection == 'ASC'}" th:value="ASC">Ascending</option>
-                                            <option th:selected="${sortDirection == 'DESC'}" th:value="DESC">Descending</option>
+                                            <option th:selected="${sortDirection.equalsIgnoreCase('asc')}" th:value="ASC">Ascending</option>
+                                            <option th:selected="${sortDirection.equalsIgnoreCase('desc')}" th:value="DESC">Descending</option>
                                         </select>
                                     </div>
                                 </div>
+                                <button form="pageAble" type="submit" class="btn-info">submit</button>
                             </form>
 
                         </div>

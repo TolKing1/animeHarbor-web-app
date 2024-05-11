@@ -24,7 +24,8 @@ public class Genre {
     @JoinTable(
             name = "genre_m2m_anime",
             joinColumns = @JoinColumn(name = "genre_id"),
-            inverseJoinColumns = @JoinColumn(name = "anime_id")
+            inverseJoinColumns = @JoinColumn(name = "anime_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"genre_id", "anime_id"})
     )
     private List<Anime> animeList = new ArrayList<Anime>();
 

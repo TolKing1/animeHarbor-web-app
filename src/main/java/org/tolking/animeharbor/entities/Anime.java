@@ -8,8 +8,7 @@ import org.tolking.animeharbor.entities.enums.AnimeType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Data
 @Entity
@@ -40,7 +39,7 @@ public class Anime {
     private List<Views> views = new ArrayList<>();
 
     @ManyToMany(mappedBy = "animeList")
-    private List<Genre> genre = new ArrayList<>();
+    private Set<Genre> genre = new TreeSet<>(Comparator.comparing(Genre::getTitle));
 
     @OneToMany(mappedBy = "anime")
     private List<Rating> ratings = new ArrayList<>();

@@ -64,7 +64,8 @@ public class AnimeServiceImpl implements AnimeService {
                 return animeRepository.getAllByGenreIdOrderByRatingAsc(genreId, pageable);
             }
         }else {
-            return getAllAnimeByGenreId(genreId, pageNo, pageSize, sortField, sortDirection);
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+            return animeRepository.findByGenreId(genreId, pageable);
         }
     }
 
