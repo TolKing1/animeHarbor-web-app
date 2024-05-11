@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.service.internal;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,15 +19,6 @@ public class AnimeServiceImpl implements AnimeService {
         this.animeRepository = animeRepository;
     }
 
-
-
-
-
-    @Override
-    public List<Anime> getAllForRecentlyAddedPage() {
-        return getAllAnime(0,6,"creation","desc");
-    }
-
     @Override
     public List<Anime> getAllAnime(int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
@@ -34,23 +26,48 @@ public class AnimeServiceImpl implements AnimeService {
     }
 
     @Override
-    public List<Anime> getAllAnimeByGenreId(long id, int pageNo, int pageSize, String sortField, String sortDirection) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection),sortField));
+    public List<Anime> getAllForRecentlyAddedPage() {
+        return getAllAnime(0, 6, "creation", "desc");
+    }
+
+    @Override
+    public Page<Anime> getAllAnimeByGenreId(long id, int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         return animeRepository.findByGenreId(id, pageable);
     }
 
     @Override
     public List<Anime> getAllForPopularityPage() {
-        Pageable pageable  = PageRequest.of(0, 6);
+        Pageable pageable = PageRequest.of(0, 6);
 
         return animeRepository.getAllByPopularityForLast3Month(pageable);
     }
 
     @Override
     public List<Anime> getAllForTopViewPage() {
-        Pageable pageable  = PageRequest.of(0, 6);
-
-        return animeRepository.getAllByOrderByViewsDesc(pageable);
+        return animeRepository.getAllByOrderByViews(PageRequest.of(0, 6));
     }
+
+    @Override
+    public Page<Anime> getSortedAnimePageByGenre(long genreId, int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        if (sortField.equalsIgnoreCase("views")){
+            if (sortDirection.equalsIgnoreCase("desc")) {
+                return animeRepository.getAllByGenreIdOrderByViewsDesc(genreId, pageable);
+            } else {
+                return animeRepository.getAllByGenreIdOrderByViewsAsc(genreId, pageable);
+            }
+        } else if (sortField.equalsIgnoreCase("rating")) {
+            if (sortDirection.equalsIgnoreCase("desc")) {
+                return animeRepository.getAllByGenreIdOrderByRatingDesc(genreId, pageable);
+            } else {
+                return animeRepository.getAllByGenreIdOrderByRatingAsc(genreId, pageable);
+            }
+        }else {
+            return getAllAnimeByGenreId(genreId, pageNo, pageSize, sortField, sortDirection);
+        }
+    }
+
+
 
 }

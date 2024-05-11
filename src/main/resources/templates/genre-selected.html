@@ -35,21 +35,35 @@
                 <div class="product__page__content">
                     <div class="product__page__title">
                         <div class="row">
-                            <div class="col-lg-8 col-md-8 col-sm-6">
+                            <div class="col-lg-6 col-md-8 col-sm-8">
                                 <div class="section-title">
                                     <h4 th:text="${genreTitle}"></h4>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                <div class="product__page__filter">
-                                    <p>Order by:</p>
-                                    <select>
-                                        <option value="">A-Z</option>
-                                        <option value="">1-10</option>
-                                        <option value="">10-50</option>
-                                    </select>
+                            <form th:id="pageAble" th:action="@{/genres/{id}(id = ${genreId})}" th:method="POST" class="col-lg-6 col-md-6 col-sm-6 d-flex flex-row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="product__page__filter">
+                                        <p>Order by:</p>
+                                        <select th:name="sortBy">
+                                            <option th:selected="${sortBy == 'title'}" th:value="title">Name</option>
+                                            <option th:selected="${sortBy == 'views'}" th:value="views">View</option>
+                                            <option th:selected="${sortBy == 'rating'}" th:value="rating">Rating</option>
+                                            <option th:selected="${sortBy == 'date'}" th:value="date">Released date</option>
+                                            <option th:selected="${sortBy == 'creation'}" th:value="creation">Added date</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="product__page__filter">
+                                        <p>Sort By:</p>
+                                        <select name="sortDirection">
+                                            <option th:selected="${sortDirection == 'ASC'}" th:value="ASC">Ascending</option>
+                                            <option th:selected="${sortDirection == 'DESC'}" th:value="DESC">Descending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                     <div class="row">
