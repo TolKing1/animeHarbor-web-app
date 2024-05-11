@@ -14,6 +14,7 @@ public class Genre {
 
     private String title;
 
+    private String description;
     @ManyToMany
     @JoinTable(
             name = "genre_m2m_anime",
