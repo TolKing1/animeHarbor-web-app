@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <meta charset="UTF-8" >
     <title>Elements</title>
 </head>
 <body>
 <!--Card-->
-<div class="col-lg-4 col-md-6 col-sm-6" th:each="anime : ${animeList.get()}">
+<div th:fragment="card(animeList,isSearch)" th:class="${isSearch ? 'col-lg-3 col-md-4 col-sm-6':'col-lg-4 col-md-6 col-sm-6'}" th:each="anime : ${animeList}">
     <div class="product__item">
         <div class="product__item__pic set-bg"  th:attr="data-setbg=@{/img/popular/popular-1.jpg}">
             <!--                                    <div class="comment"><i class="fa fa-comments"></i> 11</div>-->

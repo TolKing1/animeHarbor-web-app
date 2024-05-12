@@ -72,6 +72,27 @@
     </header>
     <!-- Header End -->
 
+    <!-- Sidebar Begin -->
+    <div th:fragment="topView(animeByView)" class="col-lg-4 col-md-6 col-sm-8">
+        <div class="product__sidebar">
+            <div class="product__sidebar__view" th:if="${animeByView.size() > 0}">
+                <div class="section-title">
+                    <h5>Top Views</h5>
+                </div>
+                <div class="filter__gallery">
+                    <div class="product__sidebar__view__item set-bg mix day years"
+                         th:attr="data-setbg=@{/img/sidebar/tv-1.jpg}"
+                         th:each="anime : ${animeByView}">
+                        <div class="view" th:if="${anime.views.size() > 0}"><i class="fa fa-eye"></i> <span
+                                th:text="${anime.views.size()}"></span></div>
+                        <h5><a href="#" th:text="${anime.title}">Boruto: Naruto next generations</a></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sidebar end -->
+
     <!-- Footer Section Begin -->
     <footer class="footer" th:fragment="footer">
         <div class="page-up">

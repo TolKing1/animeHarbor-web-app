@@ -45,48 +45,12 @@
 
                     </div>
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6" th:each="anime : ${animeList.get()}">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"  th:attr="data-setbg=@{/img/popular/popular-1.jpg}">
-<!--                                    <div class="comment"><i class="fa fa-comments"></i> 11</div>-->
-                                    <div th:if="${anime.views.size() > 0}" class="view">
-                                        <i class="fa fa-eye"></i>
-                                        <span th:text="${anime.views.size()}"></span>
-                                    </div>
-                                </div>
-                                <div class="product__item__text">
-                                    <ul>
-                                        <li th:each="genre, genreStat : ${anime.genre}"
-                                            th:text="${genre.title}" th:unless="${genreStat.index > 2}">Active
-                                        </li>
-                                    </ul>
-                                    <h5><a href="#" th:text="${anime.title}"></a></h5>
-                                </div>
-                            </div>
-                        </div>
+                        <div th:replace="~{fragments/elements :: card(${animePage.get()}, false)}"></div>
                     </div>
                 </div>
-
-                <div th:replace="fragments/elements :: pagination(${formName},${animeList})" class="product__pagination"></div>
+                <div th:replace="fragments/elements :: pagination(${formName},${animePage})"></div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-8">
-                <div class="product__sidebar">
-                    <div class="product__sidebar__view" th:if="${animeByView.size() > 0}">
-                        <div class="section-title">
-                            <h5>Top Views</h5>
-                        </div>
-                        <div class="filter__gallery">
-                            <div class="product__sidebar__view__item set-bg mix day years"
-                                 th:attr="data-setbg=@{/img/sidebar/tv-1.jpg}"
-                                 th:each="anime : ${animeByView}">
-                                <div class="view" th:if="${anime.views.size() > 0}"><i class="fa fa-eye"></i> <span
-                                        th:text="${anime.views.size()}"></span></div>
-                                <h5><a href="#" th:text="${anime.title}">Boruto: Naruto next generations</a></h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div th:replace="~{fragments/general :: topView(${animeByView})}"></div>
         </div>
     </div>
 </section>
