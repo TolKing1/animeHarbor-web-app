@@ -24,16 +24,16 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
     List<Anime> getAllByOrderByViews(Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g WHERE g.id = ?1 ORDER BY SIZE(a.views) ASC")
-    Page<Anime> getAllByGenreIdOrderByViewsAsc(long id, Pageable pageable);
+    Page<Anime> getByGenreIdOrderByViewsAsc(long id, Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g WHERE g.id = ?1 ORDER BY SIZE(a.views) DESC")
-    Page<Anime> getAllByGenreIdOrderByViewsDesc(long id, Pageable pageable);
+    Page<Anime> getByGenreIdOrderByViewsDesc(long id, Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g LEFT JOIN a.ratings r WHERE g.id = ?1 GROUP BY a.id,r.id ORDER BY COALESCE(AVG(r.score),0) ASC")
-    Page<Anime> getAllByGenreIdOrderByRatingAsc(long id, Pageable pageable);
+    Page<Anime> getByGenreIdOrderByRatingAsc(long id, Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g LEFT JOIN a.ratings r WHERE g.id = ?1 GROUP BY a.id,r.id ORDER BY COALESCE(AVG(r.score),0) DESC")
-    Page<Anime> getAllByGenreIdOrderByRatingDesc(long id, Pageable pageable);
+    Page<Anime> getByGenreIdOrderByRatingDesc(long id, Pageable pageable);
 
     Page<Anime> findByGenreId(long id, Pageable pageable);
 }
