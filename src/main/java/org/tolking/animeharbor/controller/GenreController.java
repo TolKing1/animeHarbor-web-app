@@ -46,18 +46,18 @@ public class GenreController {
     @GetMapping(value = "/{id}")
     public String getAllByGenre(
             @PathVariable("id") long id,
-            @RequestParam(defaultValue = "1") int pageNo,
+            @RequestParam(defaultValue = "0") int pageNo,
             @RequestParam(defaultValue = "creation") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             Model model) {
         Optional<Genre> genre = genreServiceImpl.getByGenre(id);
         if (genre.isPresent() && !genre.get().isEmpty()) {
             Genre g = genre.get();
-            Page<Anime> animeList = animeService.getSortedAnimePageByGenre(id, pageNo - 1, pageSize, sortBy, sortDirection);
+            Page<Anime> animeList = animeService.getSortedAnimePageByGenre(id, pageNo, pageSize, sortBy, sortDirection);
 
             model.addAttribute(GENRE_ID_ATTR, g.getId());
             model.addAttribute(GENRE_TITLE_ATTR, g.getTitle());
-            model.addAttribute(ANIME_LIST_ATTR, animeList.get());
+            model.addAttribute(ANIME_LIST_ATTR, animeList);
             model.addAttribute(ANIME_VIEWS_ATTR, animeService.getAllForTopViewPage());
 
             model.addAttribute(SORT_BY_ATTR, sortBy);

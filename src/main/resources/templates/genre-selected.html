@@ -68,7 +68,7 @@
 
                     </div>
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6" th:each="anime : ${animeList}">
+                        <div class="col-lg-4 col-md-6 col-sm-6" th:each="anime : ${animeList.get()}">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg"  th:attr="data-setbg=@{/img/popular/popular-1.jpg}">
 <!--                                    <div class="comment"><i class="fa fa-comments"></i> 11</div>-->
@@ -90,12 +90,16 @@
                     </div>
                 </div>
                 <div class="product__pagination">
-                    <a href="#" class="current-page">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
-                    <a href="#"><i class="fa fa-angle-double-right"></i></a>
+                    <button th:if="${animeList.hasPrevious() && animeList.number - 1 != 0}" th:value="0" th:name="pageNo" form="pageAble" type="submit"><i class="fa fa-angle-double-left"></i></button>
+                    <button th:if="${animeList.hasPrevious()}" th:value="${animeList.number - 1}" th:name="pageNo" form="pageAble" type="submit"><i class="fa fa-angle-left"></i></button>
+
+                    <button th:if="${animeList.totalPages != 1}"
+                            th:each="i: ${#numbers.sequence(0, animeList.totalPages - 1)}" th:text="${i+1}"
+                            th:value="${i}" th:name="pageNo" form="pageAble" type="submit"
+                            th:classappend="${animeList.number == i ? 'current-page' :''}">1</button>
+
+                    <button th:if="${animeList.hasNext()}" th:value="${animeList.number + 1}" th:name="pageNo" form="pageAble" type="submit"><i class="fa fa-angle-right"></i></button>
+                    <button th:if="${animeList.hasNext() && animeList.number + 1 != animeList.totalPages - 1}" th:value="${animeList.totalPages - 1}" th:name="pageNo" form="pageAble" type="submit"><i class="fa fa-angle-double-right"></i></button>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-8">
