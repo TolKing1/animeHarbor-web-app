@@ -53,15 +53,15 @@ public class AnimeServiceImpl implements AnimeService {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         if (sortField.equalsIgnoreCase("views")){
             if (sortDirection.equalsIgnoreCase("desc")) {
-                return animeRepository.findByGenreIdOrderByViewsDesc(genreId, pageable);
+                return animeRepository.findByGenreIdOrderByCountViewsDesc(genreId, pageable);
             } else {
-                return animeRepository.findByGenreIdOrderByViewsAsc(genreId, pageable);
+                return animeRepository.findByGenreIdOrderByCountViewsAsc(genreId, pageable);
             }
         } else if (sortField.equalsIgnoreCase("rating")) {
             if (sortDirection.equalsIgnoreCase("desc")) {
-                return animeRepository.findByGenreIdOrderByRatingsScoreDesc(genreId, pageable);
+                return animeRepository.findByGenreIdOrderByAverageRatingsScoreDesc(genreId, pageable);
             } else {
-                return animeRepository.findByGenreIdOrderByRatingsScoreAsc(genreId, pageable);
+                return animeRepository.findByGenreIdOrderByAverageRatingsScoreAsc(genreId, pageable);
             }
         }else {
             pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));

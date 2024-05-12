@@ -25,16 +25,16 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
     List<Anime> getAllByOrderByViews(Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g WHERE g.id = :genreId ORDER BY SIZE(a.views) ASC")
-    Page<Anime> findByGenreIdOrderByViewsAsc(@Param("genreId") long id, Pageable pageable);
+    Page<Anime> findByGenreIdOrderByCountViewsAsc(@Param("genreId") long id, Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g WHERE g.id = :genreId ORDER BY SIZE(a.views) DESC")
-    Page<Anime> findByGenreIdOrderByViewsDesc(@Param("genreId") long id, Pageable pageable);
+    Page<Anime> findByGenreIdOrderByCountViewsDesc(@Param("genreId") long id, Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g LEFT JOIN a.ratings r WHERE g.id = :genreId GROUP BY a.id ORDER BY COALESCE(AVG(r.score),0) ASC")
-    Page<Anime> findByGenreIdOrderByRatingsScoreAsc(@Param("genreId") long id, Pageable pageable);
+    Page<Anime> findByGenreIdOrderByAverageRatingsScoreAsc(@Param("genreId") long id, Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g LEFT JOIN a.ratings r WHERE g.id = :genreId GROUP BY a.id ORDER BY COALESCE(AVG(r.score),0) DESC")
-    Page<Anime> findByGenreIdOrderByRatingsScoreDesc(@Param("genreId") long id, Pageable pageable);
+    Page<Anime> findByGenreIdOrderByAverageRatingsScoreDesc(@Param("genreId") long id, Pageable pageable);
 
     Page<Anime> findByGenreId(long id, Pageable pageable);
 }
