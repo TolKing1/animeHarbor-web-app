@@ -40,30 +40,7 @@
                                     <h4 th:text="${genreTitle}"></h4>
                                 </div>
                             </div>
-                            <form id="pageAble" th:action="@{/genres/{id}(id = ${genreId})}" th:method="GET" class="col-lg-6 col-md-6 col-sm-12 d-flex flex-row flex-wrap justify-content-start justify-content-sm-end  align-items-end">
-                                <div class="col-lg-5 col-md-6 col-sm-6 p-1">
-                                    <div class="product__page__filter">
-                                        <p>Order by:</p>
-                                        <select th:name="sortBy">
-                                            <option th:selected="${sortBy.equalsIgnoreCase('title')}" th:value="title">Name</option>
-                                            <option th:selected="${sortBy.equalsIgnoreCase('views')}" th:value="views">View</option>
-                                            <option th:selected="${sortBy.equalsIgnoreCase('rating')}" th:value="rating">Rating</option>
-                                            <option th:selected="${sortBy.equalsIgnoreCase('date')}" th:value="date">Released date</option>
-                                            <option th:selected="${sortBy.equalsIgnoreCase('creation')}" th:value="creation">Added date</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5 col-md-6 col-sm-6 p-1">
-                                    <div class="product__page__filter">
-                                        <p>Sort By:</p>
-                                        <select name="sortDirection">
-                                            <option th:selected="${sortDirection.equalsIgnoreCase('asc')}" th:value="ASC">Ascending</option>
-                                            <option th:selected="${sortDirection.equalsIgnoreCase('desc')}" th:value="DESC">Descending</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button form="pageAble" type="submit" class="btn btn-danger text-capitalize">submit</button>
-                            </form>
+                            <form th:replace="~{fragments/elements :: sorting(${formName},${sortBy},${sortDirection})}" th:action="@{/genres/{id}(id = ${genreId})}"></form>
                         </div>
 
                     </div>
@@ -89,18 +66,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="product__pagination">
-                    <button th:if="${animeList.hasPrevious() && animeList.number - 1 != 0}" th:value="0" th:name="pageNo" form="pageAble" type="submit"><i class="fa fa-angle-double-left"></i></button>
-                    <button th:if="${animeList.hasPrevious()}" th:value="${animeList.number - 1}" th:name="pageNo" form="pageAble" type="submit"><i class="fa fa-angle-left"></i></button>
 
-                    <button th:if="${animeList.totalPages != 1}"
-                            th:each="i: ${#numbers.sequence(0, animeList.totalPages - 1)}" th:text="${i+1}"
-                            th:value="${i}" th:name="pageNo" form="pageAble" type="submit"
-                            th:classappend="${animeList.number == i ? 'current-page' :''}">1</button>
-
-                    <button th:if="${animeList.hasNext()}" th:value="${animeList.number + 1}" th:name="pageNo" form="pageAble" type="submit"><i class="fa fa-angle-right"></i></button>
-                    <button th:if="${animeList.hasNext() && animeList.number + 1 != animeList.totalPages - 1}" th:value="${animeList.totalPages - 1}" th:name="pageNo" form="pageAble" type="submit"><i class="fa fa-angle-double-right"></i></button>
-                </div>
+                <div th:replace="fragments/elements :: pagination(${formName},${animeList})" class="product__pagination"></div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-8">
                 <div class="product__sidebar">

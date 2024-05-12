@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Elements</title>
+</head>
+<body>
+<!--Card-->
+<div class="col-lg-4 col-md-6 col-sm-6" th:each="anime : ${animeList.get()}">
+    <div class="product__item">
+        <div class="product__item__pic set-bg"  th:attr="data-setbg=@{/img/popular/popular-1.jpg}">
+            <!--                                    <div class="comment"><i class="fa fa-comments"></i> 11</div>-->
+            <div th:if="${anime.views.size() > 0}" class="view">
+                <i class="fa fa-eye"></i>
+                <span th:text="${anime.views.size()}"></span>
+            </div>
+        </div>
+        <div class="product__item__text">
+            <ul>
+                <li th:each="genre, genreStat : ${anime.genre}"
+                    th:text="${genre.title}" th:unless="${genreStat.index > 2}">Active
+                </li>
+            </ul>
+            <h5><a href="#" th:text="${anime.title}"></a></h5>
+        </div>
+    </div>
+</div>
+
+
+<!--Sorting-->
+<form th:fragment="sorting(formName,sortBy,sortDirection)" class="col-lg-6 col-md-6 col-sm-12 d-flex flex-row flex-wrap justify-content-start justify-content-sm-end  align-items-end"
+      th:id="${formName}"
+      th:method="GET">
+    <div class="col-lg-5 col-md-6 col-sm-6 p-1">
+        <div class="product__page__filter">
+            <p>Order by:</p>
+            <select th:name="sortBy">
+                <option th:selected="${sortBy.equalsIgnoreCase('title')}" th:value="title">Name</option>
+                <option th:selected="${sortBy.equalsIgnoreCase('views')}" th:value="views">View</option>
+                <option th:selected="${sortBy.equalsIgnoreCase('rating')}" th:value="rating">Rating</option>
+                <option th:selected="${sortBy.equalsIgnoreCase('date')}" th:value="date">Released date</option>
+                <option th:selected="${sortBy.equalsIgnoreCase('creation')}" th:value="creation">Added date</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-5 col-md-6 col-sm-6 p-1">
+        <div class="product__page__filter">
+            <p>Sort By:</p>
+            <select name="sortDirection">
+                <option th:selected="${sortDirection.equalsIgnoreCase('asc')}" th:value="ASC">Ascending</option>
+                <option th:selected="${sortDirection.equalsIgnoreCase('desc')}" th:value="DESC">Descending</option>
+            </select>
+        </div>
+    </div>
+    <button class="btn btn-danger text-capitalize" th:form="${formName}" type="submit">submit</button>
+</form>
+
+<!--Pagination buttons-->
+<div th:fragment="pagination(formName,animeList)" class="product__pagination">
+    <!-- If current page has the previous page and previous page is not first page -->
+    <button th:form="${formName}"
+            th:if="${animeList.hasPrevious() && animeList.number - 1 != 0}"
+            th:name="pageNo" th:value="0" type="submit">
+        <i class="fa fa-angle-double-left"></i>
+    </button>
+    <!-- If current page has the previous page -->
+    <button th:form="${formName}"
+            th:if="${animeList.hasPrevious()}"
+            th:name="pageNo" th:value="${animeList.number - 1}" type="submit">
+        <i class="fa fa-angle-left"></i>
+    </button>
+
+    <span th:if="${animeList.totalPages > 1}">
+        <span th:if="${animeList.first}">
+            <!-- If current page is the first page -->
+            <button th:form="${formName}"
+                    th:classappend="${animeList.number == i ? 'current-page' : ''}"
+                    th:each="i: ${#numbers.sequence(0, 2)}"
+                    th:name="pageNo"
+                    th:text="${i + 1}"
+                    th:value="${i}"
+                    type="submit">
+            </button>
+        </span>
+        <span th:if="${animeList.last}">
+            <!-- If current page is the last page -->
+            <button th:form="${formName}"
+                    th:classappend="${animeList.number == i ? 'current-page' : ''}"
+                    th:each="i: ${#numbers.sequence(animeList.number - 1, animeList.number)}"
+                    th:name="pageNo"
+                    th:text="${i + 1}"
+                    th:value="${i}"
+                    type="submit">
+            </button>
+        </span>
+        <span th:if="${!animeList.first && !animeList.last}">
+            <!-- If current page is not the first page -->
+            <button th:form="${formName}"
+                    th:classappend="${animeList.number == i ? 'current-page' : ''}"
+                    th:each="i: ${#numbers.sequence(animeList.number - 1, animeList.number + 1)}"
+                    th:name="pageNo"
+                    th:text="${i + 1}"
+                    th:value="${i}"
+                    type="submit">
+            </button>
+        </span>
+    </span>
+
+    <!-- If current page has the next page -->
+    <button th:form="${formName}"
+            th:if="${animeList.hasNext()}"
+            th:name="pageNo" th:value="${animeList.number + 1}" type="submit">
+        <i class="fa fa-angle-right"></i>
+    </button>
+    <!-- If current page has the next page and next page is not last page -->
+    <button th:form="${formName}"
+            th:if="${animeList.hasNext() && animeList.number + 1 != animeList.totalPages - 1}"
+            th:name="pageNo" th:value="${animeList.totalPages - 1}" type="submit">
+        <i class="fa fa-angle-double-right"></i>
+    </button>
+</div>
+</body>
+</html>

@@ -26,6 +26,9 @@ public class GenreController {
     private static final String SORT_BY_ATTR = "sortBy";
     private static final String SORT_DIRECTION_ATTR = "sortDirection";
 
+    private static final String FORM_NAME_ATTR = "formName";
+    private static final String FORM_NAME = "paginate";
+
     private final GenreServiceImpl genreServiceImpl;
     private final AnimeService animeService;
 
@@ -62,6 +65,8 @@ public class GenreController {
 
             model.addAttribute(SORT_BY_ATTR, sortBy);
             model.addAttribute(SORT_DIRECTION_ATTR, sortDirection);
+
+            model.addAttribute(FORM_NAME_ATTR, FORM_NAME);
             return GENRE_SELECTED_VIEW;
         } else {
             return "redirect:" + GENRE_URL;
