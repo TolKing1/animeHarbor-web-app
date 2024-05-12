@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <form id="pageAble" th:action="@{/genres/{id}(id = ${genreId})}" th:method="GET" class="col-lg-6 col-md-6 col-sm-6 d-flex flex-row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="col-lg-5 col-md-5 col-sm-5">
                                     <div class="product__page__filter">
                                         <p>Order by:</p>
                                         <select th:name="sortBy">
@@ -53,7 +53,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="col-lg-5 col-md-5 col-sm-5">
                                     <div class="product__page__filter">
                                         <p>Sort By:</p>
                                         <select name="sortDirection">
@@ -62,7 +62,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <button form="pageAble" type="submit" class="btn-info">submit</button>
+                                <button form="pageAble" type="submit" class="btn-info col-2">submit</button>
                             </form>
 
                         </div>
