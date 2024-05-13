@@ -48,7 +48,7 @@
                         <div th:replace="~{fragments/elements :: card(${animePage.get()}, false)}"></div>
                     </div>
                 </div>
-                <div th:replace="fragments/elements :: pagination(${formName},${animePage})"></div>
+                <div th:replace="~{fragments/elements :: pagination(${formName},${animePage})}"></div>
             </div>
             <div th:replace="~{fragments/general :: topView(${animeByView})}"></div>
         </div>
