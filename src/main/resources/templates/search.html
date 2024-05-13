@@ -37,7 +37,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="section-title">
                                     <h4>Search for "<i th:text="${query}"></i>"</h4>
-                                    <input th:form="formName" th:name="query" th:value="${query}" disabled class="d-none">
+                                    <input th:form="${formName}" th:name="query" th:value="${query}" type="hidden">
                                 </div>
                             </div>
                             <form th:replace="~{fragments/elements :: sorting(${formName},${sortBy},${sortDirection})}" th:action="@{/search}"></form>
@@ -61,7 +61,7 @@
 <!-- Footer Section End -->
 
 <!-- Search model Begin -->
-<div class="search-model" th:replace="~{fragments/general :: search}"></div>
+<div class="search-model" th:replace="~{fragments/elements :: search}"></div>
 <!-- Search model end -->
 
 <div th:replace="~{fragments/general :: scripts}"></div>

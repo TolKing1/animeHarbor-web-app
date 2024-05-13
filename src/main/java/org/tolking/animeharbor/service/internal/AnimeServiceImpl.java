@@ -25,8 +25,23 @@ public class AnimeServiceImpl implements AnimeService {
 
     @Override
     public Page<Anime> searchAnime(String query, int pageNo, int pageSize, String sortField, String sortDirection) {
-        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
-        return animeRepository.searchFullText(query, pageable);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        if (sortField.equalsIgnoreCase("views")){
+            if (sortDirection.equalsIgnoreCase("desc")) {
+                return animeRepository.searchFullTextOrderByCountViewsDesc(query, pageable);
+            } else {
+                return animeRepository.searchFullTextOrderByCountViewsAsc(query, pageable);
+            }
+        } else if (sortField.equalsIgnoreCase("rating")) {
+            if (sortDirection.equalsIgnoreCase("desc")) {
+                return animeRepository.searchFullTextOrderByAverageRatingScoreDesc(query, pageable);
+            } else {
+                return animeRepository.searchFullTextOrderByAverageRatingScoreAsc(query, pageable);
+            }
+        }else {
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+            return animeRepository.searchFullText(query, pageable);
+        }
     }
 
     @Override
