@@ -21,6 +21,13 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             nativeQuery = true)
     List<Anime> getAllByPopularityForLast3Month(Pageable pageable);
 
+    @Query(value =
+            "select * from anime " +
+                    "where to_tsvector(title) @@ plainto_tsquery(:text) " +
+                    "   OR anime.title like concat('%', :text, '%') ORDER BY id DESC"
+            , nativeQuery = true)
+    Page<Anime> searchFullText(@Param("text") String description, Pageable pageable);
+
     @Query("SELECT a FROM Anime a ORDER BY SIZE(a.views) DESC")
     List<Anime> getAllByOrderByViews(Pageable pageable);
 

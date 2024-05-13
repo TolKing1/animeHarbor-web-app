@@ -12,5 +12,6 @@ public interface AnimeService {
     List<Anime> getAllForTopViewPage();
     List<Anime> getAllForRecentlyAddedPage();
 
+    Page<Anime> searchAnime(String query, int pageNo, int pageSize, String sortField, String sortDirection);
     Page<Anime> getSortedAnimePageByGenre(long genreId, int pageNo, int pageSize, String sortField, String sortDirection);
 }

@@ -116,11 +116,11 @@
     <!-- Footer Section End -->
 
     <!-- Search model Begin -->
-    <div class="search-model" th:fragment="search">
+    <div th:fragment="search" class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch"><i class="icon_close"></i></div>
-            <form class="search-model-form">
-                <input id="search-input" placeholder="Search here....." type="text">
+            <form th:action="@{/search}"  th:method="GET" class="search-model-form">
+                <input th:name="query" id="search-input" placeholder="Search here....." type="text">
             </form>
         </div>
     </div>

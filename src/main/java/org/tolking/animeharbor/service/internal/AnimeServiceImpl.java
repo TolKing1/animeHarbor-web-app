@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.service.internal;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,17 +13,20 @@ import org.tolking.animeharbor.service.AnimeService;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AnimeServiceImpl implements AnimeService {
     private final AnimeRepository animeRepository;
 
-    public AnimeServiceImpl(AnimeRepository animeRepository) {
-        this.animeRepository = animeRepository;
+    @Override
+    public List<Anime> getAllAnime(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
+        return animeRepository.getAllBy(pageable);
     }
 
     @Override
-    public List<Anime> getAllAnime(int pageNo, int pageSize, String sortField, String sortDirection) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-        return animeRepository.getAllBy(pageable);
+    public Page<Anime> searchAnime(String query, int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
+        return animeRepository.searchFullText(query, pageable);
     }
 
     @Override
@@ -30,9 +34,10 @@ public class AnimeServiceImpl implements AnimeService {
         return getAllAnime(0, 6, "creation", "desc");
     }
 
+
     @Override
     public Page<Anime> getAllAnimeByGenreId(long id, int pageNo, int pageSize, String sortField, String sortDirection) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
         return animeRepository.findByGenreId(id, pageable);
     }
 
@@ -67,6 +72,10 @@ public class AnimeServiceImpl implements AnimeService {
             pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
             return animeRepository.findByGenreId(genreId, pageable);
         }
+    }
+
+    private static Pageable getPageable(int pageNo, int pageSize, String sortField, String sortDirection) {
+        return PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
     }
 
 
