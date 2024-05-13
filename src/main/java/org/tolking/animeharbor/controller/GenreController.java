@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/genres")
+@RequiredArgsConstructor
 public class GenreController {
     private static final String GENRE_VIEW = "genre";
     private static final String GENRE_URL = "/genres";
@@ -33,11 +35,6 @@ public class GenreController {
     private final AnimeService animeService;
 
     private final int pageSize = 6;
-
-    public GenreController(GenreServiceImpl genreServiceImpl, AnimeService animeService) {
-        this.genreServiceImpl = genreServiceImpl;
-        this.animeService = animeService;
-    }
 
     @GetMapping
     public String getAll(Model model) {

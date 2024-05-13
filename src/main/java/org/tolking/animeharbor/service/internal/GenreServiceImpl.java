@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.service.internal;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tolking.animeharbor.entities.Genre;
 import org.tolking.animeharbor.entities.repositories.GenreRepository;
@@ -8,12 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class GenreServiceImpl {
     private final GenreRepository genreRepository;
-
-    public GenreServiceImpl(GenreRepository genreRepository) {
-        this.genreRepository = genreRepository;
-    }
 
     public List<Genre> getAllGenres() {
        return genreRepository.findAllByOrderByTitleAsc();
