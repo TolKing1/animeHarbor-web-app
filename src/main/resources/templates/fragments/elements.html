@@ -72,10 +72,10 @@
 
     <span th:if="${animeList.totalPages > 1}">
         <span th:if="${animeList.first}">
-            <!-- If current page is the first page -->
+            <!-- If current page is the first page of the pagination -->
             <button th:form="${formName}"
                     th:classappend="${animeList.number == i ? 'current-page' : ''}"
-                    th:each="i: ${#numbers.sequence(0, 2)}"
+                    th:each="i: ${#numbers.sequence(0, (animeList.totalPages > 2 ? 3 : animeList.totalPages) - 1)}"
                     th:name="pageNo"
                     th:text="${i + 1}"
                     th:value="${i}"
