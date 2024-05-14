@@ -40,7 +40,7 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
                 roleToCreate.setRole(roleName);
 
                 roleRepository.save(roleToCreate);
-                logger.info("CREATED ROLE : {}", roleName);
+                logger.warn("CREATED ROLE : {}", roleName);
             }
         });
     }
