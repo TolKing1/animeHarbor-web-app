@@ -19,13 +19,12 @@ public class User {
     private long id;
 
     @Column(unique = true)
-    @NotBlank(message = "Username can't be blank")
-    @Min(value = 3, message = "Minimum length for username: 3")
-    @Max(value = 30, message = "Maximum length for username: 30")
+    @NotBlank(message = "Username: Can't be blank")
+    @Size(min = 3, max = 30, message = "Username: Length should be between 3 and 30")
     private String username;
 
     @Column(unique = true)
-    @Email(message = "Enter valid email", flags = Pattern.Flag.CASE_INSENSITIVE)
+    @Email(message = "Email: Enter valid email", flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;
 
     @Column(nullable = false)
