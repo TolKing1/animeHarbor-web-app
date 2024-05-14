@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" >
     <title>Elements</title>
 </head>
 <body>
+<!--Socials-->
+<ul th:fragment="socials">
+    <li><a href="#" class="google"><i class="fa fa-google"></i> Sign in With Google</a></li>
+</ul>
+
 <!--Card-->
 <div th:fragment="card(animeList,isSearch)" th:class="${isSearch ? 'col-lg-3 col-md-4 col-sm-6':'col-lg-4 col-md-6 col-sm-6'}" th:each="anime : ${animeList}">
     <div class="product__item">
@@ -26,6 +31,8 @@
     </div>
 </div>
 
+<!--Toast-->
+<div th:fragment="toast" th:id="toastContainer" th:if="${param.login}" sec:authorize="isAuthenticated()" ></div>
 
 <!--Sorting-->
 <form th:fragment="sorting(formName,sortBy,sortDirection)" class="col-lg-6 col-md-6 col-sm-12 d-flex flex-row flex-wrap justify-content-start justify-content-sm-end  align-items-end"

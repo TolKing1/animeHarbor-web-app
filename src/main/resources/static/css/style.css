@@ -163,6 +163,16 @@ ol {
 }
 
 /* buttons */
+#toastContainer {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	background-color: rgb(225, 59, 60);
+	color: #fff;
+	padding: 10px 20px;
+	border-radius: 5px;
+	z-index: 999;
+}
 
 .primary-btn {
 	display: inline-block;

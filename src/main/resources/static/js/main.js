@@ -39,6 +39,23 @@
         $(this).css('background-image', 'url(' + bg + ')');
     });
 
+    //Toast
+    $(document).ready(function(){
+        // Function to show toast notification
+        function showToast(message,id) {
+            $(id).text(message).fadeIn();
+            setTimeout(function(){
+                $('#toastContainer').fadeOut();
+            }, 3000); // 3 seconds
+        }
+
+        // Initial toast when page loads
+        showToast("You are logged in.",'#toastContainer');
+
+    });
+
+
+
     // Search model
     $('.search-switch').on('click', function () {
         $('.search-model').fadeIn(400);

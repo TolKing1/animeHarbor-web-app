@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.tolking.animeharbor.dto.RegisterDto;
 import org.tolking.animeharbor.entities.Roles;
 import org.tolking.animeharbor.entities.User;
 import org.tolking.animeharbor.entities.enums.RoleType;
@@ -52,11 +53,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) throws RoleNotFoundException {
+    public User save(RegisterDto registerDto) throws RoleNotFoundException {
         Roles roleObg = roleRepository.findByRole(RoleType.USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.USER));
+        User user = new User();
+        user.setEmail(registerDto.getEmail());
+        user.setUsername(registerDto.getUserName());
+        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+
         user.addRole(roleObg);
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     @Override

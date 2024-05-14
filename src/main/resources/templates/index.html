@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{fragments/general :: common_header(~{::title})}">
     <title>AnimeHarbor - search for anime</title>>
@@ -8,6 +8,7 @@
 <div id="preloder">
     <div class="loader"></div>
 </div>
+
 <!-- Header Section Begin -->
 <header class="header" th:replace="~{fragments/general :: header}">
 </header>
@@ -111,6 +112,10 @@
 <!-- Search model Begin -->
 <div class="search-model" th:replace="~{fragments/elements :: search}"></div>
 <!-- Search model end -->
+
+<!-- Toast Begin -->
+<div  th:replace="~{fragments/elements :: toast}" ></div>
+<!-- Toast end -->
 
 <div th:replace="~{fragments/general :: scripts}"></div>
 </body>
