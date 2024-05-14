@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.tolking.animeharbor.entities.Anime;
-import org.tolking.animeharbor.entities.repositories.AnimeRepository;
+import org.tolking.animeharbor.repositories.AnimeRepository;
 import org.tolking.animeharbor.service.AnimeService;
 
 import java.util.List;

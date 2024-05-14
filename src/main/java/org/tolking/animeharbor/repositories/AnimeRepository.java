@@ -1,14 +1,16 @@
-package org.tolking.animeharbor.entities.repositories;
+package org.tolking.animeharbor.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.tolking.animeharbor.entities.Anime;
 
 import java.util.List;
 
+@Repository
 public interface AnimeRepository extends JpaRepository<Anime, Long> {
     //Index
     List<Anime> getAllBy(Pageable pageable);

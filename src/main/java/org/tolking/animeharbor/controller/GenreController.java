@@ -34,7 +34,7 @@ public class GenreController {
     private final GenreServiceImpl genreServiceImpl;
     private final AnimeService animeService;
 
-    private final int pageSize = 6;
+    private final int pageSize = 9;
 
     @GetMapping
     public String getAll(Model model) {
