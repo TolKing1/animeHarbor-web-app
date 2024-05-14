@@ -10,13 +10,15 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GenreServiceImpl {
+public class GenreServiceImpl implements org.tolking.animeharbor.service.GenreService {
     private final GenreRepository genreRepository;
 
+    @Override
     public List<Genre> getAllGenres() {
        return genreRepository.findAllByOrderByTitleAsc();
     }
 
+    @Override
     public Optional<Genre> getByGenre(long id) {
         return genreRepository.findById(id);
     }

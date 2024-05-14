@@ -21,17 +21,17 @@ VALUES ('Madhouse', 'Known for producing high-quality anime series and movies.')
        ('Studio Ghibli', 'Renowned for its hand-drawn animation and captivating storytelling.'),
        ('Toei Animation', 'One of the oldest and most prominent animation studios in Japan.');
 
-INSERT INTO users (username, email, password, roles)
-VALUES ('hinata', 'hinata@example.com', 'password123', 'ROLE_USER'),
-       ('sasuke', 'sasuke@example.com', 'password123', 'ROLE_USER'),
-       ('chihiro', 'chihiro@example.com', 'password123', 'ROLE_USER'),
-       ('light', 'light@example.com', 'password123', 'ROLE_USER'),
-       ('mitsuha', 'mitsuha@example.com', 'password123', 'ROLE_USER'),
-       ('edward', 'edward@example.com', 'password123', 'ROLE_USER'),
-       ('luffy', 'luffy@example.com', 'password123', 'ROLE_USER'),
-       ('totoro', 'totoro@example.com', 'password123', 'ROLE_USER'),
-       ('spike', 'spike@example.com', 'password123', 'ROLE_USER'),
-       ('naruto', 'naruto@example.com', 'password123', 'ROLE_USER');
+INSERT INTO users (username, email, password)
+VALUES ('hinata', 'hinata@example.com', 'password123'),
+       ('sasuke', 'sasuke@example.com', 'password123'),
+       ('chihiro', 'chihiro@example.com', 'password123'),
+       ('light', 'light@example.com', 'password123'),
+       ('mitsuha', 'mitsuha@example.com', 'password123'),
+       ('edward', 'edward@example.com', 'password123'),
+       ('luffy', 'luffy@example.com', 'password123'),
+       ('totoro', 'totoro@example.com', 'password123'),
+       ('spike', 'spike@example.com', 'password123'),
+       ('naruto', 'naruto@example.com', 'password123');
 
 -- Insert 40 anime
 INSERT INTO anime (title, description, type, date, director, creation, status, studio_id)

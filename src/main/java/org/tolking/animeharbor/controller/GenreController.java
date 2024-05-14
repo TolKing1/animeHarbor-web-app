@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.tolking.animeharbor.entities.Anime;
 import org.tolking.animeharbor.entities.Genre;
 import org.tolking.animeharbor.service.AnimeService;
-import org.tolking.animeharbor.service.internal.GenreServiceImpl;
+import org.tolking.animeharbor.service.GenreService;
 
 import java.util.Optional;
 
@@ -31,14 +31,14 @@ public class GenreController {
     private static final String FORM_NAME_ATTR = "formName";
     private static final String FORM_NAME = "paginate";
 
-    private final GenreServiceImpl genreServiceImpl;
+    private final GenreService genreService;
     private final AnimeService animeService;
 
     private final int pageSize = 9;
 
     @GetMapping
     public String getAll(Model model) {
-        model.addAttribute(GENRES_ATTR, genreServiceImpl.getAllGenres());
+        model.addAttribute(GENRES_ATTR, genreService.getAllGenres());
         return GENRE_VIEW;
     }
 
@@ -50,7 +50,7 @@ public class GenreController {
             @RequestParam(defaultValue = "creation") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             Model model) {
-        Optional<Genre> genre = genreServiceImpl.getByGenre(id);
+        Optional<Genre> genre = genreService.getByGenre(id);
         if (genre.isPresent() && !genre.get().isEmpty()) {
             Genre g = genre.get();
             Page<Anime> animePage = animeService.getSortedAnimePageByGenre(id, pageNo, pageSize, sortBy, sortDirection);
