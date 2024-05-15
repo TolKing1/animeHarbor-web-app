@@ -165,7 +165,7 @@ ol {
 /* buttons */
 .toastNotification {
 	position: fixed;
-	top: 20px;
+	bottom: 20px;
 	right: 20px;
 	background-color: rgb(225, 59, 60);
 	color: #fff;
@@ -430,19 +430,69 @@ ol {
 .header__right {
 	text-align: right;
 	padding: 20px 0 15px;
+	list-style: none;
+	display: flex;
+	justify-content: flex-end;
+}
+.header__right li {
+	display: inline-block;
+	margin-right: 15px;
+	color: #ffffff;
 }
 
-.header__right a {
+.header__right li a {
 	display: inline-block;
 	font-size: 18px;
 	color: #ffffff;
-	margin-right: 30px;
 }
 
-.header__right a:last-child {
+.header__right li a:last-child {
+	margin-right: 0;
+}
+.header__right li:hover .dropdown {
+	top: 42px;
+	opacity: 1;
+	visibility: visible;
+}
+
+.header__right li:hover .dropdown li a {
+	background: transparent;
+}
+.header__right li:hover .dropdown li a:hover{
+	color: #e53637;
+	transition: .3s;
+}
+
+.header__right li:last-child {
 	margin-right: 0;
 }
 
+.header__right li .dropdown {
+	position: absolute;
+	top: 82px;
+	width: 150px;
+	background: #ffffff;
+	text-align: left;
+	padding: 5px 0;
+	z-index: 9;
+	opacity: 0;
+	visibility: hidden;
+	-webkit-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+}
+
+.header__right li .dropdown li {
+	display: block;
+	margin-right: 0;
+}
+
+.header__right li .dropdown li a {
+	font-size: 14px;
+	color: #111111;
+	font-weight: 500;
+	padding: 5px 20px;
+}
 .slicknav_menu {
 	display: none;
 }

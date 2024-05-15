@@ -23,7 +23,8 @@
         <div class="product__item__text">
             <ul>
                 <li th:each="genre, genreStat : ${anime.genre}"
-                    th:text="${genre.title}" th:unless="${genreStat.index > 2}">Active
+                     th:unless="${genreStat.index > 2}">
+                    <a th:text="${genre.title}" th:href="@{/genres/{id}(id=${genre.id})}"></a>
                 </li>
             </ul>
             <h5><a href="#" th:text="${anime.title}"></a></h5>
@@ -31,11 +32,14 @@
     </div>
 </div>
 
-<!--Toast-->
+<!--Toast login-->
 <div th:fragment="toastLogin" class="toastNotification" th:id="toastLogin" th:if="${param.login}" sec:authorize="isAuthenticated()" ></div>
 
-<!--Toast-->
-<div th:fragment="toastCreate" class="toastNotification" th:id="toastCreate" th:if="${param.created}" ></div>
+<!--Toast create-->
+<div th:fragment="toastCreate" class="toastNotification" th:id="toastCreate" th:if="${param.created}"></div>
+
+<!--Toast logout-->
+<div th:fragment="toastLogout" class="toastNotification" th:id="toastLogout" th:if="${param.logout}" sec:authorize="isAnonymous()"></div>
 
 <!--Sorting-->
 <form th:fragment="sorting(formName,sortBy,sortDirection)" class="col-lg-6 col-md-6 col-sm-12 d-flex flex-row flex-wrap justify-content-start justify-content-sm-end  align-items-end"

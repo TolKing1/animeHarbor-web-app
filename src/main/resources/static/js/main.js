@@ -52,6 +52,7 @@
         // Initial toast when page loads
         showToast("You are logged in.",'#toastLogin');
         showToast("Account has been created. Please log in",'#toastCreate');
+        showToast("You logged out",'#toastLogout');
 
     });
 
