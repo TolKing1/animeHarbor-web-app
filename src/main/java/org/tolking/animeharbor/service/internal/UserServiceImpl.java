@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, UserAlreadyExists {
         Roles roleObg = roleRepository.findByRole(RoleType.USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.USER));
-        Optional<User> existUser = userRepository.findByUsername(registerDto.getUserName());
+        Optional<User> existUser = userRepository.findByUsernameOrEmail(registerDto.getUserName(), registerDto.getEmail());
 
         if (existUser.isEmpty()) {
             User user = new User();
@@ -71,8 +71,6 @@ public class UserServiceImpl implements UserService {
             user.addRole(roleObg);
 
             userRepository.save(user);
-        }else {
-            throw new UserAlreadyExists(registerDto.getUserName()+" already exists");
         }
     }
 

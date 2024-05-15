@@ -12,6 +12,7 @@ public interface UserService extends UserDetailsService {
     User findByUsername(String username);
     User findByEmail(String email);
     User findById(long id);
+
     void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, UserAlreadyExists;
 
     boolean existsByUsername(String username);
