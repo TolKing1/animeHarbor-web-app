@@ -1,0 +1,31 @@
+server:
+  port: ${PORT}
+
+logging:
+  level:
+    org:
+      springframework:
+        web : DEBUG
+
+spring:
+  datasource:
+    url:  jdbc:postgresql:${DATABASE_URL}
+    username: ${USERNAME}
+    password: ${PASSWORD}
+  jooq:
+    sql-dialect:  org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+
