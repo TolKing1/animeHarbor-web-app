@@ -12,6 +12,7 @@ import org.tolking.animeharbor.entities.Roles;
 import org.tolking.animeharbor.entities.User;
 import org.tolking.animeharbor.entities.enums.Provider;
 import org.tolking.animeharbor.entities.enums.RoleType;
+import org.tolking.animeharbor.exception.UserAlreadyExists;
 import org.tolking.animeharbor.repositories.RoleRepository;
 import org.tolking.animeharbor.repositories.UserRepository;
 import org.tolking.animeharbor.service.UserService;
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException {
+    public void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, UserAlreadyExists {
         Roles roleObg = roleRepository.findByRole(RoleType.USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.USER));
         Optional<User> existUser = userRepository.findByUsername(registerDto.getUserName());
 
@@ -70,6 +71,8 @@ public class UserServiceImpl implements UserService {
             user.addRole(roleObg);
 
             userRepository.save(user);
+        }else {
+            throw new UserAlreadyExists(registerDto.getUserName()+" already exists");
         }
     }
 

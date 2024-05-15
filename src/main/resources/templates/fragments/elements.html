@@ -32,7 +32,10 @@
 </div>
 
 <!--Toast-->
-<div th:fragment="toast" th:id="toastContainer" th:if="${param.login}" sec:authorize="isAuthenticated()" ></div>
+<div th:fragment="toastLogin" class="toastNotification" th:id="toastLogin" th:if="${param.login}" sec:authorize="isAuthenticated()" ></div>
+
+<!--Toast-->
+<div th:fragment="toastCreate" class="toastNotification" th:id="toastCreate" th:if="${param.created}" ></div>
 
 <!--Sorting-->
 <form th:fragment="sorting(formName,sortBy,sortDirection)" class="col-lg-6 col-md-6 col-sm-12 d-flex flex-row flex-wrap justify-content-start justify-content-sm-end  align-items-end"

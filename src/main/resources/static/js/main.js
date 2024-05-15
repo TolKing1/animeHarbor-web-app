@@ -45,12 +45,13 @@
         function showToast(message,id) {
             $(id).text(message).fadeIn();
             setTimeout(function(){
-                $('#toastContainer').fadeOut();
+                $('.toastNotification').fadeOut();
             }, 3000); // 3 seconds
         }
 
         // Initial toast when page loads
-        showToast("You are logged in.",'#toastContainer');
+        showToast("You are logged in.",'#toastLogin');
+        showToast("Account has been created. Please log in",'#toastCreate');
 
     });
 
