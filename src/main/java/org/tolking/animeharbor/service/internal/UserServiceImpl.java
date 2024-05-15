@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(RegisterDto registerDto) throws RoleNotFoundException {
+    public void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException {
         Roles roleObg = roleRepository.findByRole(RoleType.USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.USER));
         Optional<User> existUser = userRepository.findByUsername(registerDto.getUserName());
 
@@ -62,9 +62,10 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             user.setEmail(registerDto.getEmail());
             user.setUsername(registerDto.getUserName());
-            user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-            user.setProvider(Provider.LOCAL);
+            user.setProvider(provider);
             user.setEnabled(true);
+
+            user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
             user.addRole(roleObg);
 
@@ -72,24 +73,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-    @Override
-    public void processOAuthPostLogin(String email, String username) throws RoleNotFoundException {
-        Optional<User> existUser = userRepository.findByUsername(username);
-        Roles roleObg = roleRepository.findByRole(RoleType.USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.USER));
-
-        if (existUser.isEmpty()) {
-            User newUser = new User();
-            newUser.setUsername(username);
-            newUser.setEmail(email);
-            newUser.setProvider(Provider.GOOGLE);
-            newUser.setEnabled(true);
-
-            newUser.addRole(roleObg);
-
-            userRepository.save(newUser);
-        }
-    }
 
     @Override
     public boolean existsByUsername(String username) {

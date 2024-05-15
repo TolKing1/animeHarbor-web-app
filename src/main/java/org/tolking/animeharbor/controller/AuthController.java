@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.tolking.animeharbor.dto.RegisterDto;
+import org.tolking.animeharbor.entities.enums.Provider;
 import org.tolking.animeharbor.service.UserService;
 
 import javax.management.relation.RoleNotFoundException;
@@ -46,7 +47,7 @@ public class AuthController {
             return SIGN_UP_VIEW;
         }
 
-        userService.save(registerDto);
+        userService.saveUser(registerDto, Provider.LOCAL);
 
         return "redirect:"+LOGIN_URL;
     }
