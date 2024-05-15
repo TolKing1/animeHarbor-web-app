@@ -38,7 +38,7 @@ public class User {
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean enabled;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_m2m_roles",
             joinColumns = @JoinColumn(name = "user_id"),
