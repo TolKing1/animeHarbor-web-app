@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,6 +19,7 @@ import org.tolking.animeharbor.service.UserService;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
     private final UserService userService;
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -35,17 +37,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .anyRequest().permitAll()
                 )
-                .oauth2Login(oauth -> oauth
-                        .loginPage("/login/oauth2/google")
-                        .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig.userService(customOAuth2UserService)))
-                        .successHandler(new OAuth2SuccessHandler(userService))
-                        .permitAll()
-                )
                 .formLogin(formLogin -> {
                             formLogin.loginPage("/login");
                             formLogin.defaultSuccessUrl("/?login");
                             formLogin.permitAll();
                         }
+                )
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/login/oauth2/google")
+                        .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig.userService(customOAuth2UserService)))
+                        .successHandler(new OAuth2SuccessHandler(userService))
+                        .permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .logout(logout -> logout
@@ -56,7 +58,6 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-
 
 
     @Bean
