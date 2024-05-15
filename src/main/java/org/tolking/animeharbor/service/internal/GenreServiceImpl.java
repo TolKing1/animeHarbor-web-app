@@ -15,7 +15,7 @@ public class GenreServiceImpl implements org.tolking.animeharbor.service.GenreSe
 
     @Override
     public List<Genre> getAllGenres() {
-       return genreRepository.findAllByOrderByTitleAsc();
+        return genreRepository.findAllByOrderByTitleAsc();
     }
 
     @Override

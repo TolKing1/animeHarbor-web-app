@@ -12,7 +12,7 @@ import org.tolking.animeharbor.service.CustomOAuth2UserService;
 public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implements CustomOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User user =  super.loadUser(userRequest);
+        OAuth2User user = super.loadUser(userRequest);
         return new CustomOAuth2User(user);
     }
 }
