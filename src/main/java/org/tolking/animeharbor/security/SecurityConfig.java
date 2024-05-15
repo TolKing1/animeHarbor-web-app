@@ -9,18 +9,23 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.tolking.animeharbor.security.handler.OAuth2SuccessHandler;
+import org.tolking.animeharbor.service.CustomOAuth2UserService;
+import org.tolking.animeharbor.service.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
-    public SecurityConfig(@Lazy UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(@Lazy UserService userService,
+                          CustomOAuth2UserService customOAuth2UserService) {
+        this.userService = userService;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Bean
@@ -29,6 +34,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         .anyRequest().permitAll()
+                )
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/login/oauth2/google")
+                        .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig.userService(customOAuth2UserService)))
+                        .successHandler(new OAuth2SuccessHandler(userService))
+                        .permitAll()
                 )
                 .formLogin(formLogin -> {
                             formLogin.loginPage("/login");
@@ -52,6 +63,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(

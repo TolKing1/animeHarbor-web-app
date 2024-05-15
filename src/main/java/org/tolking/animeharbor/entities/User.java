@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.tolking.animeharbor.entities.enums.Provider;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,6 +30,13 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, columnDefinition = "DEFAULT LOCAL")
+    @Enumerated(EnumType.STRING)
+    private Provider provider = Provider.LOCAL;
+
+    @Column(columnDefinition = "DEFAULT TRUE")
+    private boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

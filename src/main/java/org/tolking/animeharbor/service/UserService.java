@@ -10,7 +10,8 @@ public interface UserService extends UserDetailsService {
     User findByUsername(String username);
     User findByEmail(String email);
     User findById(long id);
-    User save(RegisterDto registerDto) throws RoleNotFoundException;
+    void save(RegisterDto registerDto) throws RoleNotFoundException;
+    void processOAuthPostLogin(String email, String username) throws RoleNotFoundException;
 
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);

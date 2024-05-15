@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.tolking.animeharbor.dto.RegisterDto;
 import org.tolking.animeharbor.entities.Roles;
 import org.tolking.animeharbor.entities.User;
+import org.tolking.animeharbor.entities.enums.Provider;
 import org.tolking.animeharbor.entities.enums.RoleType;
 import org.tolking.animeharbor.repositories.RoleRepository;
 import org.tolking.animeharbor.repositories.UserRepository;
@@ -53,16 +54,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(RegisterDto registerDto) throws RoleNotFoundException {
+    public void save(RegisterDto registerDto) throws RoleNotFoundException {
         Roles roleObg = roleRepository.findByRole(RoleType.USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.USER));
-        User user = new User();
-        user.setEmail(registerDto.getEmail());
-        user.setUsername(registerDto.getUserName());
-        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        Optional<User> existUser = userRepository.findByUsername(registerDto.getUserName());
 
-        user.addRole(roleObg);
+        if (existUser.isEmpty()) {
+            User user = new User();
+            user.setEmail(registerDto.getEmail());
+            user.setUsername(registerDto.getUserName());
+            user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+            user.setProvider(Provider.LOCAL);
+            user.setEnabled(true);
 
-        return userRepository.save(user);
+            user.addRole(roleObg);
+
+            userRepository.save(user);
+        }
+    }
+
+
+    @Override
+    public void processOAuthPostLogin(String email, String username) throws RoleNotFoundException {
+        Optional<User> existUser = userRepository.findByUsername(username);
+        Roles roleObg = roleRepository.findByRole(RoleType.USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.USER));
+
+        if (existUser.isEmpty()) {
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setEmail(email);
+            newUser.setProvider(Provider.GOOGLE);
+            newUser.setEnabled(true);
+
+            newUser.addRole(roleObg);
+
+            userRepository.save(newUser);
+        }
     }
 
     @Override
