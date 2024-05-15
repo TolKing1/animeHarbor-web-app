@@ -31,14 +31,14 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, columnDefinition = "DEFAULT LOCAL")
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Provider provider = Provider.LOCAL;
 
-    @Column(columnDefinition = "DEFAULT TRUE")
+    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "users_m2m_roles",
             joinColumns = @JoinColumn(name = "user_id"),
