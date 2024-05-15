@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.tolking.animeharbor.dto.PasswordDto;
 import org.tolking.animeharbor.dto.RegisterDto;
 import org.tolking.animeharbor.entities.Roles;
 import org.tolking.animeharbor.entities.User;
@@ -73,6 +74,19 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
     }
+
+    @Override
+    public void updateUserPassword(String username, PasswordDto passwordDto){
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (user.isPresent()){
+            User existingUser = user.get();
+            existingUser.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+
+            userRepository.save(existingUser);
+        }
+    }
+
 
 
     @Override

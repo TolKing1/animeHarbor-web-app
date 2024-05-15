@@ -19,12 +19,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true)
+    @Column(unique = true, updatable = false)
     @NotBlank(message = "Username: Can't be blank")
     @Size(min = 3, max = 30, message = "Username: Length should be between 3 and 30")
     private String username;
 
-    @Column(unique = true)
+    @Column(unique = true,updatable = false)
     @Email(message = "Email: Enter valid email", flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;
 
@@ -37,6 +37,9 @@ public class User {
 
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean enabled;
+
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'default.png'")
+    private String picture;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
