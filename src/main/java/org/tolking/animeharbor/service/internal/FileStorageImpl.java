@@ -114,7 +114,11 @@ public class FileStorageImpl implements FilesStorageService {
     }
 
     private boolean isValidFileType(String fileExtension) {
-        return Arrays.asList(ALLOWED_EXTENSIONS).contains(fileExtension.toLowerCase());
+        try {
+            return Arrays.asList(ALLOWED_EXTENSIONS).contains(fileExtension.toLowerCase());
+        }catch (Exception e){
+            return false;
+        }
     }
 
 
