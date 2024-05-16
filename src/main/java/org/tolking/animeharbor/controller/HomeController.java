@@ -21,6 +21,7 @@ import java.io.IOException;
 public class HomeController {
     private final AnimeService animeService;
     private final FilesStorageService storageService;
+
     @GetMapping({"/", ""})
     public String home(Model model) {
         model.addAttribute("animeByPopular",animeService.getAllForPopularityPage());
