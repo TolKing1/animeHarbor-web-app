@@ -15,6 +15,9 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User {
+    @Transient
+    private static final String DEFAULT_IMG_NAME = "'default.jpg'";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -38,7 +41,7 @@ public class User {
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean enabled;
 
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'default.png'")
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT "+DEFAULT_IMG_NAME)
     private String picture;
 
     @ManyToMany(fetch = FetchType.EAGER)
