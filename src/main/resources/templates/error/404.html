@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/general :: common_header(~{::title})}">
+    <title>Something went wrong...</title>>
+</head>
+<body class="min-vh-100">
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header" th:replace="~{fragments/general :: header}">
+</header>
+<!-- Header End -->
+
+<!-- Error Container Begin -->
+<div class="container h-100" id="error-container" >
+    <div class="row h-100 align-items-center">
+        <div class="col-md-12 text-center ">
+            <img th:src="@{/img/404.png}">
+            <p class="text-white">
+                Sorry, an error has occured, Requested page not found!
+            </p>
+        </div>
+    </div>
+</div>
+<!-- Error Container End -->
+
+
+<!-- Footer Section Begin -->
+<footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
+<!-- Footer Section End -->
+
+<!-- Search model Begin -->
+<div class="search-model" th:replace="~{fragments/elements :: search}"></div>
+<!-- Search model end -->
+
+
+<div th:replace="~{fragments/general :: scripts}"></div>
+</body>
+
+</html>
