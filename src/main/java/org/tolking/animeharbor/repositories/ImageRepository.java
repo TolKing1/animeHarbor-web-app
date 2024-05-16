@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface ImageRepository extends CrudRepository<Image, Long> {
-    public Optional<Image> findById(long id);
-    public Optional<Image> findByFilename(String name);
+    Optional<Image> findById(long id);
+    Optional<Image> findByFilename(String name);
 }

@@ -5,7 +5,6 @@ import org.tolking.animeharbor.dto.PasswordDto;
 import org.tolking.animeharbor.dto.RegisterDto;
 import org.tolking.animeharbor.entities.User;
 import org.tolking.animeharbor.entities.enums.Provider;
-import org.tolking.animeharbor.exception.UserAlreadyExists;
 
 import javax.management.relation.RoleNotFoundException;
 import java.io.FileNotFoundException;
@@ -15,7 +14,7 @@ public interface UserService extends UserDetailsService {
     User findByEmail(String email);
     User findById(long id);
 
-    void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, UserAlreadyExists, FileNotFoundException;
+    void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, FileNotFoundException;
     void updateUserPassword(String username, PasswordDto passwordDto);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);

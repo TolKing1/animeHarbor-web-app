@@ -86,7 +86,7 @@ public class ImageServiceImpl implements ImageService {
         return mimeType;
     }
 
-    public String getImageString(MultipartFile multipartFile) throws IOException {
+    private String getImageString(MultipartFile multipartFile) throws IOException {
 
         try {
             byte[] imageBytes = IOUtils.toByteArray( multipartFile.getInputStream());

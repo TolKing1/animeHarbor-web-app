@@ -10,10 +10,10 @@ import java.io.FileNotFoundException;
 import java.util.Optional;
 
 public interface ImageService {
-  public void saveProfile(MultipartFile file, String username) throws IOFileUploadException, InvalidMimeTypeException;
+  void saveProfile(MultipartFile file, String username) throws IOFileUploadException, InvalidMimeTypeException;
 
-  public ImageDataDto load(long id) throws FileNotFoundException;
+  ImageDataDto load(long id) throws FileNotFoundException;
 
-  public Optional<Image> findImageByName(String name);
+  Optional<Image> findImageByName(String name);
 
 }
