@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.controller;
 
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +23,7 @@ import java.security.Principal;
 @Controller
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5) // 5MB
 @RequestMapping("/me")
 public class ProfileController {
     public static final String ME_VIEW = "profile";
@@ -85,9 +87,10 @@ public class ProfileController {
 
 
     @ExceptionHandler({InvalidMimeTypeException.class, FileNotFoundException.class})
-    public String handleMaxSizeException(Model model, Principal principal, Exception e) {
+    public String handleFileException(Model model, Principal principal, Exception e) {
         model.addAttribute(PICTURE_ERROR_ATTR, e.getMessage());
         addPassword(model);
         return setModelAttributesForProfile(principal, model);
     }
+
 }
