@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.tolking.animeharbor.dto.ImageDataDto;
@@ -34,8 +33,8 @@ public class HomeController {
     public ResponseEntity<Resource> getProfileImage(@PathVariable String filename) throws IOException {
         ImageDataDto imageData = storageService.loadFromProfile(filename);
 
-        ByteArrayResource imageByte = imageData.getResource();
-        String mimeType = imageData.getMimeType();
+        ByteArrayResource imageByte = imageData.resource();
+        String mimeType = imageData.mimeType();
 
         return ResponseEntity
                 .status(HttpStatus.OK)

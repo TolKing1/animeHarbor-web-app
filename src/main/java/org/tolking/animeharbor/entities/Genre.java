@@ -27,7 +27,7 @@ public class Genre {
             inverseJoinColumns = @JoinColumn(name = "anime_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"genre_id", "anime_id"})
     )
-    private List<Anime> animeList = new ArrayList<Anime>();
+    private List<Anime> animeList = new ArrayList<>();
 
     @Transient
     public boolean isEmpty(){

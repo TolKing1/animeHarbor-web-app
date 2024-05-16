@@ -6,5 +6,5 @@ public enum AnimeType {
     SERIES,
     MANGA,
     LIGHT_NOVEL,
-    NOVEL;
+    NOVEL
 }

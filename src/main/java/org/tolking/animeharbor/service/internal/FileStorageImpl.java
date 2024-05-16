@@ -75,7 +75,7 @@ public class FileStorageImpl implements FilesStorageService {
 
             user.setPicture(newFileName);
             userRepository.save(user);
-        };
+        }
     }
 
     @Override
@@ -91,7 +91,7 @@ public class FileStorageImpl implements FilesStorageService {
     private ImageDataDto loadImage(String filename, Path rootPath) throws FileNotFoundException {
         File file = rootPath.resolve(filename).toFile();
 
-        byte[] data = null;
+        byte[] data;
         try {
             data = FileUtils.readFileToByteArray(file);
         } catch (IOException e) {

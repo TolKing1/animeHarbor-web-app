@@ -1,6 +1,5 @@
 package org.tolking.animeharbor.security.handler;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.tolking.animeharbor.entities.enums.Provider;
 import org.tolking.animeharbor.security.CustomOAuth2User;
 import org.tolking.animeharbor.service.UserService;
 
-import java.io.IOException;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -21,7 +19,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     @SneakyThrows
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
 
         RegisterDto registerDto = new RegisterDto();
