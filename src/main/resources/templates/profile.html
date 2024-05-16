@@ -71,14 +71,16 @@
         </div>
         <div class="row">
           <!-- Profile Picture Form -->
-          <form th:action="@{/me/password}" th:method="POST" id="profile-picture-form" class="col-lg-12 mb-4" enctype="multipart/form-data">
+          <form th:action="@{/me/picture}" th:method="POST" id="profile-picture-form" class="col-lg-12 mb-4" enctype="multipart/form-data">
             <div class="form-group">
               <label for="profile-picture" class="text-white">Profile Picture</label><br>
-              <input th:class="text-primary" type="file" class="form-control-file" id="profile-picture" name="profile-picture" accept="image/png">
+              <input th:name="picture" th:class="text-primary" type="file" class="form-control-file" id="profile-picture" name="profile-picture" accept="image/png, image/jpeg, image/jpg">
+              <small th:if="${pictureErr}" th:text="${pictureErr}" class="text-danger font-italic"></small>
             </div>
             <div class="form-group">
               <h4 class="text-white">Your current picture:</h4><br>
               <img th:src="@{/images/profile/{pic}(pic = ${imagePath})}" alt="Profile Picture" class="mt-2" width="300" height="300">
+
             </div>
             <button type="submit" class="btn btn-danger">Update Profile Picture</button>
           </form>

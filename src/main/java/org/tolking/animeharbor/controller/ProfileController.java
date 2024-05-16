@@ -5,15 +5,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.tolking.animeharbor.dto.PasswordDto;
 import org.tolking.animeharbor.entities.User;
+import org.tolking.animeharbor.exception.InvalidMimeTypeException;
+import org.tolking.animeharbor.service.FilesStorageService;
 import org.tolking.animeharbor.service.UserService;
 
+import java.io.FileNotFoundException;
 import java.security.Principal;
 
 @Controller
@@ -21,16 +24,20 @@ import java.security.Principal;
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/me")
 public class ProfileController {
-    private static final String ME_VIEW = "profile";
+    public static final String ME_VIEW = "profile";
+    public static final String ME_URL = "/me";
     public static final String USERNAME_ATTR = "username";
     public static final String EMAIL_ATTR = "email";
     public static final String PASSWORD_ATTR = "password";
+    public static final String PICTURE_ERROR_ATTR = "pictureErr";
     public static final String IMG_ATTR = "imagePath";
+
     private final UserService userService;
+    private final FilesStorageService filesStorageService;
 
     @GetMapping
     public String me(Model model, Principal principal){
-        model.addAttribute(PASSWORD_ATTR, new PasswordDto());
+        addPassword(model);
         return setModelAttributesForProfile(principal, model);
 
     }
@@ -49,8 +56,18 @@ public class ProfileController {
             userService.updateUserPassword(principal.getName(), newPassword);
         }
 
-        model.addAttribute(PASSWORD_ATTR, new PasswordDto());
+        addPassword(model);
         return setModelAttributesForProfile(principal, model);
+    }
+
+
+    @PostMapping("/picture")
+    public ModelAndView updateProfilePicture(@RequestParam("picture") MultipartFile multipartFile,
+                                       ModelMap model,
+                                       Principal principal) throws Exception {
+        filesStorageService.saveProfile(multipartFile, principal.getName());
+
+        return new ModelAndView("redirect:"+ME_URL, model);
     }
 
     private String setModelAttributesForProfile(Principal principal, Model model) {
@@ -62,5 +79,15 @@ public class ProfileController {
         return ME_VIEW;
     }
 
+    private static void addPassword(Model model) {
+        model.addAttribute(PASSWORD_ATTR, new PasswordDto());
+    }
 
+
+    @ExceptionHandler({InvalidMimeTypeException.class, FileNotFoundException.class})
+    public String handleMaxSizeException(Model model, Principal principal, Exception e) {
+        model.addAttribute(PICTURE_ERROR_ATTR, e.getMessage());
+        addPassword(model);
+        return setModelAttributesForProfile(principal, model);
+    }
 }
