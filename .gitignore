@@ -29,3 +29,6 @@ replay_pid*
 ### IntelliJ IDEA ###
 /.idea/
 /.env
+
+#images
+/images/
