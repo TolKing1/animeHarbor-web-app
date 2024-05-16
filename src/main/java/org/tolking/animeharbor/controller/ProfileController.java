@@ -1,6 +1,5 @@
 package org.tolking.animeharbor.controller;
 
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.tolking.animeharbor.dto.PasswordDto;
 import org.tolking.animeharbor.entities.User;
 import org.tolking.animeharbor.exception.InvalidMimeTypeException;
-import org.tolking.animeharbor.service.FilesStorageService;
+import org.tolking.animeharbor.service.ImageService;
 import org.tolking.animeharbor.service.UserService;
 
 import java.io.FileNotFoundException;
@@ -23,7 +22,6 @@ import java.security.Principal;
 @Controller
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
-@MultipartConfig(maxFileSize = 1024 * 1024 * 5) // 5MB
 @RequestMapping("/me")
 public class ProfileController {
     public static final String ME_VIEW = "profile";
@@ -32,10 +30,10 @@ public class ProfileController {
     public static final String EMAIL_ATTR = "email";
     public static final String PASSWORD_ATTR = "password";
     public static final String PICTURE_ERROR_ATTR = "pictureErr";
-    public static final String IMG_ATTR = "imagePath";
+    public static final String IMG_ATTR = "imageId";
 
     private final UserService userService;
-    private final FilesStorageService filesStorageService;
+    private final ImageService imageService;
 
     @GetMapping
     public String me(Model model, Principal principal){
@@ -67,7 +65,7 @@ public class ProfileController {
     public ModelAndView updateProfilePicture(@RequestParam("picture") MultipartFile multipartFile,
                                        ModelMap model,
                                        Principal principal) throws Exception {
-        filesStorageService.saveProfile(multipartFile, principal.getName());
+        imageService.saveProfile(multipartFile, principal.getName());
 
         return new ModelAndView("redirect:"+ME_URL, model);
     }
@@ -77,7 +75,7 @@ public class ProfileController {
 
         model.addAttribute(USERNAME_ATTR, user.getUsername());
         model.addAttribute(EMAIL_ATTR, user.getEmail());
-        model.addAttribute(IMG_ATTR, user.getPicture());
+        model.addAttribute(IMG_ATTR, user.getImage().getId());
         return ME_VIEW;
     }
 

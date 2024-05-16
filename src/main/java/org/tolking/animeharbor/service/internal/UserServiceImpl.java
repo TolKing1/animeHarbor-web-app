@@ -9,25 +9,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.tolking.animeharbor.dto.PasswordDto;
 import org.tolking.animeharbor.dto.RegisterDto;
+import org.tolking.animeharbor.entities.Image;
 import org.tolking.animeharbor.entities.Roles;
 import org.tolking.animeharbor.entities.User;
 import org.tolking.animeharbor.entities.enums.Provider;
 import org.tolking.animeharbor.entities.enums.RoleType;
 import org.tolking.animeharbor.repositories.RoleRepository;
 import org.tolking.animeharbor.repositories.UserRepository;
+import org.tolking.animeharbor.service.ImageService;
 import org.tolking.animeharbor.service.UserService;
 
 import javax.management.relation.RoleNotFoundException;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.tolking.animeharbor.service.seeder.ImageSeeder.DEFAULT_PROFILE_IMG;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ImageService imageService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -55,8 +61,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException {
+    public void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, FileNotFoundException {
         Roles roleObg = roleRepository.findByRole(RoleType.USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.USER));
+        Image image = imageService.findImageByName(DEFAULT_PROFILE_IMG).orElseThrow(() -> new FileNotFoundException("IMG Not Found:  " + DEFAULT_PROFILE_IMG));
+
         Optional<User> existUser = userRepository.findByUsernameOrEmail(registerDto.getUserName(), registerDto.getEmail());
 
         if (existUser.isEmpty()) {
@@ -65,6 +73,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(registerDto.getUserName());
             user.setProvider(provider);
             user.setEnabled(true);
+            user.setImage(image);
 
             user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 

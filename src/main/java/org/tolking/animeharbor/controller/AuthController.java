@@ -15,6 +15,7 @@ import org.tolking.animeharbor.exception.UserAlreadyExists;
 import org.tolking.animeharbor.service.UserService;
 
 import javax.management.relation.RoleNotFoundException;
+import java.io.FileNotFoundException;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public String register(@ModelAttribute(REGISTER_DTO_ATTR) @Valid RegisterDto registerDto, BindingResult result) throws RoleNotFoundException, UserAlreadyExists {
+    public String register(@ModelAttribute(REGISTER_DTO_ATTR) @Valid RegisterDto registerDto, BindingResult result) throws RoleNotFoundException, UserAlreadyExists, FileNotFoundException {
         if (checkIfErrorExists(registerDto, result)) {
             return SIGN_UP_VIEW;
         }

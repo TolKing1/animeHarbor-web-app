@@ -79,7 +79,7 @@
             </div>
             <div class="form-group">
               <h4 class="text-white">Your current picture:</h4><br>
-              <img th:src="@{/images/profile/{pic}(pic = ${imagePath})}" alt="Profile Picture" class="mt-2" width="300" height="300">
+              <img th:src="@{/images/profile/{id} (id = ${imageId}) }" alt="Profile Picture" class="mt-2" width="300" height="300">
 
             </div>
             <button type="submit" class="btn btn-danger">Update Profile Picture</button>

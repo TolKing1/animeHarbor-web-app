@@ -1,7 +1,10 @@
 package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -41,8 +44,8 @@ public class User {
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean enabled;
 
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT "+DEFAULT_IMG_NAME)
-    private String picture;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL})
+    private Image image;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

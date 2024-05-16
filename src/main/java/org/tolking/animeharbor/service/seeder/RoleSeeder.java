@@ -1,4 +1,4 @@
-package org.tolking.animeharbor.security;
+package org.tolking.animeharbor.service.seeder;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
