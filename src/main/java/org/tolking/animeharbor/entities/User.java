@@ -55,15 +55,17 @@ public class User {
     )
     private List<Roles> roles = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "watchlist",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "anime_id")
+            inverseJoinColumns = @JoinColumn(name = "anime_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "anime_id"}
+            )
     )
     private List<Anime> watchList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Rating> rating = new ArrayList<>();
 
     @CreationTimestamp

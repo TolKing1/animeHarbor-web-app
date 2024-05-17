@@ -21,7 +21,7 @@
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
                     <a th:href="@{/}"><i class="fa fa-home"></i> Home</a>
-                    <span>Anime</span>
+                    <span th:text="${anime.title}"></span>
                 </div>
             </div>
         </div>
@@ -99,8 +99,12 @@
                             </div>
                         </div>
                         <div class="anime__details__btn">
-                            <a class="watch-btn" href="#"><span>Add to watch list</span> <i
-                                    class="fa fa-angle-right"></i></a>
+                            <a th:unless="${watchlistIsExists}" th:href="@{/watchlist/add?animeId={id}(id = ${anime.id})}" class="watch-btn"><span>Add to watch list</span>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                            <a th:if="${watchlistIsExists}" th:href="@{/watchlist/remove?animeId={id}(id = ${anime.id})}" class="watch-btn remove"><span>Remove from watch list</span>
+                                <i class="fa fa-remove"></i>
+                            </a>
                             <a class="watch-btn rate ml-2" data-target="#ratingModal" data-toggle="modal" href="#"
                                type="button">
                                 <span>Rate</span> <i
@@ -114,7 +118,7 @@
         </div>
         <div class="row">
             <div class="col-lg-8 col-md-8">
-                <div class="anime__details__review">
+                <div th:if="${comments.size() > 0}" class="anime__details__review">
                     <div class="section-title">
                         <h5>Reviews</h5>
                     </div>

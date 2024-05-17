@@ -172,7 +172,7 @@
             <div class="modal-body text-white">
                 <form id="ratingForm" th:action="@{/anime/{id}/rate(id=${anime.id})}" th:method="POST">
                     <input class="star" max="10" min="0" step="1" th:name="score" type="range" value="5">
-                    <div><span class="view"></span> out of 10</div>
+                    <div><span class="starCount"></span> out of 10</div>
                 </form>
             </div>
             <div class="modal-footer">

@@ -1153,6 +1153,15 @@ ol {
 	border-radius: 0 4px 4px 0;
 }
 
+.anime__details__btn .watch-btn.remove span {
+	background: #369ce5;
+}
+
+.anime__details__btn .watch-btn.remove i {
+	background: #369ce5;
+	color: #ffffff;
+}
+
 .anime__details__btn .watch-btn.rate span {
 	font-size: 13px;
 	color: #ffffff;

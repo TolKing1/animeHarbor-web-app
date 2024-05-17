@@ -11,11 +11,11 @@ import org.tolking.animeharbor.service.CommentService;
 
 import java.security.Principal;
 
+import static org.tolking.animeharbor.controller.AnimeDetailControllers.ANIME_DETAILS_URL;
 
 @Controller
 @RequiredArgsConstructor
 public class CommentController {
-    private static final String ANIME_DETAILS_URL = "/anime";
     private static final String COMMENT_MESSAGE_ATTR = "commentedMessage";
 
     private final CommentService commentService;

@@ -8,6 +8,7 @@
 
     <title th:replace="${title}">The awesome application</title>
     <!-- Google Font -->
+    <link  rel="icon" type="image/x-icon" th:href="@{/img/logo/icon.ico}">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
@@ -27,7 +28,7 @@
 <ul th:fragment="navLinks">
     <li><a th:href="@{/}">Homepage</a></li>
     <li><a th:href="@{/genres}">Genres</a></li>
-    <li><a th:href="@{/watch-list}">Watching List</a></li>
+    <li><a th:href="@{/watchlist}">Watching List</a></li>
     <li><a th:href="@{/contacts}">Contacts</a></li>
 </ul>
 
@@ -51,7 +52,7 @@
                 <div class="header__logo h-100">
                     <a class="h-100" th:href="@{/}">
                         <img alt="" style="max-height: 50px; width: auto;max-width: none !important;"
-                             th:src="@{/img/logo.png}">
+                             th:src="@{/img/logo/logo.png}">
                     </a>
                 </div>
             </div>
@@ -114,6 +115,10 @@
         </div>
         <div th:each="animePopular : ${animeByPoularity}"
              th:attr="data-setbg=@{/images/anime/{id}(id=${animePopular.image.id})}" class="product__sidebar__view__item set-bg">
+            <div class="view" th:if="${animePopular.getViewCount() > 0}">
+                <i class="fa fa-eye"></i>
+                <span th:text="${animePopular.getViewCount()}"></span>
+            </div>
             <h5>
                 <a th:href="@{/anime/{id}(id=${animePopular.id})}"
                    th:text="${animePopular.title}"></a>
@@ -131,7 +136,7 @@
         <div class="row align-items-center">
             <div class="col-lg-3">
                 <div class="footer__logo">
-                    <a th:href="@{/}"><img alt="logo" style="height: 60px" th:src="@{/img/logo.png}"></a>
+                    <a th:href="@{/}"><img alt="logo" style="height: 60px" th:src="@{/img/logo/logo.png}"></a>
                 </div>
             </div>
             <div class="col-lg-6">

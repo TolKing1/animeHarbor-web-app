@@ -59,7 +59,7 @@ public class ImageSeeder implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     private void imageSave(String name, ImageType imageType, Image image) throws IOException {
-        byte[] resource = IOUtils.toByteArray(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("static/img/" + name)));
+        byte[] resource = IOUtils.toByteArray(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("static/img/default/" + name)));
         String base64 = Base64.getEncoder().encodeToString(resource);
 
 

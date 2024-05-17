@@ -63,7 +63,7 @@
     const $target = $("input.star");
     $target.on("change", function handler(event) {
         const value = event.target.value;
-        $(".view").text(value);
+        $(".starCount").text(value);
         return handler;
     });
 
