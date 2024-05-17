@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Table(schema = "public")
 public class Image{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -53,8 +53,21 @@
         showToast("You are logged in.",'#toastLogin');
         showToast("Account has been created. Please log in",'#toastCreate');
         showToast("You are logged out",'#toastLogout');
+        showToast("Anime has been rated",'#toastRating');
+        showToast("Anime has been added to watchlist",'#toastWatchList');
 
     });
+
+    //Rate
+
+    const $target = $("input.star");
+    $target.on("change", function handler(event) {
+        const value = event.target.value;
+        $(".view").text(value);
+        return handler;
+    });
+
+    $target.trigger("change"); // To simulate the change event on the target
 
 
 

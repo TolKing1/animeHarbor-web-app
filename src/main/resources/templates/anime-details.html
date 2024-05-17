@@ -1,78 +1,27 @@
 <!DOCTYPE html>
-<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
-
-    <!-- Css Styles -->
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/font-awesome.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/elegant-icons.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/plyr.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/nice-select.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/owl.carousel.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/slicknav.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{css/style.css}" type="text/css">
+<head th:replace="~{fragments/general :: common_header(~{::title})}">
+    <title th:if="${anime}"  th:text="${#strings.capitalize(anime.title)}"></title>>
 </head>
 
 <body>
-    <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
 
     <!-- Header Section Begin -->
-    <header class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="header__logo">
-                        <a href="./index.html">
-                            <img th:src="@{img/logo.png}" alt="">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="header__nav">
-                        <nav class="header__menu mobile-menu">
-                            <ul>
-                                <li class="active"><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories</a></li>
-                                <li><a href="./anime-watching.html">Watching List</a></li>
-                                <li><a href="#">Contacts</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="header__right">
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="./login.html"><span class="icon_profile"></span></a>
-                    </div>
-                </div>
-            </div>
-            <div id="mobile-menu-wrap"></div>
-        </div>
+    <header class="header" th:replace="~{fragments/general :: header}">
     </header>
     <!-- Header End -->
-
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./categories.html">Categories</a>
-                        <span>Romance</span>
+                        <a th:href="@{/}"><i class="fa fa-home"></i> Home</a>
+                        <span>Anime</span>
                     </div>
                 </div>
             </div>
@@ -87,204 +36,178 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="anime__details__pic set-bg" data-setbg="img/anime/details-pic.jpg">
-                            <div class="comment"><i class="fa fa-comments"></i> 11</div>
-                            <div class="view"><i class="fa fa-eye"></i> 9141</div>
+<!--                            <div class="comment"><i class="fa fa-comments"></i> 11</div>-->
+                            <div th:if="${anime.views.size() > 0}" class="view"><i class="fa fa-eye"></i> <span th:text="${anime.views.size()}"></span></div>
                         </div>
                     </div>
                     <div class="col-lg-9">
                         <div class="anime__details__text">
                             <div class="anime__details__title">
-                                <h3>Fate Stay Night: Unlimited Blade</h3>
+                                <h3 th:text="${anime.title}"></h3>
                             </div>
-                            <div class="anime__details__rating">
+                            <div th:if="${anime.ratings.size() > 0}" class="anime__details__rating">
                                 <div class="rating">
                                     <a href="#"><i class="fa fa-star"></i></a>
-                                    <a href="#"><i class="fa fa-star"></i></a>
-                                    <a href="#"><i class="fa fa-star"></i></a>
-                                    <a href="#"><i class="fa fa-star"></i></a>
-                                    <a href="#"><i class="fa fa-star-half-o"></i></a>
+                                    <a href="#" class="text-white"> <small th:text="${#numbers.formatDecimal(anime.getAverageRating(),1,'COMMA',1,'POINT')}"></small>/10</a>
                                 </div>
-                                <span>1.029 Votes</span>
                             </div>
-                            <p>Every human inhabiting the world of Alcia is branded by a “Count” or a number written on
-                                their body. For Hina’s mother, her total drops to 0 and she’s pulled into the Abyss,
-                                never to be seen again. But her mother’s last words send Hina on a quest to find a
-                            legendary hero from the Waste War - the fabled Ace!</p>
+                            <p th:text="${anime.description}"></p>
                             <div class="anime__details__widget">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <ul>
-                                            <li><span>Type:</span> TV Series</li>
-                                            <li><span>Studios:</span> Lerche</li>
-                                            <li><span>Date aired:</span> Oct 02, 2019 to ?</li>
-                                            <li><span>Status:</span> Airing</li>
-                                            <li><span>Genre:</span> Action, Adventure, Fantasy, Magic</li>
+                                            <li>
+                                                <span>Type:</span>
+                                                <b th:text="${#strings.capitalize( anime.type.name.replace('_',' ').toLowerCase() )}">TV Series</b>
+                                            </li>
+                                            <li>
+                                                <span>Studios:</span>
+                                                <b th:text="${#strings.capitalize( anime.studio.name )}"></b>
+                                            </li>
+                                            <li>
+                                                <span>Release date:</span>
+                                                <b th:text="${#temporals.format(anime.date,'dd/MM/yyyy')}"></b>
+                                            </li>
+                                            <li>
+                                                <span>Status:</span>
+                                                <b th:text="${#strings.capitalize( anime.status.name.replace('_',' ').toLowerCase() )}"></b>
+                                            </li>
+                                            <li>
+                                                <span>Genre:</span>
+                                                <b th:each="genre : ${anime.genre}"
+                                                   th:text="${#strings.capitalize(genre.title)+' '}"></b> </li>
                                         </ul>
                                     </div>
-                                    <div class="col-lg-6 col-md-6">
+                                    <div class="col-lg-6 col-md-6" >
                                         <ul>
-                                            <li><span>Rating:</span> 8.5 / 161 times</li>
-                                            <li><span>Views:</span> 131,541</li>
+                                            <li th:if="${anime.views.size() > 0}">
+                                                <span>Views:</span>
+                                                <b th:text="${#numbers.formatInteger(anime.views.size(),1,'COMMA')}"></b>
+                                            </li>
+                                            <li>
+                                                <span>Ratings:</span>
+                                                <b th:if="${anime.ratings.size() > 0}"
+                                                   th:text="${#numbers.formatInteger(anime.ratings.size(),1,'COMMA') + ' votes'}"></b>
+                                                <b th:unless="${anime.ratings.size() > 0}">No votes</b>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class="anime__details__btn">
                                 <a href="#" class="watch-btn"><span>Add to watch list</span> <i
-                                    class="fa fa-angle-right"></i></a>
-                                </div>
+                                        class="fa fa-angle-right"></i></a>
+                                <a href="#" type="button" class="watch-btn rate ml-2" data-toggle="modal" data-target="#ratingModal">
+                                    <span>Rate</span> <i
+                                        class="fa fa-star"></i>
+                                </a>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8 col-md-8">
-                        <div class="anime__details__review">
-                            <div class="section-title">
-                                <h5>Reviews</h5>
-                            </div>
-                            <div class="anime__review__item">
-                                <div class="anime__review__item__pic">
-                                    <img th:src="@{img/anime/review-1.jpg}" alt="">
-                                </div>
-                                <div class="anime__review__item__text">
-                                    <h6>Chris Curry - <span>1 Hour ago</span></h6>
-                                    <p>whachikan Just noticed that someone categorized this as belonging to the genre
-                                    "demons" LOL</p>
-                                </div>
-                            </div>
-                            <div class="anime__review__item">
-                                <div class="anime__review__item__pic">
-                                    <img th:src="@{img/anime/review-2.jpg}" alt="">
-                                </div>
-                                <div class="anime__review__item__text">
-                                    <h6>Lewis Mann - <span>5 Hour ago</span></h6>
-                                    <p>Finally it came out ages ago</p>
-                                </div>
-                            </div>
-                            <div class="anime__review__item">
-                                <div class="anime__review__item__pic">
-                                    <img th:src="@{img/anime/review-3.jpg}" alt="">
-                                </div>
-                                <div class="anime__review__item__text">
-                                    <h6>Louis Tyler - <span>20 Hour ago</span></h6>
-                                    <p>Where is the episode 15 ? Slow update! Tch</p>
-                                </div>
-                            </div>
-                            <div class="anime__review__item">
-                                <div class="anime__review__item__pic">
-                                    <img th:src="@{img/anime/review-4.jpg}" alt="">
-                                </div>
-                                <div class="anime__review__item__text">
-                                    <h6>Chris Curry - <span>1 Hour ago</span></h6>
-                                    <p>whachikan Just noticed that someone categorized this as belonging to the genre
-                                    "demons" LOL</p>
-                                </div>
-                            </div>
-                            <div class="anime__review__item">
-                                <div class="anime__review__item__pic">
-                                    <img th:src="@{img/anime/review-5.jpg}" alt="">
-                                </div>
-                                <div class="anime__review__item__text">
-                                    <h6>Lewis Mann - <span>5 Hour ago</span></h6>
-                                    <p>Finally it came out ages ago</p>
-                                </div>
-                            </div>
-                            <div class="anime__review__item">
-                                <div class="anime__review__item__pic">
-                                    <img th:src="@{img/anime/review-6.jpg}" alt="">
-                                </div>
-                                <div class="anime__review__item__text">
-                                    <h6>Louis Tyler - <span>20 Hour ago</span></h6>
-                                    <p>Where is the episode 15 ? Slow update! Tch</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="anime__details__form">
-                            <div class="section-title">
-                                <h5>Your Comment</h5>
-                            </div>
-                            <form action="#">
-                                <textarea placeholder="Your Comment"></textarea>
-                                <button type="submit"><i class="fa fa-location-arrow"></i> Review</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4">
-                        <div class="anime__details__sidebar">
-                            <div class="section-title">
-                                <h5>you might like...</h5>
-                            </div>
-                            <div class="product__sidebar__view__item set-bg" data-setbg="img/sidebar/tv-1.jpg">
-                                <div class="view"><i class="fa fa-eye"></i> 9141</div>
-                                <h5><a href="#">Boruto: Naruto next generations</a></h5>
-                            </div>
-                            <div class="product__sidebar__view__item set-bg" data-setbg="img/sidebar/tv-2.jpg">
-                                <div class="view"><i class="fa fa-eye"></i> 9141</div>
-                                <h5><a href="#">The Seven Deadly Sins: Wrath of the Gods</a></h5>
-                            </div>
-                            <div class="product__sidebar__view__item set-bg" data-setbg="img/sidebar/tv-3.jpg">
-                                <div class="view"><i class="fa fa-eye"></i> 9141</div>
-                                <h5><a href="#">Sword art online alicization war of underworld</a></h5>
-                            </div>
-                            <div class="product__sidebar__view__item set-bg" data-setbg="img/sidebar/tv-4.jpg">
-                                <div class="view"><i class="fa fa-eye"></i> 9141</div>
-                                <h5><a href="#">Fate/stay night: Heaven's Feel I. presage flower</a></h5>
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- Anime Section End -->
-
-        <!-- Footer Section Begin -->
-        <footer class="footer">
-            <div class="page-up">
-                <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="footer__logo">
-                            <a href="./index.html"><img th:src="@{img/logo.png}" alt=""></a>
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <div class="anime__details__review">
+                        <div class="section-title">
+                            <h5>Reviews</h5>
+                        </div>
+                        <div class="anime__review__item">
+                            <div class="anime__review__item__pic">
+                                <img src="img/anime/review-1.jpg" alt="">
+                            </div>
+                            <div class="anime__review__item__text">
+                                <h6>Chris Curry - <span>1 Hour ago</span></h6>
+                                <p>whachikan Just noticed that someone categorized this as belonging to the genre
+                                    "demons" LOL</p>
+                            </div>
+                        </div>
+                        <div class="anime__review__item">
+                            <div class="anime__review__item__pic">
+                                <img src="img/anime/review-2.jpg" alt="">
+                            </div>
+                            <div class="anime__review__item__text">
+                                <h6>Lewis Mann - <span>5 Hour ago</span></h6>
+                                <p>Finally it came out ages ago</p>
+                            </div>
+                        </div>
+                        <div class="anime__review__item">
+                            <div class="anime__review__item__pic">
+                                <img src="img/anime/review-3.jpg" alt="">
+                            </div>
+                            <div class="anime__review__item__text">
+                                <h6>Louis Tyler - <span>20 Hour ago</span></h6>
+                                <p>Where is the episode 15 ? Slow update! Tch</p>
+                            </div>
+                        </div>
+                        <div class="anime__review__item">
+                            <div class="anime__review__item__pic">
+                                <img src="img/anime/review-4.jpg" alt="">
+                            </div>
+                            <div class="anime__review__item__text">
+                                <h6>Chris Curry - <span>1 Hour ago</span></h6>
+                                <p>whachikan Just noticed that someone categorized this as belonging to the genre
+                                    "demons" LOL</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="footer__nav">
-                            <ul>
-                                <li class="active"><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories</a></li>
-                                <li><a href="./anime-watching.html">Watching List</a></li>
-                                <li><a href="#">Contacts</a></li>
-                            </ul>
+                    <div class="anime__details__form">
+                        <div class="section-title">
+                            <h5>Your Comment</h5>
+                        </div>
+                        <form action="#">
+                            <textarea placeholder="Your Comment"></textarea>
+                            <button type="submit"><i class="fa fa-location-arrow"></i> Review</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="anime__details__sidebar">
+                        <div class="section-title">
+                            <h5>you might like...</h5>
+                        </div>
+                        <div class="product__sidebar__view__item set-bg" data-setbg="img/sidebar/tv-1.jpg">
+                            <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                            <h5><a href="#">Boruto: Naruto next generations</a></h5>
+                        </div>
+                        <div class="product__sidebar__view__item set-bg" data-setbg="img/sidebar/tv-2.jpg">
+                            <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                            <h5><a href="#">The Seven Deadly Sins: Wrath of the Gods</a></h5>
+                        </div>
+                        <div class="product__sidebar__view__item set-bg" data-setbg="img/sidebar/tv-3.jpg">
+                            <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                            <h5><a href="#">Sword art online alicization war of underworld</a></h5>
+                        </div>
+                        <div class="product__sidebar__view__item set-bg" data-setbg="img/sidebar/tv-4.jpg">
+                            <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                            <h5><a href="#">Fate/stay night: Heaven's Feel I. presage flower</a></h5>
                         </div>
                     </div>
-                  </div>
-              </div>
-          </footer>
-          <!-- Footer Section End -->
-
-          <!-- Search model Begin -->
-          <div class="search-model">
-            <div class="h-100 d-flex align-items-center justify-content-center">
-                <div class="search-close-switch"><i class="icon_close"></i></div>
-                <form class="search-model-form">
-                    <input type="text" id="search-input" placeholder="Search here.....">
-                </form>
+                </div>
             </div>
         </div>
-        <!-- Search model end -->
+    </section>
 
-        <!-- Js Plugins -->
-        <script th:src="@{js/jquery-3.3.1.min.js}"></script>
-        <script th:src="@{js/bootstrap.min.js}"></script>
-        <script th:src="@{js/player.js}"></script>
-        <script th:src="@{js/jquery.nice-select.min.js}"></script>
-        <script th:src="@{js/mixitup.min.js}"></script>
-        <script th:src="@{js/jquery.slicknav.js}"></script>
-        <script th:src="@{js/owl.carousel.min.js}"></script>
-        <script th:src="@{js/main.js}"></script>
+
+    <!-- Footer Section Begin -->
+    <footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
+    <!-- Footer Section End -->
+
+    <!-- Search model Begin -->
+    <div class="search-model" th:replace="~{fragments/elements :: search}"></div>
+    <!-- Search model end -->
+
+    <!-- Rate modal Begin -->
+    <div  th:replace="~{fragments/elements :: rateModal}"></div>
+    <!-- Rate modal end -->
+
+    <!-- Toast Begin -->
+    <div th:replace="~{fragments/elements :: toastRating}" ></div>
+    <!-- Toast end -->
+
+    <div th:replace="~{fragments/general :: scripts}"></div>
+
     </body>
 
     </html>

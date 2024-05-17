@@ -27,7 +27,7 @@
                     <a th:text="${genre.title}" th:href="@{/genres/{id}(id=${genre.id})}"></a>
                 </li>
             </ul>
-            <h5><a href="#" th:text="${anime.title}"></a></h5>
+            <h5><a th:href="@{/anime/{id} (id = ${anime.id})}" th:text="${anime.title}"></a></h5>
         </div>
     </div>
 </div>
@@ -40,6 +40,12 @@
 
 <!--Toast logout-->
 <div th:fragment="toastLogout" class="toastNotification" th:id="toastLogout" th:if="${param.logout}" sec:authorize="isAnonymous()"></div>
+
+<!--Toast Rating-->
+<div th:fragment="toastRating" class="toastNotification" th:id="toastRating" th:if="${ratedMessage}" sec:authorize="isAuthenticated()"></div>
+
+<!--Toast Rating-->
+<div th:fragment="toastWatchList" class="toastNotification" th:id="toastWatchList" th:if="${watchlistMessage}" sec:authorize="isAuthenticated()"></div>
 
 <!--Sorting-->
 <form th:fragment="sorting(formName,sortBy,sortDirection)" class="col-lg-6 col-md-6 col-sm-12 d-flex flex-row flex-wrap justify-content-start justify-content-sm-end  align-items-end"
@@ -144,5 +150,30 @@
     </div>
 </div>
 <!-- Search model end -->
+
+<!--    Modal begin-->
+<div th:fragment="rateModal" class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-white" id="ratingLabel">Rate anime</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-white">
+                <form id="ratingForm" th:action="@{/anime/{id}/rate(id=${anime.id})}" th:method="POST">
+                    <input th:name="score" class="star" type="range" min="0" max="10" step="1" value="5">
+                    <div><span class="view"></span> out of 10</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button form="ratingForm" type="submit" class="btn btn-danger">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--    Modal end-->
 </body>
 </html>

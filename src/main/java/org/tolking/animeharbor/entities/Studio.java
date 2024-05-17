@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(schema = "public")
 public class Studio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

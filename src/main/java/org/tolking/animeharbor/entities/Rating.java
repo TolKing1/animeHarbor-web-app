@@ -1,12 +1,16 @@
 package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.Range;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"anime_id", "user_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"anime_id", "user_id"}), schema = "public")
 public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +24,13 @@ public class Rating {
     @JoinColumn
     private User user;
 
-    @Size(min = 1,max = 10,message = "Please choose rating between 1 and 10")
+    @Range(min = 0,max = 10,message = "Please choose rating between 0 and 10")
     @JoinColumn
     private int score;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

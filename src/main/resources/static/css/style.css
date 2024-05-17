@@ -20,10 +20,6 @@
 4.  Hero Section
 5.  Banner Section
 6.  Product Section
-7.  Intagram Section
-8.  Latest Section
-9.  Contact
-10.  Footer Style
 -------------------------------------------------------------------*/
 
 /*----------------------------------------*/
@@ -1157,6 +1153,28 @@ ol {
 	border-radius: 0 4px 4px 0;
 }
 
+.anime__details__btn .watch-btn.rate span {
+	font-size: 13px;
+	color: #ffffff;
+	background: #888888;
+	display: inline-block;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	padding: 14px 20px;
+	border-radius: 4px 0 0 4px;
+	margin-right: 1px;
+}
+
+.anime__details__btn .watch-btn.rate i {
+	font-size: 20px;
+	display: inline-block;
+	background: #888888;
+	padding: 11px 5px 16px 8px;
+	color: #ffffff;
+	border-radius: 0 4px 4px 0;
+}
+
 .anime__details__review {
 	margin-bottom: 55px;
 }
@@ -1239,114 +1257,49 @@ ol {
 	border-radius: 2px;
 }
 
-/*---------------------
-  Anime Watching
------------------------*/
-
-.anime__video__player {
-	margin-bottom: 70px;
+.modal#ratingModal .modal-dialog .modal-content{
+	background-color: #222481;
 }
 
-.anime__video__player .plyr--video {
-	border-radius: 5px;
+input[type="range"].star {
+	aspect-ratio: 5.3333333333;
+	width: 100%;
+	appearance: none;
 	background: transparent;
+	cursor: pointer;
 }
-
-.anime__video__player .plyr audio,
-.anime__video__player .plyr iframe,
-.anime__video__player .plyr video {
-	width: 102%;
+input[type="range"].star::-moz-range-track {
+	appearance: none;
+	height: 100%;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='15' viewBox='-40 0 80 15'%3E%3Cpath fill='grey' d='M -32 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M -16 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 0 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 16 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 32 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z' stroke='grey' stroke-width='0' vector-effect='non-scaling-stroke' /%3E%3C/svg%3E") top left / auto 100% no-repeat;
 }
-
-.anime__video__player .plyr--full-ui.plyr--video .plyr__control--overlaid {
-	display: block;
+input[type="range"].star::-moz-range-progress {
+	appearance: none;
+	height: 100%;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='15' viewBox='-40 0 80 15'%3E%3Cpath fill='gold' d='M -32 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M -16 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 0 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 16 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 32 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z' stroke='gold' stroke-width='1' vector-effect='non-scaling-stroke' /%3E%3C/svg%3E") top left / auto 100% no-repeat;
 }
-
-.anime__video__player .plyr--video .plyr__control.plyr__tab-focus,
-.anime__video__player .plyr--video .plyr__control:hover,
-.anime__video__player .plyr--video .plyr__control[aria-expanded=true] {
-	background: transparent;
+input[type="range"].star::-moz-range-thumb {
+	appearance: none;
+	visibility: hidden;
 }
-
-.anime__video__player .plyr--video .plyr__controls {
-	background: transparent;
+input[type="range"].star::-webkit-slider-runnable-track {
+	appearance: none;
+	height: 100%;
+	background: #e53637;
+	overflow: clip;
+	transition: .3s;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='15' viewBox='-40 0 80 15'%3E%3Cpath fill='black' d='M -32 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M -16 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 0 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 16 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 32 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z' stroke='black' stroke-width='0' vector-effect='non-scaling-stroke' /%3E%3C/svg%3E") top left / auto 100% no-repeat;
 }
-
-.anime__video__player .plyr--video .plyr__progress__buffer {
-	color: transparent;
+input[type="range"].star::-webkit-slider-thumb {
+	appearance: none;
+	width: 0px;
+	box-shadow: 400px 0 0 400px #ffffff;
 }
-
-.anime__video__player .plyr--full-ui input[type=range] {
-	color: #ffffff;
+input[type="range"].star:hover::-moz-range-progress {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='15' viewBox='-40 0 80 15'%3E%3Cpath fill='yellow' d='M -32 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M -16 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 0 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 16 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z M 32 0 m 0 0.25 l 1.875 5.75 h 5.625 l -4.625 3.25 l 1.875 5.625 l -4.75 -3.5 l -4.75 3.5 l 1.875 -5.625 l -4.625 -3.25 h 5.625 z' stroke='yellow' stroke-width='1' vector-effect='non-scaling-stroke' /%3E%3C/svg%3E") top left / auto 100% no-repeat;
 }
-
-.anime__video__player .plyr__controls .plyr__controls__item.plyr__progress__container {
-	position: absolute;
-	left: 26px;
-	bottom: 45px;
-	width: calc(100% - 60px);
-}
-
-.anime__video__player .plyr__menu {
-	margin-right: 70px;
-}
-
-.anime__video__player .plyr__controls .plyr__controls__item:first-child {
-	position: absolute;
-	left: 32px;
-	bottom: 8px;
-}
-
-.anime__video__player .plyr__controls .plyr__controls__item:last-child {
-	position: absolute;
-	right: 32px;
-	bottom: 8px;
-}
-
-.anime__video__player .plyr__volume {
-	position: absolute;
-	width: auto;
-	left: 76px;
-	bottom: 8px;
-}
-
-.anime__video__player .plyr__controls .plyr__controls__item.plyr__time {
-	position: absolute;
-	left: 106px;
-	bottom: 12px;
-}
-
-.anime__video__player .plyr__control--overlaid {
-	background: transparent;
-	background: var(--plyr-video-control-background-hover, var(--plyr-color-main, var(--plyr-color-main, transparent)));
-}
-
-.anime__video__player .plyr__control--overlaid svg {
-	height: 60px;
-	width: 50px;
-}
-
-.anime__details__episodes {
-	margin-bottom: 35px;
-}
-
-.anime__details__episodes a {
-	display: inline-block;
-	font-size: 15px;
-	color: #ffffff;
-	background: rgba(255, 255, 255, 0.2);
-	padding: 10px 20px;
-	border-radius: 4px;
-	margin-right: 15px;
-	margin-bottom: 20px;
-	-webkit-transition: all, 0.3s;
-	-o-transition: all, 0.3s;
-	transition: all, 0.3s;
-}
-
-.anime__details__episodes a:hover {
-	color: #000000;
-	background: #ffffff;
+input[type="range"].star:hover::-webkit-slider-runnable-track {
+	background: #da2324;
 }
 
 /*---------------------

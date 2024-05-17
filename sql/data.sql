@@ -21,17 +21,17 @@ VALUES ('Madhouse', 'Known for producing high-quality anime series and movies.')
        ('Studio Ghibli', 'Renowned for its hand-drawn animation and captivating storytelling.'),
        ('Toei Animation', 'One of the oldest and most prominent animation studios in Japan.');
 
-INSERT INTO users (username, email, password)
-VALUES ('hinata', 'hinata@example.com', 'password123'),
-       ('sasuke', 'sasuke@example.com', 'password123'),
-       ('chihiro', 'chihiro@example.com', 'password123'),
-       ('light', 'light@example.com', 'password123'),
-       ('mitsuha', 'mitsuha@example.com', 'password123'),
-       ('edward', 'edward@example.com', 'password123'),
-       ('luffy', 'luffy@example.com', 'password123'),
-       ('totoro', 'totoro@example.com', 'password123'),
-       ('spike', 'spike@example.com', 'password123'),
-       ('naruto', 'naruto@example.com', 'password123');
+INSERT INTO users (username, email, password, provider)
+VALUES ('hinata', 'hinata@example.com', 'password123', 'LOCAL'),
+       ('sasuke', 'sasuke@example.com', 'password123', 'LOCAL'),
+       ('chihiro', 'chihiro@example.com', 'password123', 'LOCAL'),
+       ('light', 'light@example.com', 'password123', 'LOCAL'),
+       ('mitsuha', 'mitsuha@example.com', 'password123', 'LOCAL'),
+       ('edward', 'edward@example.com', 'password123', 'LOCAL'),
+       ('luffy', 'luffy@example.com', 'password123', 'LOCAL'),
+       ('totoro', 'totoro@example.com', 'password123', 'LOCAL'),
+       ('spike', 'spike@example.com', 'password123', 'LOCAL'),
+       ('naruto', 'naruto@example.com', 'password123', 'LOCAL');
 
 -- Insert 40 anime
 INSERT INTO anime (title, description, type, date, director, creation, status, studio_id)
@@ -170,10 +170,6 @@ $$
     END
 $$;
 
-INSERT INTO views (anime_id, view_date)
-SELECT (SELECT id FROM anime ORDER BY RANDOM() LIMIT 1),
-       NOW() - INTERVAL '7 days' * RANDOM()
-FROM generate_series(1, (ROUND(RANDOM() * 100) + 1)::integer);
 
 
 -- Generate 100 random genre with unique combinations

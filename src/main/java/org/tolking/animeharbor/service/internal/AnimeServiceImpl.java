@@ -11,6 +11,7 @@ import org.tolking.animeharbor.repositories.AnimeRepository;
 import org.tolking.animeharbor.service.AnimeService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,11 @@ public class AnimeServiceImpl implements AnimeService {
 
     private static Pageable getPageable(int pageNo, int pageSize, String sortField, String sortDirection) {
         return PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+    }
+
+    @Override
+    public Optional<Anime> getAnimeById(long id) {
+        return animeRepository.findById(id);
     }
 
     @Override

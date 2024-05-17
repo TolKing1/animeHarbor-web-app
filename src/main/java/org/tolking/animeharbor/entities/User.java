@@ -16,7 +16,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "public")
 public class User {
     @Transient
     private static final String DEFAULT_IMG_NAME = "'default.jpg'";
