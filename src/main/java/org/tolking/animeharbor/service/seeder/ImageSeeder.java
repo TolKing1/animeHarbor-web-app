@@ -25,6 +25,7 @@ public class ImageSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
     private final ImageRepository imageRepository;
     private final Logger logger = LoggerFactory.getLogger(ImageSeeder.class);
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         Optional<Image> imageProfileOptional = imageRepository.findByFilename(DEFAULT_PROFILE_IMG);
