@@ -25,8 +25,9 @@
         </div>
         <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-6 p-2" th:each="genre : ${genres}" th:if="${!genre.isEmpty()}">
-                <div class="genre__item w-100" data-toggle="tooltip" data-placement="top" th:title="${genre.description}">
-                    <h4 th:text="${genre.title}" class="text-white">Action</h4>
+                <div class="genre__item w-100" data-placement="top" data-toggle="tooltip"
+                     th:title="${genre.description}">
+                    <h4 class="text-white" th:text="${genre.title}">Action</h4>
                     <div class="genre__item__hover p-1">
                         <a th:href="@{/genres/{id}(id = ${genre.id})}">Explore <i class="fa fa-angle-right"></i></a>
                     </div>

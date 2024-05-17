@@ -6,91 +6,90 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header" th:replace="~{fragments/general :: header}">
+</header>
+<!-- Header End -->
+
+<!-- Normal Breadcrumb Begin -->
+<section class="normal-breadcrumb set-bg" th:attr="data-setbg=@{/img/normal-breadcrumb.jpg}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="normal__breadcrumb__text">
+                    <h2>Login</h2>
+                    <p>Welcome to the official AnimeHarbor site.</p>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
+<!-- Normal Breadcrumb End -->
 
-    <!-- Header Section Begin -->
-    <header class="header" th:replace="~{fragments/general :: header}">
-    </header>
-    <!-- Header End -->
-
-    <!-- Normal Breadcrumb Begin -->
-    <section class="normal-breadcrumb set-bg" th:attr="data-setbg=@{/img/normal-breadcrumb.jpg}" >
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="normal__breadcrumb__text">
-                        <h2>Login</h2>
-                        <p>Welcome to the official AnimeHarbor site.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Normal Breadcrumb End -->
-
-    <!-- Login Section Begin -->
-    <section class="login spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="login__form">
-                        <h3>Login</h3>
-                        <form th:action="@{/login}" th:method="post">
-                            <div class="input__item">
-                                <input th:name="username" type="text" required placeholder="Username">
-                                <span class="icon_profile"></span>
-                            </div>
-                            <div class="input__item">
-                                <input th:name="password" type="password" required placeholder="Password">
-                                <span class="icon_lock"></span>
-                            </div>
-                            <p th:if="${param.error}" class="text-danger font-italic">Invalid username or password.</p>
-                            <button type="submit" class="site-btn">Login Now</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="login__register">
-                        <h3>Don’t Have An Account?</h3>
-                        <a th:href="@{/register}" class="primary-btn">Register Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="login__social">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-6">
-                        <div class="login__social__links">
-                            <span>or</span>
-                            <ul th:replace="~{fragments/elements :: socials}"></ul>
+<!-- Login Section Begin -->
+<section class="login spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="login__form">
+                    <h3>Login</h3>
+                    <form th:action="@{/login}" th:method="post">
+                        <div class="input__item">
+                            <input placeholder="Username" required th:name="username" type="text">
+                            <span class="icon_profile"></span>
                         </div>
+                        <div class="input__item">
+                            <input placeholder="Password" required th:name="password" type="password">
+                            <span class="icon_lock"></span>
+                        </div>
+                        <p class="text-danger font-italic" th:if="${param.error}">Invalid username or password.</p>
+                        <button class="site-btn" type="submit">Login Now</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="login__register">
+                    <h3>Don’t Have An Account?</h3>
+                    <a class="primary-btn" th:href="@{/register}">Register Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="login__social">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-6">
+                    <div class="login__social__links">
+                        <span>or</span>
+                        <ul th:replace="~{fragments/elements :: socials}"></ul>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Login Section End -->
+    </div>
+</section>
+<!-- Login Section End -->
 
-    <!-- Footer Section Begin -->
-    <footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
-    <!-- Footer Section End -->
+<!-- Footer Section Begin -->
+<footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
+<!-- Footer Section End -->
 
-    <!-- Search model Begin -->
-    <div class="search-model" th:replace="~{fragments/elements :: search}"></div>
-    <!-- Search model end -->
+<!-- Search model Begin -->
+<div class="search-model" th:replace="~{fragments/elements :: search}"></div>
+<!-- Search model end -->
 
-    <!-- Toast Begin -->
-    <div  th:replace="~{fragments/elements :: toastCreate}"></div>
-    <!-- Toast end -->
+<!-- Toast Begin -->
+<div th:replace="~{fragments/elements :: toastCreate}"></div>
+<!-- Toast end -->
 
-    <!-- Toast Begin -->
-    <div  th:replace="~{fragments/elements :: toastLogout}" ></div>
-    <!-- Toast end -->
+<!-- Toast Begin -->
+<div th:replace="~{fragments/elements :: toastLogout}"></div>
+<!-- Toast end -->
 
-    <div th:replace="~{fragments/general :: scripts}"></div>
-
+<div th:replace="~{fragments/general :: scripts}"></div>
 
 
 </body>

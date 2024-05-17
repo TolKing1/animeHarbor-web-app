@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/general :: common_header(~{::title})}">
     <title>AnimeHarbor - search for anime</title>>
@@ -104,7 +104,7 @@
 <!-- Search model end -->
 
 <!-- Toast Begin -->
-<div  th:replace="~{fragments/elements :: toastLogin}" ></div>
+<div th:replace="~{fragments/elements :: toastLogin}"></div>
 <!-- Toast end -->
 
 <div th:replace="~{fragments/general :: scripts}"></div>

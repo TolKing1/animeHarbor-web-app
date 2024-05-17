@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/general :: common_header(~{::title})}">
-  <title>Profile</title>>
+    <title>Profile</title>>
 </head>
 
 <body>
 <!-- Page Preloder -->
 <div id="preloder">
-  <div class="loader"></div>
+    <div class="loader"></div>
 </div>
 
 <!-- Header Section Begin -->
@@ -18,79 +18,89 @@
 
 <!-- Breadcrumb Begin -->
 <div class="breadcrumb-option">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="breadcrumb__links">
-          <a th:href="@{/}"><i class="fa fa-home"></i>Home</a>
-          <span>My profile</span>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a th:href="@{/}"><i class="fa fa-home"></i>Home</a>
+                    <span>My profile</span>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 <!-- Breadcrumb End -->
 
 <!-- Profile Form Section Begin -->
 <section class="profile-form p-4">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 offset-lg-2">
-        <div class="section-title">
-          <h4>Update Profile</h4>
-        </div>
+    <div class="container">
         <div class="row">
-          <!-- Username Form -->
-          <form  id="username-form" class="col-lg-6 col-md-6 col-sm-12 mb-4" >
-            <div class="form-group">
-              <label for="username" class="text-white">Username</label>
-              <input th:value="${username}" type="text" class="form-control" id="username" readonly>
-              <p class="font-italic text-warning">*Read only! You can't change your username</p>
-            </div>
-            <div class="form-group">
-              <label for="email" class="text-white">Email</label>
-              <input th:value="${email}" type="email" class="form-control" id="email" readonly>
-              <p class="font-italic text-warning">*Read only! You can't change your email</p>
-            </div>
-          </form>
+            <div class="col-lg-8 offset-lg-2">
+                <div class="section-title">
+                    <h4>Update Profile</h4>
+                </div>
+                <div class="row">
+                    <!-- Username Form -->
+                    <form class="col-lg-6 col-md-6 col-sm-12 mb-4" id="username-form">
+                        <div class="form-group">
+                            <label class="text-white" for="username">Username</label>
+                            <input class="form-control" id="username" readonly th:value="${username}" type="text">
+                            <p class="font-italic text-warning">*Read only! You can't change your username</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="email">Email</label>
+                            <input class="form-control" id="email" readonly th:value="${email}" type="email">
+                            <p class="font-italic text-warning">*Read only! You can't change your email</p>
+                        </div>
+                    </form>
 
-          <!-- Password Form -->
-          <form th:action="@{/me/password}" th:method="POST" th:object="${password}" id="password-form" class="col-lg-6 col-md-6 col-sm-12 mb-4">
-            <div class="form-group">
-              <label for="password" class="text-white">New Password</label>
-              <input th:field="*{password}" type="password" class="form-control" id="password" name="password" placeholder="Enter your new password">
-              <small th:if="${#fields.hasErrors('password')}" th:errorclass="text-danger" class="font-italic" th:errors="*{password}"></small>
-            </div>
-            <div class="form-group">
-              <label for="confirm-password" class="text-white">Confirm Password</label>
-              <input th:field="*{confirmPassword}" type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm your new password">
-              <small th:if="${#fields.hasErrors('confirmPassword')}" th:errorclass="text-danger" class="font-italic" th:errors="*{confirmPassword}"></small>
-            </div>
-            <button type="submit" class="btn btn-danger">Update Password</button>
-          </form>
-        </div>
-        <div class="row">
-          <!-- Profile Picture Form -->
-          <form th:action="@{/me/picture}" th:method="POST" id="profile-picture-form" class="col-lg-12 mb-4" enctype="multipart/form-data">
-            <div class="form-group">
-              <label for="profile-picture" class="text-white">Profile Picture</label><br>
-              <input th:name="picture" th:class="text-primary" type="file" class="form-control-file" id="profile-picture" name="profile-picture" accept="image/png, image/jpeg, image/jpg">
-              <small th:if="${pictureErr}" th:text="${pictureErr}" class="text-danger font-italic"></small>
-            </div>
-            <div class="form-group">
-              <h4 class="text-white">Your current picture:</h4><br>
-              <img th:src="@{/images/profile/{id} (id = ${imageId}) }" alt="Profile Picture" class="mt-2" width="300" height="300">
+                    <!-- Password Form -->
+                    <form class="col-lg-6 col-md-6 col-sm-12 mb-4" id="password-form" th:action="@{/me/password}" th:method="POST"
+                          th:object="${password}">
+                        <div class="form-group">
+                            <label class="text-white" for="password">New Password</label>
+                            <input class="form-control" id="password" name="password" placeholder="Enter your new password"
+                                   th:field="*{password}" type="password">
+                            <small class="font-italic" th:errorclass="text-danger"
+                                   th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></small>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="confirm-password">Confirm Password</label>
+                            <input class="form-control" id="confirm-password" name="confirm-password"
+                                   placeholder="Confirm your new password" th:field="*{confirmPassword}"
+                                   type="password">
+                            <small class="font-italic" th:errorclass="text-danger"
+                                   th:errors="*{confirmPassword}" th:if="${#fields.hasErrors('confirmPassword')}"></small>
+                        </div>
+                        <button class="btn btn-danger" type="submit">Update Password</button>
+                    </form>
+                </div>
+                <div class="row">
+                    <!-- Profile Picture Form -->
+                    <form class="col-lg-12 mb-4" enctype="multipart/form-data" id="profile-picture-form" th:action="@{/me/picture}"
+                          th:method="POST">
+                        <div class="form-group">
+                            <label class="text-white" for="profile-picture">Profile Picture</label><br>
+                            <input accept="image/png, image/jpeg, image/jpg" class="form-control-file" id="profile-picture" name="profile-picture"
+                                   th:class="text-primary" th:name="picture"
+                                   type="file">
+                            <small class="text-danger font-italic" th:if="${pictureErr}"
+                                   th:text="${pictureErr}"></small>
+                        </div>
+                        <div class="form-group">
+                            <h4 class="text-white">Your current picture:</h4><br>
+                            <img alt="Profile Picture" class="mt-2" height="300"
+                                 th:src="@{/images/profile/{id} (id = ${imageId}) }" width="300">
 
+                        </div>
+                        <button class="btn btn-danger" type="submit">Update Profile Picture</button>
+                    </form>
+                </div>
             </div>
-            <button type="submit" class="btn btn-danger">Update Profile Picture</button>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 <!-- Profile Form Section End -->
-
 
 
 <!-- Footer Section Begin -->
@@ -102,15 +112,14 @@
 <!-- Search model end -->
 
 <!-- Toast Begin -->
-<div  th:replace="~{fragments/elements :: toastCreate}"></div>
+<div th:replace="~{fragments/elements :: toastCreate}"></div>
 <!-- Toast end -->
 
 <!-- Toast Begin -->
-<div  th:replace="~{fragments/elements :: toastLogout}" ></div>
+<div th:replace="~{fragments/elements :: toastLogout}"></div>
 <!-- Toast end -->
 
 <div th:replace="~{fragments/general :: scripts}"></div>
-
 
 
 </body>

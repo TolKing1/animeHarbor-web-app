@@ -6,84 +6,89 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header" th:replace="~{fragments/general :: header}">
+</header>
+<!-- Header End -->
+
+<!-- Normal Breadcrumb Begin -->
+<section class="normal-breadcrumb set-bg" th:attr="data-setbg=@{/img/normal-breadcrumb.jpg}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="normal__breadcrumb__text">
+                    <h2>Sign Up</h2>
+                    <p>Welcome to the official AnimeHarbour site.</p>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
+<!-- Normal Breadcrumb End -->
 
-    <!-- Header Section Begin -->
-    <header class="header" th:replace="~{fragments/general :: header}">
-    </header>
-    <!-- Header End -->
+<!-- Signup Section Begin -->
+<section class="signup spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="login__form">
+                    <h3>Sign Up</h3>
+                    <form th:action="@{/register}" th:method="POST" th:object="${registerDto}">
 
-    <!-- Normal Breadcrumb Begin -->
-    <section class="normal-breadcrumb set-bg" th:attr="data-setbg=@{/img/normal-breadcrumb.jpg}">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="normal__breadcrumb__text">
-                        <h2>Sign Up</h2>
-                        <p>Welcome to the official AnimeHarbour site.</p>
-                    </div>
+                        <div class="input__item">
+                            <input name="email" placeholder="Email address" required th:field="*{email}" type="text">
+                            <span class="icon_mail"></span>
+                            <small class="font-italic" th:errorclass="text-danger" th:errors="*{email}"
+                                   th:if="${#fields.hasErrors('email')}"></small>
+                        </div>
+
+
+                        <div class="input__item">
+                            <input name="username" placeholder="Your Username" required th:field="*{userName}"
+                                   type="text">
+                            <span class="icon_profile"></span>
+                            <small class="font-italic" th:errorclass="text-danger"
+                                   th:errors="*{userName}" th:if="${#fields.hasErrors('userName')}"></small>
+                        </div>
+
+                        <div class="input__item">
+                            <input name="password" placeholder="Password" required th:field="*{password}"
+                                   type="password">
+                            <span class="icon_lock"></span>
+                            <small class="font-italic" th:errorclass="text-danger"
+                                   th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></small>
+                        </div>
+
+                        <button class="site-btn" type="submit">Login Now</button>
+                    </form>
+                    <h5>Already have an account? <a th:href="@{/login}">Log In!</a></h5>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="login__social__links">
+                    <h3>Login With:</h3>
+                    <ul th:replace="~{fragments/elements :: socials}"></ul>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Normal Breadcrumb End -->
+    </div>
+</section>
+<!-- Signup Section End -->
 
-    <!-- Signup Section Begin -->
-    <section class="signup spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="login__form">
-                        <h3>Sign Up</h3>
-                        <form th:action="@{/register}" th:method="POST" th:object="${registerDto}">
+<!-- Footer Section Begin -->
+<footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
+<!-- Footer Section End -->
 
-                            <div class="input__item">
-                                <input th:field="*{email}" name="email" type="text"  required placeholder="Email address">
-                                <span class="icon_mail"></span>
-                                <small th:if="${#fields.hasErrors('email')}" th:errorclass="text-danger" class="font-italic" th:errors="*{email}"></small>
-                            </div>
+<!-- Search model Begin -->
+<div class="search-model" th:replace="~{fragments/elements :: search}"></div>
+<!-- Search model end -->
 
-
-                            <div class="input__item">
-                                <input th:field="*{userName}" name="username" type="text" required placeholder="Your Username">
-                                <span class="icon_profile"></span>
-                                <small th:if="${#fields.hasErrors('userName')}" th:errorclass="text-danger" class="font-italic" th:errors="*{userName}"></small>
-                            </div>
-
-                            <div class="input__item">
-                                <input th:field="*{password}" name="password" type="password" required placeholder="Password">
-                                <span class="icon_lock"></span>
-                                <small th:if="${#fields.hasErrors('password')}" th:errorclass="text-danger" class="font-italic" th:errors="*{password}"></small>
-                            </div>
-
-                            <button type="submit" class="site-btn">Login Now</button>
-                        </form>
-                        <h5>Already have an account? <a th:href="@{/login}">Log In!</a></h5>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="login__social__links">
-                        <h3>Login With:</h3>
-                        <ul th:replace="~{fragments/elements :: socials}"></ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Signup Section End -->
-
-    <!-- Footer Section Begin -->
-    <footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
-    <!-- Footer Section End -->
-
-    <!-- Search model Begin -->
-    <div class="search-model" th:replace="~{fragments/elements :: search}"></div>
-    <!-- Search model end -->
-
-    <div th:replace="~{fragments/general :: scripts}"></div>
+<div th:replace="~{fragments/general :: scripts}"></div>
 
 </body>
 

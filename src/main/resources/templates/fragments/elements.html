@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" >
+    <meta charset="UTF-8">
     <title>Elements</title>
 </head>
 <body>
 <!--Socials-->
 <ul th:fragment="socials">
-    <li><a th:href="@{/oauth2/authorization/google}" class="google"><i class="fa fa-google"></i> Sign in With Google</a></li>
+    <li><a class="google" th:href="@{/oauth2/authorization/google}"><i class="fa fa-google"></i> Sign in With Google</a>
+    </li>
 </ul>
 
 <!--Card-->
-<div th:fragment="card(animeList,isSearch)" th:class="${isSearch ? 'col-lg-3 col-md-4 col-sm-6':'col-lg-4 col-md-6 col-sm-6'}" th:each="anime : ${animeList}">
+<div th:class="${isSearch ? 'col-lg-3 col-md-4 col-sm-6':'col-lg-4 col-md-6 col-sm-6'}"
+     th:each="anime : ${animeList}" th:fragment="card(animeList,isSearch)">
     <div class="product__item">
-        <div class="product__item__pic set-bg"  th:attr="data-setbg=@{/img/popular/popular-1.jpg}">
+        <div class="product__item__pic set-bg" th:attr="data-setbg=@{/img/popular/popular-1.jpg}">
             <!--                                    <div class="comment"><i class="fa fa-comments"></i> 11</div>-->
-            <div th:if="${anime.views.size() > 0}" class="view">
+            <div class="view" th:if="${anime.views.size() > 0}">
                 <i class="fa fa-eye"></i>
                 <span th:text="${anime.views.size()}"></span>
             </div>
@@ -23,8 +25,8 @@
         <div class="product__item__text">
             <ul>
                 <li th:each="genre, genreStat : ${anime.genre}"
-                     th:unless="${genreStat.index > 2}">
-                    <a th:text="${genre.title}" th:href="@{/genres/{id}(id=${genre.id})}"></a>
+                    th:unless="${genreStat.index > 2}">
+                    <a th:href="@{/genres/{id}(id=${genre.id})}" th:text="${genre.title}"></a>
                 </li>
             </ul>
             <h5><a th:href="@{/anime/{id} (id = ${anime.id})}" th:text="${anime.title}"></a></h5>
@@ -33,22 +35,27 @@
 </div>
 
 <!--Toast login-->
-<div th:fragment="toastLogin" class="toastNotification" th:id="toastLogin" th:if="${param.login}" sec:authorize="isAuthenticated()" ></div>
+<div class="toastNotification" sec:authorize="isAuthenticated()" th:fragment="toastLogin" th:id="toastLogin"
+     th:if="${param.login}"></div>
 
 <!--Toast create-->
-<div th:fragment="toastCreate" class="toastNotification" th:id="toastCreate" th:if="${param.created}"></div>
+<div class="toastNotification" th:fragment="toastCreate" th:id="toastCreate" th:if="${param.created}"></div>
 
 <!--Toast logout-->
-<div th:fragment="toastLogout" class="toastNotification" th:id="toastLogout" th:if="${param.logout}" sec:authorize="isAnonymous()"></div>
+<div class="toastNotification" sec:authorize="isAnonymous()" th:fragment="toastLogout" th:id="toastLogout"
+     th:if="${param.logout}"></div>
 
 <!--Toast Rating-->
-<div th:fragment="toastRating" class="toastNotification" th:id="toastRating" th:if="${ratedMessage}" sec:authorize="isAuthenticated()"></div>
+<div class="toastNotification" sec:authorize="isAuthenticated()" th:fragment="toastRating" th:id="toastRating"
+     th:if="${ratedMessage}"></div>
 
 <!--Toast Rating-->
-<div th:fragment="toastWatchList" class="toastNotification" th:id="toastWatchList" th:if="${watchlistMessage}" sec:authorize="isAuthenticated()"></div>
+<div class="toastNotification" sec:authorize="isAuthenticated()" th:fragment="toastWatchList" th:id="toastWatchList"
+     th:if="${watchlistMessage}"></div>
 
 <!--Sorting-->
-<form th:fragment="sorting(formName,sortBy,sortDirection)" class="col-lg-6 col-md-6 col-sm-12 d-flex flex-row flex-wrap justify-content-start justify-content-sm-end  align-items-end"
+<form class="col-lg-6 col-md-6 col-sm-12 d-flex flex-row flex-wrap justify-content-start justify-content-sm-end  align-items-end"
+      th:fragment="sorting(formName,sortBy,sortDirection)"
       th:id="${formName}"
       th:method="GET">
     <div class="col-lg-5 col-md-6 col-sm-6 p-1">
@@ -76,7 +83,7 @@
 </form>
 
 <!--Pagination buttons-->
-<div th:fragment="pagination(formName,animeList)" class="product__pagination">
+<div class="product__pagination" th:fragment="pagination(formName,animeList)">
     <!-- If current page has the previous page and previous page is not first page -->
     <button th:form="${formName}"
             th:if="${animeList.hasPrevious() && animeList.number - 1 != 0}"
@@ -93,9 +100,9 @@
     <span th:if="${animeList.totalPages > 1}">
         <span th:if="${animeList.first}">
             <!-- If current page is the first page of the pagination -->
-            <button th:form="${formName}"
-                    th:classappend="${animeList.number == i ? 'current-page' : ''}"
+            <button th:classappend="${animeList.number == i ? 'current-page' : ''}"
                     th:each="i: ${#numbers.sequence(0, (animeList.totalPages > 2 ? 3 : animeList.totalPages) - 1)}"
+                    th:form="${formName}"
                     th:name="pageNo"
                     th:text="${i + 1}"
                     th:value="${i}"
@@ -104,9 +111,9 @@
         </span>
         <span th:if="${animeList.last}">
             <!-- If current page is the last page -->
-            <button th:form="${formName}"
-                    th:classappend="${animeList.number == i ? 'current-page' : ''}"
+            <button th:classappend="${animeList.number == i ? 'current-page' : ''}"
                     th:each="i: ${#numbers.sequence(animeList.number - 1, animeList.number)}"
+                    th:form="${formName}"
                     th:name="pageNo"
                     th:text="${i + 1}"
                     th:value="${i}"
@@ -115,9 +122,9 @@
         </span>
         <span th:if="${!animeList.first && !animeList.last}">
             <!-- If current page is not the first page -->
-            <button th:form="${formName}"
-                    th:classappend="${animeList.number == i ? 'current-page' : ''}"
+            <button th:classappend="${animeList.number == i ? 'current-page' : ''}"
                     th:each="i: ${#numbers.sequence(animeList.number - 1, animeList.number + 1)}"
+                    th:form="${formName}"
                     th:name="pageNo"
                     th:text="${i + 1}"
                     th:value="${i}"
@@ -141,35 +148,36 @@
 </div>
 
 <!-- Search model Begin -->
-<div th:fragment="search" class="search-model">
+<div class="search-model" th:fragment="search">
     <div class="h-100 d-flex align-items-center justify-content-center">
         <div class="search-close-switch"><i class="icon_close"></i></div>
-        <form th:action="@{/search}"  th:method="GET" class="search-model-form">
-            <input th:name="query" id="search-input" placeholder="Search here....." type="text">
+        <form class="search-model-form" th:action="@{/search}" th:method="GET">
+            <input id="search-input" placeholder="Search here....." th:name="query" type="text">
         </form>
     </div>
 </div>
 <!-- Search model end -->
 
 <!--    Modal begin-->
-<div th:fragment="rateModal" class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="ratingModal" role="dialog"
+     tabindex="-1" th:fragment="rateModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-white" id="ratingLabel">Rate anime</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <button aria-label="Close" class="close text-white" data-dismiss="modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body text-white">
                 <form id="ratingForm" th:action="@{/anime/{id}/rate(id=${anime.id})}" th:method="POST">
-                    <input th:name="score" class="star" type="range" min="0" max="10" step="1" value="5">
+                    <input class="star" max="10" min="0" step="1" th:name="score" type="range" value="5">
                     <div><span class="view"></span> out of 10</div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                <button form="ratingForm" type="submit" class="btn btn-danger">Save changes</button>
+                <button class="btn btn-light" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-danger" form="ratingForm" type="submit">Save changes</button>
             </div>
         </div>
     </div>

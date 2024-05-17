@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/general :: common_header(~{::title})}">
-    <title th:text="${'Genre: ' + genreTitle.substring(0,1).toUpperCase() + genreTitle.substring(1).toLowerCase()}"></title>>
+    <title th:text="${'Genre: ' + genreTitle.substring(0,1).toUpperCase() + genreTitle.substring(1).toLowerCase()}"></title>
+    >
 </head>
 <body>
 
@@ -40,7 +41,8 @@
                                     <h4 th:text="${genreTitle}"></h4>
                                 </div>
                             </div>
-                            <form th:replace="~{fragments/elements :: sorting(${formName},${sortBy},${sortDirection})}" th:action="@{/genres/{id}(id = ${genreId})}"></form>
+                            <form th:action="@{/genres/{id}(id = ${genreId})}"
+                                  th:replace="~{fragments/elements :: sorting(${formName},${sortBy},${sortDirection})}"></form>
                         </div>
 
                     </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/general :: common_header(~{::title})}">
     <title>Something went wrong...</title>>
@@ -15,11 +15,11 @@
 <!-- Header End -->
 
 <!-- Error Container Begin -->
-<div class="container h-100" id="error-container" >
+<div class="container h-100" id="error-container">
     <div class="row h-100 align-items-center">
         <div class="col-md-12 text-center ">
             <h1 class="text-white display-1">Oops!</h1>
-            <h2 th:text="${status}" class="text-danger">404 Not Found</h2>
+            <h2 class="text-danger" th:text="${status}">404 Not Found</h2>
             <div class="text-white" th:text="${error}">
                 Sorry, an error has occured, Requested page not found!
             </div>
