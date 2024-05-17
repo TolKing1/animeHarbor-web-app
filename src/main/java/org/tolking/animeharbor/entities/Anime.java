@@ -43,7 +43,7 @@ public class Anime {
     @NotBlank(message = "Status can't be blank")
     private AnimeStatus status;
 
-    @OneToMany(mappedBy = "anime")
+    @OneToMany(mappedBy = "anime", fetch = FetchType.LAZY)
     private List<Views> views = new ArrayList<>();
 
     @ManyToMany(mappedBy = "animeList")
@@ -52,13 +52,21 @@ public class Anime {
     @OneToMany(mappedBy = "anime")
     private List<Rating> ratings = new ArrayList<>();
 
-    @Transient
-    public double getAverageRating() {
-        return ratings.stream().mapToDouble(Rating::getScore).average().orElse(0.0);
-    }
-
     @ManyToOne
     @JoinColumn
     private Studio studio;
 
+    @NotBlank(message = "Image can't be empty")
+    @ManyToOne
+    private Image image;
+
+    @Transient
+    public long getViewCount() {
+        return views.size();
+    }
+
+    @Transient
+    public double getAverageRating() {
+        return ratings.stream().mapToDouble(Rating::getScore).average().orElse(0.0);
+    }
 }

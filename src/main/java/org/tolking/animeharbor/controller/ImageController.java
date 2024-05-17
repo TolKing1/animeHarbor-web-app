@@ -21,7 +21,7 @@ import java.io.IOException;
 public class ImageController {
     private final ImageService imageService;
 
-    @GetMapping("/profile/{id}")
+    @GetMapping({"/profile/{id}", "/anime/{id}"})
     public ResponseEntity<Resource> getProfileImage(@PathVariable long id) throws IOException {
         ImageDataDto imageData = imageService.load(id);
 
@@ -31,7 +31,7 @@ public class ImageController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentLength(imageByte.contentLength())
-                .contentType(MediaType.valueOf("image/"+mimeType))
+                .contentType(MediaType.valueOf("image/" + mimeType))
                 .body(imageByte);
     }
 }

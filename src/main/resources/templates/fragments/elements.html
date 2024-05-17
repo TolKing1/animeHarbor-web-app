@@ -15,11 +15,11 @@
 <div th:class="${isSearch ? 'col-lg-3 col-md-4 col-sm-6':'col-lg-4 col-md-6 col-sm-6'}"
      th:each="anime : ${animeList}" th:fragment="card(animeList,isSearch)">
     <div class="product__item">
-        <div class="product__item__pic set-bg" th:attr="data-setbg=@{/img/popular/popular-1.jpg}">
+        <div th:attr="data-setbg=@{/images/anime/{id}(id=${anime.image.id})}" class="product__item__pic set-bg">
             <!--                                    <div class="comment"><i class="fa fa-comments"></i> 11</div>-->
-            <div class="view" th:if="${anime.views.size() > 0}">
+            <div class="view" th:if="${anime.getViewCount() > 0}">
                 <i class="fa fa-eye"></i>
-                <span th:text="${anime.views.size()}"></span>
+                <span th:text="${anime.getViewCount()}"></span>
             </div>
         </div>
         <div class="product__item__text">
@@ -49,7 +49,7 @@
 <div class="toastNotification" sec:authorize="isAuthenticated()" th:fragment="toastRating" th:id="toastRating"
      th:if="${ratedMessage}"></div>
 
-<!--Toast Rating-->
+<!--Toast watchlist-->
 <div class="toastNotification" sec:authorize="isAuthenticated()" th:fragment="toastWatchList" th:id="toastWatchList"
      th:if="${watchlistMessage}"></div>
 

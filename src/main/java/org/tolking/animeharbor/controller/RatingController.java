@@ -12,20 +12,21 @@ import org.tolking.animeharbor.service.RatingService;
 
 import java.security.Principal;
 
+import static org.tolking.animeharbor.controller.AnimeDetailControllers.ANIME_DETAILS_URL;
+
 @Controller
 @RequiredArgsConstructor
 public class RatingController {
-    private static final String ANIME_DETAILS_URL = "/anime";
-    public static final String RATED_MESSAGE_ATTR = "ratedMessage";
+    private static final String RATED_MESSAGE_ATTR = "ratedMessage";
 
     private final RatingService ratingService;
 
-    @PostMapping(ANIME_DETAILS_URL+"/{id}/rate")
+    @PostMapping(ANIME_DETAILS_URL + "/{id}/rate")
     @PreAuthorize("isAuthenticated()")
     public String rateAnime(@RequestParam("score") int score,
-                         @PathVariable("id") int animeId,
-                         Principal principal,
-                         RedirectAttributes redirectAttributes) throws AnimeNotFoundException {
+                            @PathVariable("id") int animeId,
+                            Principal principal,
+                            RedirectAttributes redirectAttributes) throws AnimeNotFoundException {
         ratingService.save(principal.getName(), animeId, score);
 
         redirectAttributes.addFlashAttribute(RATED_MESSAGE_ATTR, true);

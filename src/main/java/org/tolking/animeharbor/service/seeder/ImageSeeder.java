@@ -21,30 +21,55 @@ import java.util.Optional;
 public class ImageSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
     public static final String DEFAULT_PROFILE_IMG = "default_profile.jpg";
+    public static final String DEFAULT_ANIME_IMG = "default_anime.png";
 
     private final ImageRepository imageRepository;
     private final Logger logger = LoggerFactory.getLogger(ImageSeeder.class);
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        Optional<Image> imageOptional = imageRepository.findByFilename(DEFAULT_PROFILE_IMG);
+        Optional<Image> imageProfileOptional = imageRepository.findByFilename(DEFAULT_PROFILE_IMG);
+        Optional<Image> imageAnimeOptional = imageRepository.findByFilename(DEFAULT_ANIME_IMG);
+
+        imageSeeder(imageProfileOptional, DEFAULT_PROFILE_IMG, ImageType.PROFILE);
+        imageSeeder(imageAnimeOptional, DEFAULT_ANIME_IMG, ImageType.ANIME);
+    }
+
+    private void imageSeeder(Optional<Image> imageOptional, String name, ImageType imageType) {
         if (imageOptional.isPresent()) {
-            logger.info("IMAGE EXISTS: {}", DEFAULT_PROFILE_IMG);
+            try {
+                Image image = imageOptional.get();
+                imageSave(name, imageType, image);
+
+                logger.info("IMAGE OVERWRITE: {}", name);
+            } catch (IOException e) {
+                notFoundLog(name);
+            }
+
         }else {
             try {
-                byte[] resource = IOUtils.toByteArray(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("static/img/" + DEFAULT_PROFILE_IMG)));
-                String base64 = Base64.getEncoder().encodeToString(resource);
-
                 Image image = new Image();
-                image.setFilename(DEFAULT_PROFILE_IMG);
-                image.setData(base64);
-                image.setImageType(ImageType.PROFILE);
+                imageSave(name, imageType, image);
 
-                imageRepository.save(image);
-
-                logger.warn("IMAGE SAVED: {}", DEFAULT_PROFILE_IMG);
+                logger.warn("IMAGE SAVED: {}", name);
             } catch (IOException e) {
-                logger.error("IMAGE NOT FOUND: {}", DEFAULT_PROFILE_IMG);
+                notFoundLog(name);
             }
         }
+    }
+
+    private void imageSave(String name, ImageType imageType, Image image) throws IOException {
+        byte[] resource = IOUtils.toByteArray(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("static/img/" + name)));
+        String base64 = Base64.getEncoder().encodeToString(resource);
+
+
+        image.setFilename(name);
+        image.setData(base64);
+        image.setImageType(imageType);
+
+        imageRepository.save(image);
+    }
+
+    private void notFoundLog(String name) {
+        logger.error("IMAGE NOT FOUND: {}", name);
     }
 }

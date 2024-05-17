@@ -90,17 +90,37 @@
             </div>
             <div class="filter__gallery">
                 <div class="product__sidebar__view__item set-bg mix day years"
-                     th:attr="data-setbg=@{/img/sidebar/tv-1.jpg}"
+                     th:attr="data-setbg=@{/images/anime/{id}(id=${anime.image.id})}"
                      th:each="anime : ${animeByView}">
-                    <div class="view" th:if="${anime.views.size() > 0}"><i class="fa fa-eye"></i> <span
-                            th:text="${anime.views.size()}"></span></div>
-                    <h5><a href="#" th:text="${anime.title}">Boruto: Naruto next generations</a></h5>
+                    <div class="view" th:if="${anime.getViewCount() > 0}">
+                        <i class="fa fa-eye"></i>
+                        <span th:text="${anime.getViewCount()}"></span>
+                    </div>
+                    <h5>
+                        <a th:href="@{/anime/{id}(id=${anime.id})}"
+                           th:text="${anime.title}">Boruto: Naruto next generations</a>
+                    </h5>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Sidebar end -->
+
+<div class="col-lg-4 col-md-4" th:fragment="likeThis(animeByPoularity)">
+    <div class="anime__details__sidebar">
+        <div class="section-title">
+            <h5>you might like...</h5>
+        </div>
+        <div th:each="animePopular : ${animeByPoularity}"
+             th:attr="data-setbg=@{/images/anime/{id}(id=${animePopular.image.id})}" class="product__sidebar__view__item set-bg">
+            <h5>
+                <a th:href="@{/anime/{id}(id=${animePopular.id})}"
+                   th:text="${animePopular.title}"></a>
+            </h5>
+        </div>
+    </div>
+</div>
 
 <!-- Footer Section Begin -->
 <footer class="footer" th:fragment="footer">
