@@ -22,12 +22,14 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
 
-        RegisterDto registerDto = new RegisterDto();
-        registerDto.setEmail(oauthUser.getEmail());
-        registerDto.setUserName(oauthUser.getName());
-        registerDto.setPassword(UUID.randomUUID().toString());
+        if (!userService.existsByUsername(oauthUser.getName())){
+            RegisterDto registerDto = new RegisterDto();
+            registerDto.setEmail(oauthUser.getEmail());
+            registerDto.setUserName(oauthUser.getName());
+            registerDto.setPassword(UUID.randomUUID().toString());
 
-        userService.saveUser(registerDto, Provider.GOOGLE);
+            userService.saveUser(registerDto, Provider.GOOGLE);
+        }
 
         response.sendRedirect("/?login");
     }
