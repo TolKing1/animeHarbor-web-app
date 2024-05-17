@@ -1,5 +1,8 @@
 server:
   port: ${PORT}
+  tomcat:
+    max-swallow-size: -1
+
 
 logging:
   level:

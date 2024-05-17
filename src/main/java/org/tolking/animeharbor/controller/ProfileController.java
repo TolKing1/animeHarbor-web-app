@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.controller;
 
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tolking.animeharbor.dto.PasswordDto;
 import org.tolking.animeharbor.entities.User;
 import org.tolking.animeharbor.exception.InvalidMimeTypeException;
@@ -22,6 +25,7 @@ import java.security.Principal;
 @Controller
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
+@MultipartConfig(maxFileSize = 1024*1024*5)
 @RequestMapping("/me")
 public class ProfileController {
     public static final String ME_VIEW = "profile";
@@ -85,10 +89,16 @@ public class ProfileController {
 
 
     @ExceptionHandler({InvalidMimeTypeException.class, FileNotFoundException.class})
-    public String handleFileException(Model model, Principal principal, Exception e) {
-        model.addAttribute(PICTURE_ERROR_ATTR, e.getMessage());
+    public String handleFileException(RedirectAttributes model, Principal principal, Exception e) {
+        model.addFlashAttribute(PICTURE_ERROR_ATTR, e.getMessage());
         addPassword(model);
-        return setModelAttributesForProfile(principal, model);
+        return "redirect:"+ME_URL;
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String handleMaxSizeException(MaxUploadSizeExceededException exc, RedirectAttributes attributes) {
+        attributes.addFlashAttribute(PICTURE_ERROR_ATTR, exc.getMessage());
+        return "redirect:"+ME_URL;
     }
 
 }

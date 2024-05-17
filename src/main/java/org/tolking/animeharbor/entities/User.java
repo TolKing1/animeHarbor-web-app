@@ -44,7 +44,7 @@ public class User {
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean enabled;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE})
     private Image image;
 
     @ManyToMany(fetch = FetchType.EAGER)

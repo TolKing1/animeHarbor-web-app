@@ -47,6 +47,8 @@ public class ImageServiceImpl implements ImageService {
                 image.setData(getImageString(file));
                 image.setFilename(UUID.randomUUID() + "." + extension);
 
+                image = imageRepository.save(image);
+
                 user.setImage(image);
             }catch (IOException e){
                 throw new IOFileUploadException("Can't save file",e);

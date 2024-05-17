@@ -9,6 +9,6 @@ public class FileUploadExceptionAdvice {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String handleMaxSizeException(MaxUploadSizeExceededException exc) {
-        return "/";
+        return "error/maxUploadSizeExceeded";
     }
 }

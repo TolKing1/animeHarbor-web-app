@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/general :: common_header(~{::title})}">
+    <title>Something went wrong...</title>>
+</head>
+<body class="min-vh-100">
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header" th:replace="~{fragments/general :: header}">
+</header>
+<!-- Header End -->
+
+<!-- Error Container Begin -->
+<div class="container h-100" id="error-container" >
+    <div class="row h-100 align-items-center">
+        <div class="col-md-12 text-center ">
+            <img th:src="@{/img/too_big.png}" class="h-75">
+            <h3 class="text-white">
+                File is tooooooo big. <span th:if="${@environment.getProperty('spring.servlet.multipart.max-file-size')}">Max: <b th:text="${@environment.getProperty('spring.servlet.multipart.max-file-size')}"></b></span>
+            </h3>
+        </div>
+    </div>
+</div>
+<!-- Error Container End -->
+
+
+<!-- Footer Section Begin -->
+<footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
+<!-- Footer Section End -->
+
+<!-- Search model Begin -->
+<div class="search-model" th:replace="~{fragments/elements :: search}"></div>
+<!-- Search model end -->
+
+
+<div th:replace="~{fragments/general :: scripts}"></div>
+</body>
+
+</html>
