@@ -36,22 +36,7 @@ public class AnimeServiceImpl implements AnimeService {
     @Override
     public Page<Anime> searchAnime(String query, int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        if (sortField.equalsIgnoreCase("views")) {
-            return getAnimePageByView(sortDirection, animeRepository.searchFullTextOrderByCountViewsDesc(query, pageable), animeRepository.searchFullTextOrderByCountViewsAsc(query, pageable));
-        } else if (sortField.equalsIgnoreCase("rating")) {
-            return getAnimePageByView(sortDirection, animeRepository.searchFullTextOrderByAverageRatingScoreDesc(query, pageable), animeRepository.searchFullTextOrderByAverageRatingScoreAsc(query, pageable));
-        } else {
-            pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-            return animeRepository.searchFullText(query, pageable);
-        }
-    }
-
-    private Page<Anime> getAnimePageByView(String sortDirection, Page<Anime> animeRepository, Page<Anime> animeRepository1) {
-        if (sortDirection.equalsIgnoreCase("desc")) {
-            return animeRepository;
-        } else {
-            return animeRepository1;
-        }
+        return sortedAnimePage(query, pageNo, pageSize, sortField, sortDirection, pageable);
     }
 
     @Override
@@ -80,6 +65,10 @@ public class AnimeServiceImpl implements AnimeService {
     @Override
     public Page<Anime> getSortedAnimePageByGenre(long genreId, int pageNo, int pageSize, String sortField, String sortDirection) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return sortAnimePageByGenreId(genreId, pageNo, pageSize, sortField, sortDirection, pageable);
+    }
+
+    private Page<Anime> sortAnimePageByGenreId(long genreId, int pageNo, int pageSize, String sortField, String sortDirection, Pageable pageable) {
         if (sortField.equalsIgnoreCase("views")) {
             return getAnimePageByView(sortDirection, animeRepository.findByGenreIdOrderByCountViewsDesc(genreId, pageable), animeRepository.findByGenreIdOrderByCountViewsAsc(genreId, pageable));
         } else if (sortField.equalsIgnoreCase("rating")) {
@@ -90,5 +79,23 @@ public class AnimeServiceImpl implements AnimeService {
         }
     }
 
+    private Page<Anime> sortedAnimePage(String query, int pageNo, int pageSize, String sortField, String sortDirection, Pageable pageable) {
+        if (sortField.equalsIgnoreCase("views")) {
+            return getAnimePageByView(sortDirection, animeRepository.searchFullTextOrderByCountViewsDesc(query, pageable), animeRepository.searchFullTextOrderByCountViewsAsc(query, pageable));
+        } else if (sortField.equalsIgnoreCase("rating")) {
+            return getAnimePageByView(sortDirection, animeRepository.searchFullTextOrderByAverageRatingScoreDesc(query, pageable), animeRepository.searchFullTextOrderByAverageRatingScoreAsc(query, pageable));
+        } else {
+            pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+            return animeRepository.searchFullText(query, pageable);
+        }
+    }
+
+    private Page<Anime> getAnimePageByView(String sortDirection, Page<Anime> animeRepository, Page<Anime> animeRepository1) {
+        if (sortDirection.equalsIgnoreCase("desc")) {
+            return animeRepository;
+        } else {
+            return animeRepository1;
+        }
+    }
 
 }

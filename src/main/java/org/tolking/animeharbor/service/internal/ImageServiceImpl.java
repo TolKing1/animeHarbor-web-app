@@ -81,13 +81,6 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.findByFilename(name);
     }
 
-    private static String validateJPG(String mimeType) {
-        if (Objects.equals(mimeType, "jpg")) {
-            mimeType = "jpeg";
-        }
-        return mimeType;
-    }
-
     private String getImageString(MultipartFile multipartFile) throws IOException {
 
         try {
@@ -108,6 +101,13 @@ public class ImageServiceImpl implements ImageService {
 
     private String getFileExtension(String fileName) {
         return StringUtils.getFilenameExtension(fileName);
+    }
+
+    private static String validateJPG(String mimeType) {
+        if (Objects.equals(mimeType, "jpg")) {
+            mimeType = "jpeg";
+        }
+        return mimeType;
     }
 
     private void isValidFileType(String fileExtension) throws InvalidMimeTypeException {

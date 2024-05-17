@@ -67,20 +67,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> existUser = userRepository.findByUsernameOrEmail(registerDto.getUserName(), registerDto.getEmail());
 
-        if (existUser.isEmpty()) {
-            User user = new User();
-            user.setEmail(registerDto.getEmail());
-            user.setUsername(registerDto.getUserName());
-            user.setProvider(provider);
-            user.setEnabled(true);
-            user.setImage(image);
-
-            user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-
-            user.addRole(roleObg);
-
-            userRepository.save(user);
-        }
+        createIfExists(registerDto, provider, existUser, image, roleObg);
     }
 
     @Override
@@ -123,6 +110,23 @@ public class UserServiceImpl implements UserService {
 
     private Collection<GrantedAuthority> mapAuthorities(List<Roles> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole().toString())).collect(Collectors.toList());
+    }
+
+    private void createIfExists(RegisterDto registerDto, Provider provider, Optional<User> existUser, Image image, Roles roleObg) {
+        if (existUser.isEmpty()) {
+            User user = new User();
+            user.setEmail(registerDto.getEmail());
+            user.setUsername(registerDto.getUserName());
+            user.setProvider(provider);
+            user.setEnabled(true);
+            user.setImage(image);
+
+            user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+
+            user.addRole(roleObg);
+
+            userRepository.save(user);
+        }
     }
 
 }
