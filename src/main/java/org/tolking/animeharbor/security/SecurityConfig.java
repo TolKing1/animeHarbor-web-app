@@ -37,16 +37,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .anyRequest().permitAll()
                 )
-                .formLogin(formLogin -> {
-                            formLogin.loginPage("/login");
-                            formLogin.defaultSuccessUrl("/?login");
-                            formLogin.permitAll();
-                        }
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/?login")
+                        .failureUrl("/error/disabled")
+                        .permitAll()
                 )
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login/oauth2/google")
                         .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig.userService(customOAuth2UserService)))
                         .successHandler(new OAuth2SuccessHandler(userService))
+                        .failureUrl("/error/disabled")
                         .permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())

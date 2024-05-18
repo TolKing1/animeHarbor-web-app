@@ -1,6 +1,7 @@
 package org.tolking.animeharbor.service.internal;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import org.tolking.animeharbor.entities.Roles;
 import org.tolking.animeharbor.entities.User;
 import org.tolking.animeharbor.entities.enums.Provider;
 import org.tolking.animeharbor.entities.enums.RoleType;
+import org.tolking.animeharbor.exception.AccountIsDisabledException;
 import org.tolking.animeharbor.repositories.RoleRepository;
 import org.tolking.animeharbor.repositories.UserRepository;
 import org.tolking.animeharbor.service.ImageService;
@@ -92,15 +94,25 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByEmail(email);
     }
 
+    @SneakyThrows
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);
 
         if (user.isPresent()) {
             var userObj = user.get();
+
+            if (!userObj.isEnabled()){
+                throw new AccountIsDisabledException("Your account is disabled");
+            }
+
             return new org.springframework.security.core.userdetails.User(
                     userObj.getUsername(),
                     userObj.getPassword(),
+                    true,
+                    true,
+                    true,
+                    true,
                     mapAuthorities(userObj.getRoles())
             );
         } else {

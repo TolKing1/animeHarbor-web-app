@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @ControllerAdvice
-public class FileUploadExceptionAdvice {
+public class GlobalExceptionAdvice {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String handleMaxSizeException(MaxUploadSizeExceededException exc) {
-        return "error/maxUploadSizeExceeded";
+        return "redirect:/error/maxUploadSizeExceeded";
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.tolking.animeharbor.dto.RegisterDto;
 import org.tolking.animeharbor.entities.enums.Provider;
-import org.tolking.animeharbor.exception.UserAlreadyExists;
 import org.tolking.animeharbor.service.UserService;
 
 import javax.management.relation.RoleNotFoundException;
@@ -43,7 +42,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public String register(@ModelAttribute(REGISTER_DTO_ATTR) @Valid RegisterDto registerDto, BindingResult result) throws RoleNotFoundException, UserAlreadyExists, FileNotFoundException {
+    public String register(@ModelAttribute(REGISTER_DTO_ATTR) @Valid RegisterDto registerDto, BindingResult result) throws RoleNotFoundException, FileNotFoundException {
         if (checkIfErrorExists(registerDto, result)) {
             return SIGN_UP_VIEW;
         }
