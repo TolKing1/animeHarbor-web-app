@@ -37,7 +37,7 @@ public class RatingServiceImpl implements org.tolking.animeharbor.service.Rating
 
         } else {
             rating = new Rating();
-            User user = userRepository.findByUsername(username)
+            User user = userRepository.findByUsernameEquals(username)
                     .orElseThrow(() -> new UsernameNotFoundException(username));
             Anime anime = animeRepository.findById(animeId)
                     .orElseThrow(() -> new AnimeNotFoundException("Not found"));

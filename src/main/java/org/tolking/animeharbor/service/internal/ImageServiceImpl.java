@@ -32,7 +32,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void saveProfile(MultipartFile file, String username) throws IOFileUploadException, InvalidMimeTypeException {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+        Optional<User> optionalUser = userRepository.findByUsernameEquals(username);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();

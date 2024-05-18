@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     private Comment getComment(String username, long animeId, String commentMsg) throws AnimeNotFoundException {
         Comment comment = new Comment();
 
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsernameEquals(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         Anime anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException("Not found"));
