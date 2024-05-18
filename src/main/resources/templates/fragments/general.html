@@ -29,6 +29,15 @@
     <li><a th:href="@{/}">Homepage</a></li>
     <li><a th:href="@{/genres}">Genres</a></li>
     <li><a th:href="@{/watchlist}">Watching List</a></li>
+    <li class="text-light" sec:authorize="hasAnyRole('ADMIN','SUPER_ADMIN')">
+        Admin<span class="arrow_carrot-down"></span>
+        <ul class="dropdown">
+            <li><a th:href="@{/admin/anime}">Anime</a></li>
+            <li><a th:href="@{/admin/studio}">Studios</a></li>
+            <li><a th:href="@{/admin/genre}">Genres</a></li>
+            <li><a th:href="@{/admin/user}">Users</a></li>
+        </ul>
+    </li>
     <li><a th:href="@{/contacts}">Contacts</a></li>
 </ul>
 

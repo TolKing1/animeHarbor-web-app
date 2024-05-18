@@ -25,9 +25,9 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
     }
     private void loadRoles() {
         List<RoleType> roleTypes = List.of(
-                RoleType.USER,
-                RoleType.ADMIN,
-                RoleType.SUPER_ADMIN
+                RoleType.ROLE_USER,
+                RoleType.ROLE_ADMIN,
+                RoleType.ROLE_SUPER_ADMIN
         );
 
         roleTypes.forEach((roleName) -> {

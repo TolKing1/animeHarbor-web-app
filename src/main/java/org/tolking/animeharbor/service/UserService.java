@@ -15,7 +15,7 @@ public interface UserService extends UserDetailsService {
     Optional<User> findByEmail(String email);
     User findById(long id);
 
-    void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, FileNotFoundException;
+    Optional<User> saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, FileNotFoundException;
     void updateUserPassword(String username, PasswordDto passwordDto);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);

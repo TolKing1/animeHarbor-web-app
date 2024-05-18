@@ -60,13 +60,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, FileNotFoundException {
-        Roles roleObg = roleRepository.findByRole(RoleType.USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.USER));
+    public Optional<User> saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, FileNotFoundException {
+        Roles roleObg = roleRepository.findByRole(RoleType.ROLE_USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.ROLE_USER));
         Image image = imageService.findImageByName(DEFAULT_PROFILE_IMG).orElseThrow(() -> new FileNotFoundException("IMG Not Found:  " + DEFAULT_PROFILE_IMG));
 
         Optional<User> existUser = userRepository.findByUsernameOrEmail(registerDto.getUserName(), registerDto.getEmail());
 
-        createIfExists(registerDto, provider, existUser, image, roleObg);
+       return createIfExists(registerDto, provider, existUser, image, roleObg);
     }
 
     @Override
@@ -103,25 +103,21 @@ public class UserServiceImpl implements UserService {
                 throw new AccountIsDisabledException("Your account is disabled");
             }
 
-            return new org.springframework.security.core.userdetails.User(
-                    userObj.getUsername(),
-                    userObj.getPassword(),
-                    true,
-                    true,
-                    true,
-                    true,
-                    mapAuthorities(userObj.getRoles())
-            );
+            return org.springframework.security.core.userdetails.User.builder()
+                    .username(userObj.getUsername())
+                    .password(userObj.getPassword())
+                    .authorities(mapAuthorities(userObj.getRoles()))
+                    .build();
         } else {
             throw new UsernameNotFoundException(username);
         }
     }
 
-    private Collection<GrantedAuthority> mapAuthorities(List<Roles> roles) {
+    public static Collection<GrantedAuthority> mapAuthorities(List<Roles> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole().toString())).collect(Collectors.toList());
     }
 
-    private void createIfExists(RegisterDto registerDto, Provider provider, Optional<User> existUser, Image image, Roles roleObg) {
+    private Optional<User> createIfExists(RegisterDto registerDto, Provider provider, Optional<User> existUser, Image image, Roles roleObg) {
         if (existUser.isEmpty()) {
             User user = new User();
             user.setEmail(registerDto.getEmail());
@@ -134,8 +130,9 @@ public class UserServiceImpl implements UserService {
 
             user.addRole(roleObg);
 
-            userRepository.save(user);
+            return Optional.of(userRepository.save(user));
         }
+        return Optional.empty();
     }
 
 }

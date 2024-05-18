@@ -1,6 +1,7 @@
 package org.tolking.animeharbor.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ public class HomeController {
     private final AnimeService animeService;
 
     @GetMapping({"/", ""})
-    public String home(Model model) {
+    public String home(Model model, Authentication auth) {
         model.addAttribute("animeByPopular",animeService.getAllForPopularityPage());
         model.addAttribute("animeByView",animeService.getAllForTopViewPage());
         model.addAttribute("animeByInsertDate",animeService.getAllForRecentlyAddedPage());

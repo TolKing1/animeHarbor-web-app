@@ -6,11 +6,16 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import java.util.Collection;
 import java.util.Map;
 
+
 public class CustomOAuth2User implements OAuth2User {
     private final OAuth2User oauth2User;
+    private final Collection<GrantedAuthority> authorities;
 
-    public CustomOAuth2User(OAuth2User oauth2User) {
+    public CustomOAuth2User(OAuth2User oauth2User, Collection<GrantedAuthority> authorities) {
         this.oauth2User = oauth2User;
+
+        authorities.addAll(oauth2User.getAuthorities());
+        this.authorities = authorities;
     }
 
     @Override
@@ -20,7 +25,7 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return oauth2User.getAuthorities();
+        return authorities;
     }
 
     @Override
