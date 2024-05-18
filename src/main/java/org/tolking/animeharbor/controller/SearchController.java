@@ -34,7 +34,7 @@ public class SearchController {
     @GetMapping
     public String search(@RequestParam(defaultValue = "") String query,
                          @RequestParam(defaultValue = "0") int pageNo,
-                         @RequestParam(defaultValue = "creation") String sortBy,
+                         @RequestParam(defaultValue = "created") String sortBy,
                          @RequestParam(defaultValue = "desc") String sortDirection,
                          Model model) {
         Page<Anime> animePage = animeService.searchAnime(query,pageNo,pageSize,sortBy,sortDirection);

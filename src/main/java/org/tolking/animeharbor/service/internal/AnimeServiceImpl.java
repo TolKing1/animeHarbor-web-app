@@ -41,7 +41,7 @@ public class AnimeServiceImpl implements AnimeService {
 
     @Override
     public List<Anime> getAllForRecentlyAddedPage() {
-        return getAllAnime(0, 6, "creation", "desc");
+        return getAllAnime(0, 6, "created", "desc");
     }
 
     @Override

@@ -2,17 +2,15 @@ package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(schema = "public")
-public class Studio {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class Studio extends TransactionEntity{
     private String name;
 
     @Column(columnDefinition = "text")

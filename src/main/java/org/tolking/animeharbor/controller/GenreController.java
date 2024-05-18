@@ -49,7 +49,7 @@ public class GenreController {
     public String getAllByGenre(
             @PathVariable("id") long id,
             @RequestParam(defaultValue = "0") int pageNo,
-            @RequestParam(defaultValue = "creation") String sortBy,
+            @RequestParam(defaultValue = "created") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             Model model) {
         Optional<Genre> genre = genreService.getByGenre(id);

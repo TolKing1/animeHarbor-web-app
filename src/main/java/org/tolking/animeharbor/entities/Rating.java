@@ -2,19 +2,14 @@ package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Range;
 
-import java.time.LocalDateTime;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"anime_id", "user_id"}), schema = "public")
-public class Rating {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Rating extends TransactionEntity{
 
     @ManyToOne
     @JoinColumn
@@ -28,9 +23,4 @@ public class Rating {
     @JoinColumn
     private int score;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }

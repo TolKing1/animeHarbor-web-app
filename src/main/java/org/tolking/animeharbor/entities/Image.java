@@ -2,19 +2,14 @@ package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.EqualsAndHashCode;
 import org.tolking.animeharbor.entities.enums.ImageType;
 
-import java.time.LocalDateTime;
-
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Table(schema = "public")
-public class Image{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Image extends TransactionEntity{
 
     private String filename;
 
@@ -24,9 +19,5 @@ public class Image{
     @Column(columnDefinition = "text")
     private String data;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }

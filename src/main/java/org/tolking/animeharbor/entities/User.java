@@ -6,24 +6,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.tolking.animeharbor.entities.enums.Provider;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "users", schema = "public")
-public class User {
-    @Transient
-    private static final String DEFAULT_IMG_NAME = "'default.jpg'";
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class User extends TransactionEntity{
 
     @Column(unique = true, updatable = false)
     @NotBlank(message = "Username: Can't be blank")
@@ -67,14 +58,6 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Rating> rating = new ArrayList<>();
-
-    @CreationTimestamp
-    @Column(updatable = false, name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @Transient
     public void addRole(Roles role) {
