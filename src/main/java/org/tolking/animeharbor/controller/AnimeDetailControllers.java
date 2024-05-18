@@ -43,23 +43,22 @@ public class AnimeDetailControllers {
                            Principal principal) {
 
         Optional<Anime> animeOptional = animeService.getAnimeById(id);
-        if (animeOptional.isEmpty()) {
-            return NOT_FOUND_VIEW;
-        } else {
-            Anime anime = animeOptional.get();
 
-            viewService.createView(anime.getId());
+        return animeOptional
+                .map(anime -> {
+                            viewService.createView(anime.getId());
 
-            List<Anime> animeListByPopularity = animeService.getAllForPopularityPage();
-            List<Comment> commentList = commentService.getLast5Comments(anime.getId());
-            boolean watchListFound =watchListService.isAdded(id, principal);
+                            List<Anime> animeListByPopularity = animeService.getAllForPopularityPage();
+                            List<Comment> commentList = commentService.getLast5Comments(anime.getId());
+                            boolean watchListFound = watchListService.isAdded(id, principal);
 
-            model.addAttribute(ANIME_ATTR, anime);
-            model.addAttribute(ANIME_LIST_BY_POPULARITY_ATTR, animeListByPopularity);
-            model.addAttribute(COMMENTS_ATTR, commentList);
-            model.addAttribute(WATCHLIST_IS_EXISTS_ATTR, watchListFound);
-            return ANIME_VIEW;
-        }
+                            model.addAttribute(ANIME_ATTR, anime);
+                            model.addAttribute(ANIME_LIST_BY_POPULARITY_ATTR, animeListByPopularity);
+                            model.addAttribute(COMMENTS_ATTR, commentList);
+                            model.addAttribute(WATCHLIST_IS_EXISTS_ATTR, watchListFound);
+                            return ANIME_VIEW;
+                        }
+                ).orElse(NOT_FOUND_VIEW);
     }
 
 
