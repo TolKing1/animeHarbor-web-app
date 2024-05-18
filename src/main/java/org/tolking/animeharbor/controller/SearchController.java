@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.tolking.animeharbor.entities.Anime;
 import org.tolking.animeharbor.service.AnimeService;
 
+import static org.tolking.animeharbor.constant.ControllerConstant.SEARCH_URL;
+
 @Controller
-@RequestMapping("/search")
+@RequestMapping(SEARCH_URL)
 @RequiredArgsConstructor
 public class SearchController {
+
     private final AnimeService animeService;
 
     private static final String SEARCH_VIEW = "search";

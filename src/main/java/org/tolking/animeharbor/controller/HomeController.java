@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.tolking.animeharbor.service.AnimeService;
 
+import static org.tolking.animeharbor.constant.ControllerConstant.CONTACTS_URL;
+
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -19,7 +21,7 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/contacts")
+    @GetMapping(CONTACTS_URL)
     public String contact() {
         return "contact";
     }

@@ -12,12 +12,14 @@ import org.tolking.animeharbor.service.GenreService;
 
 import java.util.Optional;
 
+import static org.tolking.animeharbor.constant.ControllerConstant.GENRE_URL;
+
 @Controller
-@RequestMapping("/genres")
+@RequestMapping(GENRE_URL)
 @RequiredArgsConstructor
 public class GenreController {
     private static final String GENRE_VIEW = "genre";
-    private static final String GENRE_URL = "/genres";
+
     private static final String GENRE_SELECTED_VIEW = "genre-selected";
 
     private static final String GENRES_ATTR = "genres";

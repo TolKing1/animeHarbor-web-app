@@ -12,7 +12,8 @@ import org.tolking.animeharbor.service.RatingService;
 
 import java.security.Principal;
 
-import static org.tolking.animeharbor.controller.AnimeDetailControllers.ANIME_DETAILS_URL;
+import static org.tolking.animeharbor.constant.ControllerConstant.ANIME_URL;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class RatingController {
 
     private final RatingService ratingService;
 
-    @PostMapping(ANIME_DETAILS_URL + "/{id}/rate")
+    @PostMapping(ANIME_URL + "/{id}/rate")
     @PreAuthorize("isAuthenticated()")
     public String rateAnime(@RequestParam("score") int score,
                             @PathVariable("id") int animeId,
@@ -31,6 +32,6 @@ public class RatingController {
 
         redirectAttributes.addFlashAttribute(RATED_MESSAGE_ATTR, true);
 
-        return "redirect:%s/%d".formatted(ANIME_DETAILS_URL, animeId);
+        return "redirect:%s/%d".formatted(ANIME_URL, animeId);
     }
 }

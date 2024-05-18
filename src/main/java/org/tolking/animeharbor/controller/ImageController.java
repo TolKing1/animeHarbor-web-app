@@ -15,13 +15,17 @@ import org.tolking.animeharbor.service.ImageService;
 
 import java.io.IOException;
 
+import static org.tolking.animeharbor.constant.ControllerConstant.ANIME_URL;
+import static org.tolking.animeharbor.constant.ControllerConstant.IMAGES_URL;
+
 @Controller
-@RequestMapping("/images")
+@RequestMapping(IMAGES_URL)
 @RequiredArgsConstructor
 public class ImageController {
+
     private final ImageService imageService;
 
-    @GetMapping({"/profile/{id}", "/anime/{id}"})
+    @GetMapping({"/profile/{id}", ANIME_URL+"/{id}"})
     public ResponseEntity<Resource> getProfileImage(@PathVariable long id) throws IOException {
         ImageDataDto imageData = imageService.load(id);
 

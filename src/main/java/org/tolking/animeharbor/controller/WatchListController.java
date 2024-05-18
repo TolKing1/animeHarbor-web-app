@@ -13,22 +13,24 @@ import org.tolking.animeharbor.service.WatchListService;
 import java.security.Principal;
 import java.util.List;
 
-import static org.tolking.animeharbor.controller.AnimeDetailControllers.ANIME_DETAILS_URL;
+import static org.tolking.animeharbor.constant.ControllerConstant.ANIME_URL;
+import static org.tolking.animeharbor.constant.ControllerConstant.WATCHLIST_URL;
+
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/watchlist")
+@RequestMapping(WATCHLIST_URL)
 @PreAuthorize("isAuthenticated()")
 public class WatchListController {
     public static final String WATCHLIST_VIEW = "watchlist";
-    public static final String WATCHLIST = "watchlist";
+    public static final String WATCHLIST_ATTR = "watchlist";
     private final WatchListService watchListService;
 
     @GetMapping
     public String getWatchList(Model model, Principal principal) {
         List<Anime> animeList = watchListService.getList(principal.getName());
 
-        model.addAttribute(WATCHLIST, animeList);
+        model.addAttribute(WATCHLIST_ATTR, animeList);
         return WATCHLIST_VIEW;
     }
 
@@ -38,7 +40,7 @@ public class WatchListController {
                                Principal principal) {
         watchListService.addToList(animeId, principal.getName());
 
-        return "redirect:%s/%d".formatted(ANIME_DETAILS_URL, animeId);
+        return "redirect:%s/%d".formatted(ANIME_URL, animeId);
     }
 
     @GetMapping("/remove")
@@ -46,6 +48,6 @@ public class WatchListController {
                                Principal principal) {
         watchListService.removeFromList(animeId, principal.getName());
 
-        return "redirect:%s/%d".formatted(ANIME_DETAILS_URL, animeId);
+        return "redirect:%s/%d".formatted(ANIME_URL, animeId);
     }
 }

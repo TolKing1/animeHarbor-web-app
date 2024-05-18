@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
+        return userRepository.findByUsernameEquals(username)
                 .orElseThrow(
                         () -> new UsernameNotFoundException("User Not Found by username: " + username)
                 );
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserPassword(String username, PasswordDto passwordDto){
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsernameEquals(username);
 
         if (user.isPresent()){
             User existingUser = user.get();
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsernameEquals(username);
 
         if (user.isPresent()) {
             var userObj = user.get();

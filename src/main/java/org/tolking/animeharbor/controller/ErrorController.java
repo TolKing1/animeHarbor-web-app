@@ -4,8 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import static org.tolking.animeharbor.constant.ControllerConstant.ERROR_URL;
+
 @Controller
-@RequestMapping("/error")
+@RequestMapping(ERROR_URL)
 public class ErrorController {
 
     @GetMapping("/maxUploadSizeExceeded")

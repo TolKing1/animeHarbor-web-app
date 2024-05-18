@@ -22,7 +22,7 @@ public class WatchListServiceImpl implements org.tolking.animeharbor.service.Wat
 
     @Override
     public List<Anime> getList(String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<User> userOptional = userRepository.findByUsernameEquals(username);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -35,7 +35,7 @@ public class WatchListServiceImpl implements org.tolking.animeharbor.service.Wat
     @Override
     public void addToList(long animeId, String username) {
         Optional<Anime> animeOptional = animeRepository.findById(animeId);
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<User> userOptional = userRepository.findByUsernameEquals(username);
 
         if (animeOptional.isPresent() && userOptional.isPresent()) {
             User user = userOptional.get();
@@ -50,7 +50,7 @@ public class WatchListServiceImpl implements org.tolking.animeharbor.service.Wat
 
     @Override
     public void removeFromList(long animeId, String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<User> userOptional = userRepository.findByUsernameEquals(username);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -69,7 +69,7 @@ public class WatchListServiceImpl implements org.tolking.animeharbor.service.Wat
         }
 
         Optional<Anime> animeOptional = animeRepository.findById(animeId);
-        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
+        Optional<User> userOptional = userRepository.findByUsernameEquals(principal.getName());
 
         if (animeOptional.isPresent() && userOptional.isPresent()) {
             User user = userOptional.get();

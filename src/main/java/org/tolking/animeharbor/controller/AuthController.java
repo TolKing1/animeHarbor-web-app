@@ -20,28 +20,30 @@ import java.io.FileNotFoundException;
 @RequiredArgsConstructor
 @PreAuthorize("isAnonymous()")
 public class AuthController {
+    private static final String LOGIN_VIEW = "login";
+    private static final String SIGN_UP_VIEW = "signup";
+    private static final String LOGIN_URL = "/login";
+    private static final String REGISTER_URL = "/register";
+    private static final String REGISTER_DTO_ATTR = "registerDto";
+
+
     private final UserService userService;
 
-    private final static String LOGIN_VIEW = "login";
-    private final static String LOGIN_URL = "/login";
-    private final static String SIGN_UP_VIEW = "signup";
-    private final static String REGISTER_DTO_ATTR = "registerDto";
 
-
-    @GetMapping("/login")
+    @GetMapping(LOGIN_URL)
     public String loginPage() {
         return LOGIN_VIEW;
     }
 
 
-    @GetMapping("/register")
+    @GetMapping(REGISTER_URL)
     public String registerPage(Model model) {
         model.addAttribute(REGISTER_DTO_ATTR, new RegisterDto());
         return SIGN_UP_VIEW;
     }
 
 
-    @PostMapping("/register")
+    @PostMapping(REGISTER_URL)
     public String register(@ModelAttribute(REGISTER_DTO_ATTR) @Valid RegisterDto registerDto, BindingResult result) throws RoleNotFoundException, FileNotFoundException {
         if (checkIfErrorExists(registerDto, result)) {
             return SIGN_UP_VIEW;

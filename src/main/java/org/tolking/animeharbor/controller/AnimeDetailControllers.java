@@ -17,11 +17,13 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import static org.tolking.animeharbor.constant.ControllerConstant.ANIME_URL;
+
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/anime")
+@RequestMapping(ANIME_URL)
 public class AnimeDetailControllers {
-    public static final String ANIME_DETAILS_URL = "/anime";
+
     private static final String ANIME_VIEW = "anime-details";
     private static final String NOT_FOUND_VIEW = "error/404";
 

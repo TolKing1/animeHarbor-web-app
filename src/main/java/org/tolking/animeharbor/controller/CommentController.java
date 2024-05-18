@@ -11,7 +11,8 @@ import org.tolking.animeharbor.service.CommentService;
 
 import java.security.Principal;
 
-import static org.tolking.animeharbor.controller.AnimeDetailControllers.ANIME_DETAILS_URL;
+import static org.tolking.animeharbor.constant.ControllerConstant.ANIME_URL;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping(ANIME_DETAILS_URL + "/comment")
+    @PostMapping(ANIME_URL + "/comment")
     @PreAuthorize("isAuthenticated()")
     public String postComment(@RequestParam("comment") String comment,
                               @RequestParam("animeId") long animeId,
@@ -30,6 +31,6 @@ public class CommentController {
 
         redirectAttributes.addFlashAttribute(COMMENT_MESSAGE_ATTR, true);
 
-        return "redirect:%s/%d".formatted(ANIME_DETAILS_URL, animeId);
+        return "redirect:%s/%d".formatted(ANIME_URL, animeId);
     }
 }
