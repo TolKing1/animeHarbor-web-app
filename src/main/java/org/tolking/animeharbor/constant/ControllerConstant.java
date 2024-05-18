@@ -9,4 +9,5 @@ public final class ControllerConstant {
     public static final String IMAGES_URL = "/images";
     public static final String SEARCH_URL = "/search";
     public static final String WATCHLIST_URL = "/watchlist";
+    public static final String ADMIN_URL = "/admin";
 }

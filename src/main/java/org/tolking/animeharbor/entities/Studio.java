@@ -1,9 +1,11 @@
 package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -11,11 +13,19 @@ import java.util.List;
 @Entity
 @Table(schema = "public")
 public class Studio extends TransactionEntity{
+
+    @Size(min = 3, max = 30, message = "Length should be between 3 and 30")
     private String name;
 
     @Column(columnDefinition = "text")
+    @Size(min = 3, max = 400, message = "Length should be between 3 and 400")
     private String description;
 
-    @OneToMany(mappedBy = "studio")
-    private List<Anime> animeList;
+    @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY)
+    private List<Anime> animeList = new ArrayList<Anime>();
+
+    @Transient
+    public boolean isEmptyAnimeList(){
+        return animeList.isEmpty();
+    }
 }
