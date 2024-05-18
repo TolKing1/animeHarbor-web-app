@@ -28,13 +28,13 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
     List<Anime> getAllByOrderByViews(Pageable pageable);
 
     //Genre
-    @Query("SELECT a FROM Anime a JOIN a.genre g WHERE g.id = :genreId ORDER BY SIZE(a.views) ASC")
+    @Query("SELECT a FROM Anime a JOIN a.genre g WHERE g.id = :genreId ORDER BY SIZE(a.views)")
     Page<Anime> findByGenreIdOrderByCountViewsAsc(@Param("genreId") long id, Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g WHERE g.id = :genreId ORDER BY SIZE(a.views) DESC")
     Page<Anime> findByGenreIdOrderByCountViewsDesc(@Param("genreId") long id, Pageable pageable);
 
-    @Query("SELECT a FROM Anime a JOIN a.genre g LEFT JOIN a.ratings r WHERE g.id = :genreId GROUP BY a.id ORDER BY COALESCE(AVG(r.score),0) ASC")
+    @Query("SELECT a FROM Anime a JOIN a.genre g LEFT JOIN a.ratings r WHERE g.id = :genreId GROUP BY a.id ORDER BY COALESCE(AVG(r.score),0)")
     Page<Anime> findByGenreIdOrderByAverageRatingsScoreAsc(@Param("genreId") long id, Pageable pageable);
 
     @Query("SELECT a FROM Anime a JOIN a.genre g LEFT JOIN a.ratings r WHERE g.id = :genreId GROUP BY a.id ORDER BY COALESCE(AVG(r.score),0) DESC")
@@ -71,22 +71,22 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
     Page<Anime> searchFullTextOrderByCountViewsDesc(@Param("query") String query, Pageable pageable);
 
     @Query(value =
-            "SELECT a.*, COALESCE(AVG(r.anime_id), 0) as count FROM anime a " +
+            "SELECT a.*, COALESCE(AVG(r.score), 0) as avg FROM anime a " +
                     "LEFT JOIN rating r on a.id = r.anime_id " +
                     "WHERE to_tsvector(a.title) @@ plainto_tsquery(:query) " +
                     "OR LOWER(a.title) LIKE CONCAT('%', LOWER(:query), '%') "+
                     "GROUP BY a.id " +
-                    "ORDER BY count DESC "
+                    "ORDER BY avg DESC"
             , nativeQuery = true)
     Page<Anime> searchFullTextOrderByAverageRatingScoreDesc(@Param("query") String query, Pageable pageable);
 
     @Query(value =
-            "SELECT a.*, COALESCE(AVG(r.anime_id), 0) as count FROM anime a " +
+            "SELECT a.*, COALESCE(AVG(r.score), 0) as avg FROM anime a " +
                     "LEFT JOIN rating r on a.id = r.anime_id " +
                     "WHERE to_tsvector(a.title) @@ plainto_tsquery(:query) " +
                     "OR LOWER(a.title) LIKE CONCAT('%', LOWER(:query), '%') "+
                     "GROUP BY a.id " +
-                    "ORDER BY count "
+                    "ORDER BY avg"
             , nativeQuery = true)
     Page<Anime> searchFullTextOrderByAverageRatingScoreAsc(@Param("query") String query, Pageable pageable);
 }
