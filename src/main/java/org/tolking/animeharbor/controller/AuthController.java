@@ -20,8 +20,8 @@ import java.io.FileNotFoundException;
 @RequiredArgsConstructor
 @PreAuthorize("isAnonymous()")
 public class AuthController {
-    private static final String LOGIN_VIEW = "login";
-    private static final String SIGN_UP_VIEW = "signup";
+    private static final String LOGIN_VIEW = "/authorization/login";
+    private static final String SIGN_UP_VIEW = "/authorization/signup";
     private static final String LOGIN_URL = "/login";
     private static final String REGISTER_URL = "/register";
     private static final String REGISTER_DTO_ATTR = "registerDto";
