@@ -45,12 +45,6 @@ public class AnimeServiceImpl implements AnimeService {
     }
 
     @Override
-    public Page<Anime> getAllAnimeByGenreId(long id, int pageNo, int pageSize, String sortField, String sortDirection) {
-        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
-        return animeRepository.findByGenreId(id, pageable);
-    }
-
-    @Override
     public List<Anime> getAllForPopularityPage() {
         Pageable pageable = PageRequest.of(0, 6);
 

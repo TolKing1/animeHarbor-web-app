@@ -10,7 +10,6 @@ public interface AnimeService {
     Optional<Anime> getAnimeById(long id);
 
     List<Anime> getAllAnime(int pageNo, int pageSize, String sortField, String sortDirection);
-    Page<Anime> getAllAnimeByGenreId(long id, int pageNo, int pageSize, String sortField, String sortDirection);
     List<Anime> getAllForPopularityPage();
     List<Anime> getAllForTopViewPage();
     List<Anime> getAllForRecentlyAddedPage();
