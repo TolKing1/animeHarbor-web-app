@@ -21,6 +21,7 @@ public class Genre {
 
     @NotBlank(message = "Description can not be blank")
     private String description;
+
     @ManyToMany
     @JoinTable(
             name = "genre_m2m_anime",

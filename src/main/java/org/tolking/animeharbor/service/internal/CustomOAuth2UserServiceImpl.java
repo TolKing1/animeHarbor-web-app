@@ -8,28 +8,56 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.tolking.animeharbor.repositories.UserRepository;
+import org.tolking.animeharbor.dto.RegisterDto;
+import org.tolking.animeharbor.entities.User;
+import org.tolking.animeharbor.entities.enums.Provider;
+import org.tolking.animeharbor.security.CustomOAuth2User;
 import org.tolking.animeharbor.service.CustomOAuth2UserService;
+import org.tolking.animeharbor.service.UserService;
+
+import javax.management.relation.RoleNotFoundException;
+import java.io.FileNotFoundException;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implements CustomOAuth2UserService {
-    private final UserRepository userRepository;
+
+    private final UserService userService;
 
     @SneakyThrows
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+        String email = oAuth2User.getAttribute("email");
+        String name = oAuth2User.getAttribute("name");
 
-        OAuth2User user = super.loadUser(userRequest);
-        String email = user.getAttribute("email");
-        if (userRepository.existsByEmail(email)){
-            if (userRepository.existsByUsernameAndEnabledIsTrue(email)){
-                return user;
+        Optional<User> checkUserOptional = userService.findByEmail(email);
+
+        if (checkUserOptional.isPresent()) {
+            if (checkUserOptional.get().isEnabled()){
+                return getCustomOAuth2User(oAuth2User);
             }else {
                 throw new InternalAuthenticationServiceException("User is disabled");
             }
         }else {
-            return user;
+            saveUser(email, name);
+            return getCustomOAuth2User(oAuth2User);
         }
+
+    }
+
+    private static CustomOAuth2User getCustomOAuth2User(OAuth2User oAuth2User) {
+        return new CustomOAuth2User(oAuth2User);
+    }
+
+    private void saveUser(String email, String name) throws FileNotFoundException, RoleNotFoundException {
+        RegisterDto registerDto = new RegisterDto();
+        registerDto.setEmail(email);
+        registerDto.setUserName(name);
+        registerDto.setPassword(UUID.randomUUID().toString());
+
+        userService.saveUser(registerDto, Provider.GOOGLE);
     }
 }

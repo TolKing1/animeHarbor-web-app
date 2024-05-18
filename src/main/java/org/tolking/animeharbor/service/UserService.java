@@ -8,10 +8,11 @@ import org.tolking.animeharbor.entities.enums.Provider;
 
 import javax.management.relation.RoleNotFoundException;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
     User findByUsername(String username);
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
     User findById(long id);
 
     void saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, FileNotFoundException;
