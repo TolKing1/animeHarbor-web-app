@@ -1,21 +1,41 @@
 package org.tolking.animeharbor.dto.user;
 
 import lombok.Data;
-import org.tolking.animeharbor.dto.AnimeDTO;
+import lombok.EqualsAndHashCode;
+import org.springframework.stereotype.Component;
+import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.dto.RolesDTO;
-import org.tolking.animeharbor.entities.Image;
-import org.tolking.animeharbor.entities.enums.Provider;
+import org.tolking.animeharbor.entities.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class UserDTO {
+@Component
+public class UserDTO extends DTOConverter<User,UserDTO> {
+    private int id;
     private String username;
     private String email;
-    private String password;
-    private Provider provider;
+    private String provider;
     private boolean enabled;
-    private Image image;
     private List<RolesDTO> roles;
-    private List<AnimeDTO> watchList;
+    private LocalDateTime created;
+    private LocalDateTime updated;
+
+    public boolean hasRole(String strRole) {
+        return roles.stream()
+                .map(RolesDTO::getRole)
+                .anyMatch(role -> role.equalsIgnoreCase(strRole));
+    }
+
+    @Override
+    protected Class<User> getTypeEntity() {
+        return User.class;
+    }
+
+    @Override
+    protected Class<UserDTO> getTypeDTO() {
+        return UserDTO.class;
+    }
 }

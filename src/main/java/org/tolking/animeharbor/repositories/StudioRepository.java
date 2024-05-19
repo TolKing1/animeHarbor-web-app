@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface StudioRepository extends CrudRepository<Studio, Long> {
     List<Studio> findAllBy();
+    boolean existsByNameEqualsIgnoreCase(String name);
 }

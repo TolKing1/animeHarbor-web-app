@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/general :: common_header(~{::title})}">
+    <title>Edit genre</title>>
+</head>
+
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header" th:replace="~{fragments/general :: header}">
+</header>
+<!-- Header End -->
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a th:href="@{/}"><i class="fa fa-home"></i>Home</a>
+                    <a th:href="@{/admin/genre}">Admin Genre</a>
+                    <span th:text="${genre.title}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Profile Form Section Begin -->
+<section class="profile-form p-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="section-title">
+                    <h4>Update Genre: <span th:text="${genre.title}"></span></h4>
+                </div>
+                <div class="row justify-content-center">
+
+                    <!-- Username Form -->
+                    <form class="col-lg-6 col-md-6 col-sm-12 mb-4" id="username-form" th:action="@{/admin/genre/update}"
+                          th:method="post" th:object="${genre}">
+                        <div class="form-group">
+                            <label class="text-white" for="username">ID</label>
+                            <input class="form-control" id="username" readonly th:field="*{id}" type="text">
+                            <p class="font-italic text-warning">*Read only! You can't change id</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="name">Name</label>
+                            <input class="form-control" id="name" th:field="*{title}" type="text">
+                            <small class="font-italic" th:errorclass="text-danger"
+                                   th:errors="*{title}" th:if="${#fields.hasErrors('title')}"></small>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="description">Description</label>
+                            <textarea class="form-control" id="description" maxlength="200"
+                                      minlength="3" placeholder="Describe description"
+                                      th:field="*{description}"></textarea>
+                            <small class="font-italic" th:errorclass="text-danger"
+                                   th:errors="*{description}" th:if="${#fields.hasErrors('description')}"></small>
+                        </div>
+                        <button class="btn btn-danger" type="submit">Update Genre</button>
+                        <button class="btn btn-warning" form="delete" th:if="${isEmptyList}" type="submit">Delete
+                            Genre
+                        </button>
+                    </form>
+                    <form id="delete" th:action="@{/admin/genre/delete}"
+                          th:if="${isEmptyList}"
+                          th:method="POST"
+                          th:object="${genre}">
+                        <input th:field="*{id}" type="hidden">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Profile Form Section End -->
+
+
+<!-- Footer Section Begin -->
+<footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
+<!-- Footer Section End -->
+
+<!-- Search model Begin -->
+<div class="search-model" th:replace="~{fragments/elements :: search}"></div>
+<!-- Search model end -->
+
+<!-- Toast Begin -->
+<div th:replace="~{fragments/elements :: toastCreate}"></div>
+<!-- Toast end -->
+
+<!-- Toast Begin -->
+<div th:replace="~{fragments/elements :: toastLogout}"></div>
+<!-- Toast end -->
+
+<div th:replace="~{fragments/general :: scripts}"></div>
+
+
+</body>
+
+</html>

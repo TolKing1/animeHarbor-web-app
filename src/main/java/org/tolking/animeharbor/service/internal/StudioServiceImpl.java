@@ -2,7 +2,6 @@ package org.tolking.animeharbor.service.internal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.dto.StudioDTO;
 import org.tolking.animeharbor.entities.Studio;
@@ -30,15 +29,21 @@ public class StudioServiceImpl implements StudioService {
     }
 
     @Override
-    public void save(StudioDTO studioDTO) {
-        Studio studio = studioDTO.convertToEntity(studioDTO);
-        studioRepository.save(studio);
+    public void updateOrSave(StudioDTO studioDTO) {
+        studioRepository.findById(studioDTO.getId())
+                .ifPresentOrElse(studio -> {
+                            studio.setName(studioDTO.getName());
+                            studio.setDescription(studioDTO.getDescription());
+
+                            studioRepository.save(studio);
+                        },
+                        () -> studioRepository.save(dtoConverter.convertToEntity(studioDTO))
+                );
     }
 
     @Override
-    @Transactional
     public void delete(StudioDTO studioDTO) {
-        Studio studio = studioDTO.convertToEntity(studioDTO);
+        Studio studio = dtoConverter.convertToEntity(studioDTO);
         studioRepository.delete(studio);
     }
 

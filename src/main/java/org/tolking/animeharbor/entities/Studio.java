@@ -15,6 +15,7 @@ import java.util.List;
 public class Studio extends TransactionEntity{
 
     @Size(min = 3, max = 30, message = "Length should be between 3 and 30")
+    @Column(unique= true)
     private String name;
 
     @Column(columnDefinition = "text")

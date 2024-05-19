@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.dto.PasswordDto;
 import org.tolking.animeharbor.dto.RegisterDto;
+import org.tolking.animeharbor.dto.user.UserDTO;
 import org.tolking.animeharbor.dto.user.UserDetailDTO;
 import org.tolking.animeharbor.entities.Image;
 import org.tolking.animeharbor.entities.Roles;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.tolking.animeharbor.constant.ControllerConstant.SUPER_ADMIN_ROLE;
 import static org.tolking.animeharbor.service.seeder.ImageSeeder.DEFAULT_PROFILE_IMG;
 
 @Service
@@ -40,11 +42,17 @@ public class UserServiceImpl implements UserService {
     private final ImageService imageService;
     private final PasswordEncoder passwordEncoder;
     private final DTOConverter<User, UserDetailDTO> userDetailDTOConverter;
+    private final DTOConverter<User, UserDTO> userDTOConverter;
 
     public static Collection<GrantedAuthority> mapAuthorities(List<Roles> roles) {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRole().toString()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getUsers() {
+        return userDTOConverter.convertToDtoList(userRepository.getAllBy());
     }
 
     @Override
@@ -81,6 +89,49 @@ public class UserServiceImpl implements UserService {
         userRepository.findByUsernameEquals(username)
                 .ifPresent(user -> {
                     user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+                    userRepository.save(user);
+                });
+    }
+
+    @Override
+    public void enableAdminRole(long userId) {
+        addOrRemoveRole(userId, true);
+    }
+
+    @Override
+    public void disableAdminRole(long userId) {
+        addOrRemoveRole(userId, false);
+    }
+
+    private void addOrRemoveRole(long userId, boolean isAdding) {
+        userRepository.findById(userId)
+                .ifPresent(user -> roleRepository.findByRole(RoleType.ROLE_ADMIN)
+                        .ifPresent(roles -> {
+                            if (isAdding){
+                                user.addRole(roles);
+                            }else {
+                                user.removeRole(roles);
+                            }
+                            userRepository.save(user);
+                        }));
+    }
+
+    @Override
+    public void enableUser(long userId) {
+        enableOrDisableUser(userId, true);
+    }
+
+    @Override
+    public void disableUser(long userId) {
+        enableOrDisableUser(userId, false);
+    }
+
+    private void enableOrDisableUser(long userId, boolean status) {
+        userRepository.findById(userId)
+                .ifPresent(user -> {
+                    if (!user.hasRole(SUPER_ADMIN_ROLE)){
+                        user.setEnabled(status);
+                    }
                     userRepository.save(user);
                 });
     }

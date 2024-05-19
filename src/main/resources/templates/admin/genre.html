@@ -2,7 +2,7 @@
 <html class="dark" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/general :: common_header(~{::title})}">
-    <title> Admin panel: Studio</title>
+    <title> Admin panel: Genre</title>
 </head>
 <body>
 <!-- Header Section Begin -->
@@ -16,7 +16,7 @@
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
                     <a th:href="@{/}"><i class="fa fa-home"></i> Home</a>
-                    <span>Admin Studio</span>
+                    <span>Admin Genre</span>
                 </div>
             </div>
         </div>
@@ -29,39 +29,39 @@
     <div class="row justify-content-between">
         <div class="col-lg-8 col-md-8 col-sm-8">
             <div class="section-title">
-                <h4>Studios</h4>
+                <h4>Genres</h4>
             </div>
         </div>
         <div class="col-lg-2 col-lg-2 col-sm-2 d-flex justify-content-end">
-            <button class="btn btn-danger" data-target="#studioCreateModal" data-toggle="modal">Create</button>
+            <button class="btn btn-danger" data-target="#genreCreateModal" data-toggle="modal">Create</button>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12 p-2 " style="border-radius: 5px">
-            <table class="table table-dark table-striped table-bordered table-responsive-md" id="example"
+            <table class="table table-light table-striped table-bordered table-responsive-md" id="genreTable"
                    style="width:100%">
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Title</th>
                     <th>Description</th>
                     <th>Created At</th>
                     <th>Updated At</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="studio : ${studios}">
-                    <td th:text="${studio.id}"></td>
-                    <td><a th:href="@{/admin/studio/{id}(id = ${studio.id})}" th:text="${studio.name}"></a></td>
-                    <td th:text="${studio.description}">Description</td>
-                    <td th:text="${#temporals.format(studio.created,'dd-MM-yyyy HH:mm')}">Created At</td>
-                    <td th:text="${#temporals.format(studio.updated,'dd-MM-yyyy HH:mm')}">Updated At</td>
+                <tr th:each="genre : ${genres}">
+                    <td th:text="${genre.id}"></td>
+                    <td><a th:href="@{/admin/genre/{id}(id = ${genre.id})}" th:text="${genre.title}"></a></td>
+                    <td th:text="${genre.description}">Description</td>
+                    <td th:text="${#temporals.format(genre.created,'dd-MM-yyyy HH:mm')}">Created At</td>
+                    <td th:text="${#temporals.format(genre.updated,'dd-MM-yyyy HH:mm')}">Updated At</td>
                 </tr>
                 </tbody>
                 <tfoot>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Title</th>
                     <th>Description</th>
                     <th>Created At</th>
                     <th>Updated At</th>
@@ -82,25 +82,25 @@
 <!-- Search model end -->
 
 <!--    Modal begin-->
-<div aria-hidden="true" aria-labelledby="studioCreateModalLabel" class="modal fade" id="studioCreateModal" role="dialog"
+<div aria-hidden="true" aria-labelledby="genreCreateModalLabel" class="modal fade" id="genreCreateModal" role="dialog"
      tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-white" id="ratingLabel">Create Studio</h5>
+                <h5 class="modal-title text-white" id="ratingLabel">Create Genre</h5>
                 <button aria-label="Close" class="close text-white" data-dismiss="modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body text-white">
-                <form class="col-lg-12 col-md-12 col-sm-12 mb-4" id="studioForm" th:action="@{/admin/studio/create}"
-                      th:method="post" th:object="${studioRegister}">
+                <form class="col-lg-12 col-md-12 col-sm-12 mb-4" id="genreForm" th:action="@{/admin/genre/create}"
+                      th:method="post" th:object="${genreRegister}">
                     <div class="form-group">
                         <input th:field="*{id}" type="hidden">
-                        <label class="text-white" for="name">Name</label>
-                        <input th:field="*{name}" class="form-control" id="name"  type="text" placeholder="Enter studio name">
+                        <label class="text-white" for="name">Title</label>
+                        <input th:field="*{title}" class="form-control" id="name"  type="text" placeholder="Enter genre title">
                         <small class="font-italic" th:errorclass="text-danger"
-                               th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></small>
+                               th:errors="*{title}" th:if="${#fields.hasErrors('title')}"></small>
                     </div>
                     <div class="form-group">
                         <label class="text-white" for="description">Description</label>
@@ -114,7 +114,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-light" data-dismiss="modal" type="button">Close</button>
-                <button class="btn btn-danger" form="studioForm" type="submit">Save changes</button>
+                <button class="btn btn-danger" form="genreForm" type="submit">Save changes</button>
             </div>
         </div>
     </div>
@@ -127,7 +127,7 @@
 <script th:src="@{https://cdn.datatables.net/v/bs4/jq-3.7.0/dt-2.0.7/b-3.0.2/datatables.min.js}"></script>
 
 <script>
-    $('#example').DataTable();
+    $('#genreTable').DataTable();
 </script>
 </body>
 

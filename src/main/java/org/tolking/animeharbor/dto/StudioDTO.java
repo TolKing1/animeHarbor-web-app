@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
 import org.tolking.animeharbor.entities.Studio;
+import org.tolking.animeharbor.validator.annotation.UniqueStudioTitle;
 
 import java.time.LocalDateTime;
 
@@ -12,9 +13,10 @@ import java.time.LocalDateTime;
 @Data
 @Component
 public class StudioDTO extends DTOConverter<Studio, StudioDTO> {
-    
-    private int id;
+    private long id;
+
     @Size(min = 3, max = 30, message = "Length should be between 3 and 30")
+    @UniqueStudioTitle
     private String name;
 
     @Size(min = 3, max = 400, message = "Length should be between 3 and 400")

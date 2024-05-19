@@ -10,7 +10,7 @@ public interface StudioService {
 
     List<StudioDTO> getAllStudios();
 
-    void save(StudioDTO studio);
+    void updateOrSave(StudioDTO studio);
 
     void delete(StudioDTO studio);
 }

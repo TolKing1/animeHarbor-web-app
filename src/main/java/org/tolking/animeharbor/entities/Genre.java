@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 @Table(schema = "public")
 public class Genre extends TransactionEntity{
 
-    @UniqueElements(message = "Title must be unique")
+    @Column(unique= true)
     private String title;
 
     @NotBlank(message = "Description can not be blank")

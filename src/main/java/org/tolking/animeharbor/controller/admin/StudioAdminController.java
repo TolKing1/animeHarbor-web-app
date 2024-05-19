@@ -10,32 +10,30 @@ import org.springframework.web.bind.annotation.*;
 import org.tolking.animeharbor.dto.StudioDTO;
 import org.tolking.animeharbor.service.StudioService;
 
-import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_URL;
+import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_STUDIO_URL;
 
 @Controller
-@RequestMapping(ADMIN_URL)
+@RequestMapping(ADMIN_STUDIO_URL)
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
+@PreAuthorize("hasAnyRole('ADMIN_ROLE','SUPER_ADMIN')")
 public class StudioAdminController {
     private static final String STUDIO_ATTR = "studio";
     private static final String STUDIO_IS_EMPTY_ATTR = "isEmptyList";
     private static final String STUDIO_REGISTER_ATTR = "studioRegister";
     private static final String STUDIOS_LIST_ATTR = "studios";
-    private static final String STUDIO_URL = "/studio";
-    private static final String ADMIN_STUDIO_URL = "/admin/studio";
     private static final String STUDIO_VIEW = "admin/studio";
     private static final String STUDIO_DETAILS_VIEW = "admin/studio-details";
 
     private final StudioService studioService;
 
-    @GetMapping(STUDIO_URL)
+    @GetMapping
     public String getStudioPage(Model model) {
         model.addAttribute(STUDIO_REGISTER_ATTR, new StudioDTO());
         appendStudiosToModel(model);
         return STUDIO_VIEW;
     }
 
-    @GetMapping(STUDIO_URL + "/{id}")
+    @GetMapping("/{id}")
     public String findById(@PathVariable("id") long id, Model model) {
         return studioService.getStudioById(id)
                 .map(studio -> {
@@ -46,7 +44,7 @@ public class StudioAdminController {
                 .orElse("redirect:/error/404");
     }
 
-    @PostMapping(STUDIO_URL + "/update")
+    @PostMapping("/update")
     public String updateStudio(@ModelAttribute(STUDIO_ATTR) @Valid StudioDTO studioDTO,
                                BindingResult result,
                                Model model) {
@@ -54,11 +52,11 @@ public class StudioAdminController {
             model.addAttribute(STUDIO_ATTR, studioDTO);
             return STUDIO_DETAILS_VIEW;
         }
-        studioService.save(studioDTO);
+        studioService.updateOrSave(studioDTO);
         return "redirect:" + studioDTO.getId();
     }
 
-    @PostMapping(STUDIO_URL + "/create")
+    @PostMapping("/create")
     public String createStudio(@ModelAttribute(STUDIO_REGISTER_ATTR) @Valid StudioDTO studioDTO,
                                BindingResult result,
                                Model model) {
@@ -67,12 +65,12 @@ public class StudioAdminController {
             appendStudiosToModel(model);
             return STUDIO_VIEW;
         }
-        studioService.save(studioDTO);
+        studioService.updateOrSave(studioDTO);
         return "redirect:" + ADMIN_STUDIO_URL;
     }
 
 
-    @PostMapping(STUDIO_URL + "/delete")
+    @PostMapping("/delete")
     public String deleteStudio(@ModelAttribute(STUDIO_ATTR) StudioDTO studioDTO) {
         if (studioService.getStudioById(studioDTO.getId())
                 .filter(StudioDTO::isEmptyAnimeList)

@@ -6,11 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.tolking.animeharbor.entities.enums.Provider;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "users", schema = "public")
@@ -63,4 +65,17 @@ public class User extends TransactionEntity{
     public void addRole(Roles role) {
         roles.add(role);
     }
+
+    @Transient
+    public void removeRole(Roles role) {
+        roles.remove(role);
+    }
+
+    @Transient
+    public boolean hasRole(String strRole) {
+        return roles.stream()
+                .map(Roles::getRole)
+                .anyMatch(role -> role.name().equalsIgnoreCase(strRole));
+    }
+
 }

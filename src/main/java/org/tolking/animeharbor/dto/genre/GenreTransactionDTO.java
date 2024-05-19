@@ -1,26 +1,24 @@
 package org.tolking.animeharbor.dto.genre;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
 import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.entities.Genre;
-import org.tolking.animeharbor.validator.annotation.UniqueGenreTitle;
+
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Component
-public class GenreNameDTO extends DTOConverter<Genre, GenreNameDTO> {
+public class GenreTransactionDTO extends DTOConverter<Genre, GenreTransactionDTO> {
     private long id;
-
-    @Size(min = 3, max = 30, message = "Length should be between 3 and 30")
-    @UniqueGenreTitle
     private String title;
-    @NotBlank(message = "Description can not be blank")
     private String description;
     private boolean empty;
+
+    private LocalDateTime created;
+    private LocalDateTime updated;
 
     @Override
     protected Class<Genre> getTypeEntity() {
@@ -28,7 +26,7 @@ public class GenreNameDTO extends DTOConverter<Genre, GenreNameDTO> {
     }
 
     @Override
-    protected Class<GenreNameDTO> getTypeDTO() {
-        return GenreNameDTO.class;
+    protected Class<GenreTransactionDTO> getTypeDTO() {
+        return GenreTransactionDTO.class;
     }
 }
