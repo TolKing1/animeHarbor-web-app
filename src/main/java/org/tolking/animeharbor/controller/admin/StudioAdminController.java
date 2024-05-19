@@ -15,7 +15,7 @@ import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_STUDIO_U
 @Controller
 @RequestMapping(ADMIN_STUDIO_URL)
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('ADMIN_ROLE','SUPER_ADMIN')")
+@PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
 public class StudioAdminController {
     private static final String STUDIO_ATTR = "studio";
     private static final String STUDIO_IS_EMPTY_ATTR = "isEmptyList";
