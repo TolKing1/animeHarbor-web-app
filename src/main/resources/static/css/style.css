@@ -1312,6 +1312,17 @@ input[type="range"].star:hover::-moz-range-progress {
 input[type="range"].star:hover::-webkit-slider-runnable-track {
 	background: #da2324;
 }
+/*Modals*/
+.modal-content .modal-header{
+	background-color: #1d1e39;
+}
+.modal-content .modal-body{
+	background-color: #1d1e39;
+}
+
+.modal-content .modal-footer{
+	background-color: #1d1e39;
+}
 
 /*---------------------
   Breadcrumb

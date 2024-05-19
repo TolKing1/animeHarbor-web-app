@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.tolking.animeharbor.dto.StudioDTO;
 import org.tolking.animeharbor.service.StudioService;
 
-import java.util.Optional;
-
 import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_URL;
 
 @Controller
@@ -19,23 +17,27 @@ import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_URL;
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
 public class StudioAdminController {
-    public static final String STUDIO_ATTR = "studio";
-    public static final String STUDIO_IS_EMPTY_ATTR = "isEmptyList";
-    public static final String STUDIO_URL = "/studio";
-    public static final String ADMIN_STUDIO_URL = "/admin/studio";
+    private static final String STUDIO_ATTR = "studio";
+    private static final String STUDIO_IS_EMPTY_ATTR = "isEmptyList";
+    private static final String STUDIO_REGISTER_ATTR = "studioRegister";
+    private static final String STUDIOS_LIST_ATTR = "studios";
+    private static final String STUDIO_URL = "/studio";
+    private static final String ADMIN_STUDIO_URL = "/admin/studio";
     private static final String STUDIO_VIEW = "admin/studio";
     private static final String STUDIO_DETAILS_VIEW = "admin/studio-details";
+
     private final StudioService studioService;
 
     @GetMapping(STUDIO_URL)
     public String getStudioPage(Model model) {
-        model.addAttribute("studios", studioService.getAllStudios());
+        model.addAttribute(STUDIO_REGISTER_ATTR, new StudioDTO());
+        appendStudiosToModel(model);
         return STUDIO_VIEW;
     }
 
     @GetMapping(STUDIO_URL + "/{id}")
     public String findById(@PathVariable("id") long id, Model model) {
-        return getStudioById(id)
+        return studioService.getStudioById(id)
                 .map(studio -> {
                     model.addAttribute(STUDIO_ATTR, studio);
                     model.addAttribute(STUDIO_IS_EMPTY_ATTR, studio.isEmptyAnimeList());
@@ -45,7 +47,9 @@ public class StudioAdminController {
     }
 
     @PostMapping(STUDIO_URL + "/update")
-    public String updateStudio(@ModelAttribute(STUDIO_ATTR) @Valid StudioDTO studioDTO, BindingResult result, Model model) {
+    public String updateStudio(@ModelAttribute(STUDIO_ATTR) @Valid StudioDTO studioDTO,
+                               BindingResult result,
+                               Model model) {
         if (result.hasErrors()) {
             model.addAttribute(STUDIO_ATTR, studioDTO);
             return STUDIO_DETAILS_VIEW;
@@ -53,6 +57,20 @@ public class StudioAdminController {
         studioService.save(studioDTO);
         return "redirect:" + studioDTO.getId();
     }
+
+    @PostMapping(STUDIO_URL + "/create")
+    public String createStudio(@ModelAttribute(STUDIO_REGISTER_ATTR) @Valid StudioDTO studioDTO,
+                               BindingResult result,
+                               Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute(STUDIO_REGISTER_ATTR, studioDTO);
+            appendStudiosToModel(model);
+            return STUDIO_VIEW;
+        }
+        studioService.save(studioDTO);
+        return "redirect:" + ADMIN_STUDIO_URL;
+    }
+
 
     @PostMapping(STUDIO_URL + "/delete")
     public String deleteStudio(@ModelAttribute(STUDIO_ATTR) StudioDTO studioDTO) {
@@ -64,7 +82,7 @@ public class StudioAdminController {
         return "redirect:" + ADMIN_STUDIO_URL;
     }
 
-    private Optional<StudioDTO> getStudioById(long id) {
-        return studioService.getStudioById(id);
+    private void appendStudiosToModel(Model model) {
+        model.addAttribute(STUDIOS_LIST_ATTR, studioService.getAllStudios());
     }
 }
