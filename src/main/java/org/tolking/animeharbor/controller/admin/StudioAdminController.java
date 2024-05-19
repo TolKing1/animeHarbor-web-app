@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.tolking.animeharbor.entities.Studio;
+import org.tolking.animeharbor.dto.StudioDTO;
 import org.tolking.animeharbor.service.StudioService;
 
 import java.util.Optional;
@@ -45,26 +45,26 @@ public class StudioAdminController {
     }
 
     @PostMapping(STUDIO_URL + "/update")
-    public String updateStudio(@ModelAttribute(STUDIO_ATTR) @Valid Studio studio, BindingResult result, Model model) {
+    public String updateStudio(@ModelAttribute(STUDIO_ATTR) @Valid StudioDTO studioDTO, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute(STUDIO_ATTR, studio);
+            model.addAttribute(STUDIO_ATTR, studioDTO);
             return STUDIO_DETAILS_VIEW;
         }
-        studioService.save(studio);
-        return "redirect:" + studio.getId();
+        studioService.save(studioDTO);
+        return "redirect:" + studioDTO.getId();
     }
 
     @PostMapping(STUDIO_URL + "/delete")
-    public String deleteStudio(@ModelAttribute(STUDIO_ATTR) Studio studio) {
-        if (studioService.getStudioById(studio.getId())
-                .filter(Studio::isEmptyAnimeList)
+    public String deleteStudio(@ModelAttribute(STUDIO_ATTR) StudioDTO studioDTO) {
+        if (studioService.getStudioById(studioDTO.getId())
+                .filter(StudioDTO::isEmptyAnimeList)
                 .isPresent()) {
-            studioService.delete(studio);
+            studioService.delete(studioDTO);
         }
         return "redirect:" + ADMIN_STUDIO_URL;
     }
 
-    private Optional<Studio> getStudioById(long id) {
+    private Optional<StudioDTO> getStudioById(long id) {
         return studioService.getStudioById(id);
     }
 }

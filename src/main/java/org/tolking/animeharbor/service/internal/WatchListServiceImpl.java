@@ -2,6 +2,8 @@ package org.tolking.animeharbor.service.internal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.tolking.animeharbor.dto.AnimeDTO;
+import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.entities.Anime;
 import org.tolking.animeharbor.entities.User;
 import org.tolking.animeharbor.repositories.AnimeRepository;
@@ -19,17 +21,13 @@ import static java.util.Objects.isNull;
 public class WatchListServiceImpl implements org.tolking.animeharbor.service.WatchListService {
     private final UserRepository userRepository;
     private final AnimeRepository animeRepository;
+    private final DTOConverter<Anime, AnimeDTO> dtoConverter;
 
     @Override
-    public List<Anime> getList(String username) {
-        Optional<User> userOptional = userRepository.findByUsernameEquals(username);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
-            return user.getWatchList();
-        }
-        return new ArrayList<>();
+    public List<AnimeDTO> getList(String username) {
+        return userRepository.findByUsernameEquals(username)
+                .map(user -> dtoConverter.convertToDtoList(user.getWatchList()))
+                .orElseGet(ArrayList::new);
     }
 
     @Override
@@ -37,47 +35,35 @@ public class WatchListServiceImpl implements org.tolking.animeharbor.service.Wat
         Optional<Anime> animeOptional = animeRepository.findById(animeId);
         Optional<User> userOptional = userRepository.findByUsernameEquals(username);
 
-        if (animeOptional.isPresent() && userOptional.isPresent()) {
-            User user = userOptional.get();
-            Anime anime = animeOptional.get();
-
-            List<Anime> animeList = user.getWatchList();
-            animeList.add(anime);
-
-            userRepository.save(user);
-        }
+        animeOptional.ifPresent(anime ->
+                userOptional.ifPresent(user -> {
+                    user.getWatchList().add(anime);
+                    userRepository.save(user);
+                })
+        );
     }
 
     @Override
     public void removeFromList(long animeId, String username) {
         Optional<User> userOptional = userRepository.findByUsernameEquals(username);
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
-            List<Anime> animeList = user.getWatchList();
-            animeList.removeIf(anime -> anime.getId() == animeId);
+        userOptional.ifPresent(user -> {
+            user.getWatchList()
+                    .removeIf(anime -> anime.getId() == animeId);
 
             userRepository.save(user);
-        }
+        });
     }
 
     @Override
     public boolean isAdded(long animeId, Principal principal) {
-        if (isNull(principal)){
+        if (isNull(principal)) {
             return false;
         }
 
-        Optional<Anime> animeOptional = animeRepository.findById(animeId);
-        Optional<User> userOptional = userRepository.findByUsernameEquals(principal.getName());
-
-        if (animeOptional.isPresent() && userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<Anime> animeList = user.getWatchList();
-            return animeList.contains(animeOptional.get());
-        }
-        else{
-            return false;
-        }
+        return animeRepository.findById(animeId)
+                .flatMap(anime -> userRepository.findByUsernameEquals(principal.getName())
+                        .map(user -> user.getWatchList().contains(anime)))
+                .orElse(false);
     }
 }

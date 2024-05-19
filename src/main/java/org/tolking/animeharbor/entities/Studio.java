@@ -21,8 +21,8 @@ public class Studio extends TransactionEntity{
     @Size(min = 3, max = 400, message = "Length should be between 3 and 400")
     private String description;
 
-    @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY)
-    private List<Anime> animeList = new ArrayList<Anime>();
+    @OneToMany(mappedBy = "studio")
+    private List<Anime> animeList = new ArrayList<>();
 
     @Transient
     public boolean isEmptyAnimeList(){

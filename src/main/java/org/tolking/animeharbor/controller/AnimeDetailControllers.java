@@ -6,8 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.tolking.animeharbor.entities.Anime;
-import org.tolking.animeharbor.entities.Comment;
+import org.tolking.animeharbor.dto.AnimeDTO;
+import org.tolking.animeharbor.dto.CommentDTO;
 import org.tolking.animeharbor.service.AnimeService;
 import org.tolking.animeharbor.service.CommentService;
 import org.tolking.animeharbor.service.ViewService;
@@ -42,14 +42,14 @@ public class AnimeDetailControllers {
                            Model model,
                            Principal principal) {
 
-        Optional<Anime> animeOptional = animeService.getAnimeById(id);
+        Optional<AnimeDTO> animeOptional = animeService.getAnimeById(id);
 
         return animeOptional
                 .map(anime -> {
                             viewService.createView(anime.getId());
 
-                            List<Anime> animeListByPopularity = animeService.getAllForPopularityPage();
-                            List<Comment> commentList = commentService.getLast5Comments(anime.getId());
+                            List<AnimeDTO> animeListByPopularity = animeService.getAllForPopularityPage();
+                            List<CommentDTO> commentList = commentService.getLast5Comments(anime.getId());
                             boolean watchListFound = watchListService.isAdded(id, principal);
 
                             model.addAttribute(ANIME_ATTR, anime);

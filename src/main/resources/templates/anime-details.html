@@ -38,7 +38,7 @@
                     <div class="anime__details__pic set-bg"
                          th:attr="data-setbg=@{/images/anime/{id}(id=${anime.image.id})}">
                         <!--                            <div class="comment"><i class="fa fa-comments"></i> 11</div>-->
-                        <div class="view" th:if="${anime.getViewCount() > 0}"><i class="fa fa-eye"></i> <span
+                        <div class="view" th:if="${anime.viewCount > 0}"><i class="fa fa-eye"></i> <span
                                 th:text="${anime.getViewCount()}"></span></div>
                     </div>
                 </div>
@@ -47,11 +47,11 @@
                         <div class="anime__details__title">
                             <h3 th:text="${anime.title}"></h3>
                         </div>
-                        <div class="anime__details__rating" th:if="${anime.ratings.size() > 0}">
+                        <div class="anime__details__rating" th:if="${anime.ratingCount > 0}">
                             <div class="rating">
                                 <a href="#"><i class="fa fa-star"></i></a>
                                 <a class="text-white" href="#"> <small
-                                        th:text="${#numbers.formatDecimal(anime.getAverageRating(),1,'COMMA',1,'POINT')}"></small>/10</a>
+                                        th:text="${#numbers.formatDecimal(anime.averageRating,1,'COMMA',1,'POINT')}"></small>/10</a>
                             </div>
                         </div>
                         <p th:text="${anime.description}"></p>
@@ -66,7 +66,7 @@
                                         </li>
                                         <li>
                                             <span>Studios:</span>
-                                            <b th:text="${#strings.capitalize( anime.studio.name )}"></b>
+                                            <b th:text="${#strings.capitalize( anime.studioName )}"></b>
                                         </li>
                                         <li>
                                             <span>Release date:</span>
@@ -74,7 +74,7 @@
                                         </li>
                                         <li>
                                             <span>Status:</span>
-                                            <b th:text="${#strings.capitalize( anime.status.name.replace('_',' ').toLowerCase() )}"></b>
+                                            <b th:text="${#strings.capitalize( anime.status.replace('_',' ').toLowerCase() )}"></b>
                                         </li>
                                         <li>
                                             <span>Genre:</span>
@@ -86,13 +86,13 @@
                                     <ul>
                                         <li th:if="${anime.getViewCount() > 0}">
                                             <span>Views:</span>
-                                            <b th:text="${#numbers.formatInteger(anime.views.size(),1,'COMMA')}"></b>
+                                            <b th:text="${#numbers.formatInteger(anime.viewCount,1,'COMMA')}"></b>
                                         </li>
                                         <li>
                                             <span>Ratings:</span>
-                                            <b th:if="${anime.ratings.size() > 0}"
-                                               th:text="${#numbers.formatInteger(anime.ratings.size(),1,'COMMA') + ' votes'}"></b>
-                                            <b th:unless="${anime.ratings.size() > 0}">No votes</b>
+                                            <b th:if="${anime.ratingCount > 0}"
+                                               th:text="${#numbers.formatInteger(anime.ratingCount,1,'COMMA') + ' votes'}"></b>
+                                            <b th:unless="${anime.ratingCount > 0}">No votes</b>
                                         </li>
                                     </ul>
                                 </div>

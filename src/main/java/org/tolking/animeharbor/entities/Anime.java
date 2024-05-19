@@ -37,8 +37,10 @@ public class Anime extends TransactionEntity{
     @NotBlank(message = "Status can't be blank")
     private AnimeStatus status;
 
+
     @OneToMany(mappedBy = "anime", fetch = FetchType.LAZY)
     private List<Views> views = new ArrayList<>();
+
 
     @ManyToMany(mappedBy = "animeList", fetch = FetchType.LAZY)
     private Set<Genre> genre = new TreeSet<>(Comparator.comparing(Genre::getTitle));
@@ -57,6 +59,11 @@ public class Anime extends TransactionEntity{
     @Transient
     public long getViewCount() {
         return views.size();
+    }
+
+    @Transient
+    public long getRatingCount() {
+        return ratings.size();
     }
 
     @Transient

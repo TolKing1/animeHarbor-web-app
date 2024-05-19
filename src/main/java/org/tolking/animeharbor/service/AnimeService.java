@@ -1,19 +1,19 @@
 package org.tolking.animeharbor.service;
 
 import org.springframework.data.domain.Page;
-import org.tolking.animeharbor.entities.Anime;
+import org.tolking.animeharbor.dto.AnimeDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AnimeService {
-    Optional<Anime> getAnimeById(long id);
+    Optional<AnimeDTO> getAnimeById(long id);
 
-    List<Anime> getAllAnime(int pageNo, int pageSize, String sortField, String sortDirection);
-    List<Anime> getAllForPopularityPage();
-    List<Anime> getAllForTopViewPage();
-    List<Anime> getAllForRecentlyAddedPage();
+    List<AnimeDTO> getAllAnime(int pageNo, int pageSize, String sortField, String sortDirection);
+    List<AnimeDTO> getAllForPopularityPage();
+    List<AnimeDTO> getAllForTopViewPage();
+    List<AnimeDTO> getAllForRecentlyAddedPage();
 
-    Page<Anime> searchAnime(String query, int pageNo, int pageSize, String sortField, String sortDirection);
-    Page<Anime> getSortedAnimePageByGenre(long genreId, int pageNo, int pageSize, String sortField, String sortDirection);
+    Page<AnimeDTO> searchAnime(String query, int pageNo, int pageSize, String sortField, String sortDirection);
+    Page<AnimeDTO> getSortedAnimeDTOPageByGenre(long genreId, int pageNo, int pageSize, String sortField, String sortDirection);
 }

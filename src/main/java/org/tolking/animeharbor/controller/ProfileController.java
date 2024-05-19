@@ -9,12 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tolking.animeharbor.dto.PasswordDto;
-import org.tolking.animeharbor.entities.User;
+import org.tolking.animeharbor.dto.user.UserDetailDTO;
 import org.tolking.animeharbor.exception.InvalidMimeTypeException;
 import org.tolking.animeharbor.service.ImageService;
 import org.tolking.animeharbor.service.UserService;
@@ -42,8 +41,8 @@ public class ProfileController {
     private final ImageService imageService;
 
     @GetMapping
-    public String me(Model model, Principal principal){
-        addPassword(model);
+    public String profile(Model model, Principal principal){
+        addPasswordToModel(model);
         return setModelAttributesForProfile(principal, model);
 
     }
@@ -53,9 +52,9 @@ public class ProfileController {
                                         BindingResult result,
                                         Principal principal,
                                         Model model) {
-        if (errorBinding(newPassword, result, principal, model)) return setModelAttributesForProfile(principal, model);
+        if (errorBinding(newPassword, result, principal)) return setModelAttributesForProfile(principal, model);
 
-        addPassword(model);
+        addPasswordToModel(model);
         return setModelAttributesForProfile(principal, model);
     }
 
@@ -69,7 +68,7 @@ public class ProfileController {
     }
 
     private String setModelAttributesForProfile(Principal principal, Model model) {
-        User user = userService.findByUsername(principal.getName());
+        UserDetailDTO user = userService.findByUsername(principal.getName());
 
         model.addAttribute(USERNAME_ATTR, user.getUsername());
         model.addAttribute(EMAIL_ATTR, user.getEmail());
@@ -77,7 +76,7 @@ public class ProfileController {
         return PROFILE_VIEW;
     }
 
-    private boolean errorBinding(PasswordDto newPassword, BindingResult result, Principal principal, Model model) {
+    private boolean errorBinding(PasswordDto newPassword, BindingResult result, Principal principal) {
         if (result.hasErrors()) {
             return true;
         } else if (!newPassword.getPassword().equals(newPassword.getConfirmPassword())) {
@@ -89,21 +88,15 @@ public class ProfileController {
         return false;
     }
 
-    private static void addPassword(Model model) {
+    private static void addPasswordToModel(Model model) {
         model.addAttribute(PASSWORD_ATTR, new PasswordDto());
     }
 
 
     @ExceptionHandler({InvalidMimeTypeException.class, FileNotFoundException.class})
-    public String handleFileException(RedirectAttributes model, Principal principal, Exception e) {
+    public String handleFileException(RedirectAttributes model, Exception e) {
         model.addFlashAttribute(PICTURE_ERROR_ATTR, e.getMessage());
-        addPassword(model);
-        return "redirect:"+ PROFILE_URL;
-    }
-
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public String handleMaxSizeException(MaxUploadSizeExceededException exc, RedirectAttributes attributes) {
-        attributes.addFlashAttribute(PICTURE_ERROR_ATTR, exc.getMessage());
+        addPasswordToModel(model);
         return "redirect:"+ PROFILE_URL;
     }
 

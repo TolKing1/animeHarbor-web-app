@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.tolking.animeharbor.entities.Anime;
+import org.tolking.animeharbor.dto.AnimeDTO;
 import org.tolking.animeharbor.service.AnimeService;
 
 import static org.tolking.animeharbor.constant.ControllerConstant.SEARCH_URL;
@@ -37,7 +37,7 @@ public class SearchController {
                          @RequestParam(defaultValue = "created") String sortBy,
                          @RequestParam(defaultValue = "desc") String sortDirection,
                          Model model) {
-        Page<Anime> animePage = animeService.searchAnime(query,pageNo,pageSize,sortBy,sortDirection);
+        Page<AnimeDTO> animePage = animeService.searchAnime(query,pageNo,pageSize,sortBy,sortDirection);
 
         model.addAttribute(ANIME_PAGE_ATTR, animePage);
 

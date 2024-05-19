@@ -1,16 +1,16 @@
 package org.tolking.animeharbor.service;
 
-import org.tolking.animeharbor.entities.Studio;
+import org.tolking.animeharbor.dto.StudioDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface StudioService {
-    Optional<Studio> getStudioById(long id);
+    Optional<StudioDTO> getStudioById(long id);
 
-    List<Studio> getAllStudios();
+    List<StudioDTO> getAllStudios();
 
-    void save(Studio studio);
+    void save(StudioDTO studio);
 
-    void delete(Studio studio);
+    void delete(StudioDTO studio);
 }

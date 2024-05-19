@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.tolking.animeharbor.entities.Anime;
-import org.tolking.animeharbor.entities.Genre;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.tolking.animeharbor.dto.AnimeDTO;
+import org.tolking.animeharbor.dto.genre.GenreNameDTO;
 import org.tolking.animeharbor.service.AnimeService;
 import org.tolking.animeharbor.service.GenreService;
 
@@ -40,7 +43,7 @@ public class GenreController {
 
     @GetMapping
     public String getAll(Model model) {
-        model.addAttribute(GENRES_ATTR, genreService.getAllGenres());
+        model.addAttribute(GENRES_ATTR, genreService.getAllGenresOrderByTitle());
         return GENRE_VIEW;
     }
 
@@ -52,10 +55,10 @@ public class GenreController {
             @RequestParam(defaultValue = "created") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             Model model) {
-        Optional<Genre> genre = genreService.getByGenre(id);
+        Optional<GenreNameDTO> genre = genreService.getByGenre(id);
         if (genre.isPresent() && !genre.get().isEmpty()) {
-            Genre g = genre.get();
-            Page<Anime> animePage = animeService.getSortedAnimePageByGenre(id, pageNo, pageSize, sortBy, sortDirection);
+            GenreNameDTO g = genre.get();
+            Page<AnimeDTO> animePage = animeService.getSortedAnimeDTOPageByGenre(id, pageNo, pageSize, sortBy, sortDirection);
 
             model.addAttribute(GENRE_ID_ATTR, g.getId());
             model.addAttribute(GENRE_TITLE_ATTR, g.getTitle());

@@ -46,8 +46,8 @@
                                         <a th:href="@{/anime/{id}(id = ${anime.id} )}"
                                            th:text="${anime.title}" class="text-light"></a>
                                     </td>
-                                    <td th:text="${#numbers.formatInteger(anime.views.size(),1,'COMMA')}">1,234,567</td>
-                                    <td th:text="${#numbers.formatInteger(anime.ratings.size(),1,'COMMA') + ' votes'}">8.5</td>
+                                    <td th:text="${#numbers.formatInteger(anime.viewCount,1,'COMMA')}">1,234,567</td>
+                                    <td th:text="${#numbers.formatDecimal(anime.averageRating,1,'COMMA',1,'POINT')}"></td>
                                     <td th:text="${#temporals.format(anime.date,'dd-MM-yyyy')}">2024-01-01</td>
                                 </tr>
                             </tbody>

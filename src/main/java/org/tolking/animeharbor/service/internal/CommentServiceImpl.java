@@ -5,6 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.tolking.animeharbor.dto.CommentDTO;
+import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.entities.Anime;
 import org.tolking.animeharbor.entities.Comment;
 import org.tolking.animeharbor.entities.User;
@@ -22,16 +24,16 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final AnimeRepository animeRepository;
+    private final DTOConverter<Comment, CommentDTO> dtoConverter;
 
-    public List<Comment> getLast5Comments(long animeId) {
+    public List<CommentDTO> getLast5Comments(long animeId) {
         Pageable pageable = PageRequest.of(0, 5);
-        return commentRepository.findByAnimeIdOrderByCreatedAtDesc(animeId, pageable);
+        List<Comment> commentList = commentRepository.findByAnimeIdOrderByCreatedAtDesc(animeId, pageable);
+        return dtoConverter.convertToDtoList(commentList);
     }
 
     public void save(String userName, long animeId, String commentMsg) throws AnimeNotFoundException {
-
         Comment comment = getComment(userName, animeId, commentMsg);
-
         commentRepository.save(comment);
     }
 

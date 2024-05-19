@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.dto.PasswordDto;
 import org.tolking.animeharbor.dto.RegisterDto;
+import org.tolking.animeharbor.dto.user.UserDetailDTO;
 import org.tolking.animeharbor.entities.Image;
 import org.tolking.animeharbor.entities.Roles;
 import org.tolking.animeharbor.entities.User;
@@ -37,48 +39,50 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final ImageService imageService;
     private final PasswordEncoder passwordEncoder;
+    private final DTOConverter<User, UserDetailDTO> userDetailDTOConverter;
 
-    @Override
-    public User findByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsernameEquals(username)
-                .orElseThrow(
-                        () -> new UsernameNotFoundException("User Not Found by username: " + username)
-                );
+    public static Collection<GrantedAuthority> mapAuthorities(List<Roles> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRole().toString()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<User> findByEmail(String email) throws UsernameNotFoundException {
+    public UserDetailDTO findByUsername(String username) {
+        User user = userRepository.findByUsernameEquals(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found by username: " + username));
+        return userDetailDTOConverter.convertToDto(user);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    public User findById(long id) throws UsernameNotFoundException {
+    public User findById(long id) {
         return userRepository.findById(id)
-                .orElseThrow(
-                        () -> new UsernameNotFoundException("User Not Found by id: " + id)
-                );
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found by id: " + id));
     }
 
     @Override
     public Optional<User> saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, FileNotFoundException {
-        Roles roleObg = roleRepository.findByRole(RoleType.ROLE_USER).orElseThrow(() -> new RoleNotFoundException("Role Not Found:  " + RoleType.ROLE_USER));
-        Image image = imageService.findImageByName(DEFAULT_PROFILE_IMG).orElseThrow(() -> new FileNotFoundException("IMG Not Found:  " + DEFAULT_PROFILE_IMG));
+        Roles role = roleRepository.findByRole(RoleType.ROLE_USER)
+                .orElseThrow(() -> new RoleNotFoundException("Role Not Found: " + RoleType.ROLE_USER));
+        Image image = imageService.findImageByName(DEFAULT_PROFILE_IMG)
+                .orElseThrow(() -> new FileNotFoundException("Image Not Found: " + DEFAULT_PROFILE_IMG));
 
-        Optional<User> existUser = userRepository.findByUsernameOrEmail(registerDto.getUserName(), registerDto.getEmail());
-
-       return createIfExists(registerDto, provider, existUser, image, roleObg);
+        return userRepository.findByUsernameOrEmail(registerDto.getUserName(), registerDto.getEmail()).
+                or(() -> createUser(registerDto, provider, image, role));
     }
 
     @Override
-    public void updateUserPassword(String username, PasswordDto passwordDto){
-        Optional<User> user = userRepository.findByUsernameEquals(username);
-
-        if (user.isPresent()){
-            User existingUser = user.get();
-            existingUser.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
-
-            userRepository.save(existingUser);
-        }
+    public void updateUserPassword(String username, PasswordDto passwordDto) {
+        userRepository.findByUsernameEquals(username)
+                .ifPresent(user -> {
+                    user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+                    userRepository.save(user);
+                });
     }
 
     @Override
@@ -93,46 +97,32 @@ public class UserServiceImpl implements UserService {
 
     @SneakyThrows
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsernameEquals(username);
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findByUsernameEquals(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        if (user.isPresent()) {
-            var userObj = user.get();
-
-            if (!userObj.isEnabled()){
-                throw new AccountIsDisabledException("Your account is disabled");
-            }
-
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(userObj.getUsername())
-                    .password(userObj.getPassword())
-                    .authorities(mapAuthorities(userObj.getRoles()))
-                    .build();
-        } else {
-            throw new UsernameNotFoundException(username);
+        if (!user.isEnabled()) {
+            throw new AccountIsDisabledException("Your account is disabled");
         }
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .authorities(mapAuthorities(user.getRoles()))
+                .build();
     }
 
-    public static Collection<GrantedAuthority> mapAuthorities(List<Roles> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole().toString())).collect(Collectors.toList());
-    }
+    private Optional<User> createUser(RegisterDto registerDto, Provider provider, Image image, Roles role) {
+        User user = new User();
+        user.setEmail(registerDto.getEmail());
+        user.setUsername(registerDto.getUserName());
+        user.setProvider(provider);
+        user.setEnabled(true);
+        user.setImage(image);
+        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        user.addRole(role);
 
-    private Optional<User> createIfExists(RegisterDto registerDto, Provider provider, Optional<User> existUser, Image image, Roles roleObg) {
-        if (existUser.isEmpty()) {
-            User user = new User();
-            user.setEmail(registerDto.getEmail());
-            user.setUsername(registerDto.getUserName());
-            user.setProvider(provider);
-            user.setEnabled(true);
-            user.setImage(image);
-
-            user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-
-            user.addRole(roleObg);
-
-            return Optional.of(userRepository.save(user));
-        }
-        return Optional.empty();
+        return Optional.of(userRepository.save(user));
     }
 
 }

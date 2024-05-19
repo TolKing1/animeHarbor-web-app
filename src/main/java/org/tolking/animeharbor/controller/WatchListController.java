@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.tolking.animeharbor.entities.Anime;
+import org.tolking.animeharbor.dto.AnimeDTO;
 import org.tolking.animeharbor.service.WatchListService;
 
 import java.security.Principal;
@@ -28,9 +28,9 @@ public class WatchListController {
 
     @GetMapping
     public String getWatchList(Model model, Principal principal) {
-        List<Anime> animeList = watchListService.getList(principal.getName());
+        List<AnimeDTO> watchlist = watchListService.getList(principal.getName());
 
-        model.addAttribute(WATCHLIST_ATTR, animeList);
+        model.addAttribute(WATCHLIST_ATTR, watchlist);
         return WATCHLIST_VIEW;
     }
 

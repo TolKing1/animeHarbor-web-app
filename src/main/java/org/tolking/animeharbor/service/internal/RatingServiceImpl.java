@@ -24,13 +24,13 @@ public class RatingServiceImpl implements org.tolking.animeharbor.service.Rating
     public void save(String username, long animeId, int score) throws AnimeNotFoundException {
         Optional<Rating> ratingOptional = ratingRepository.findRatingByAnimeIdAndUserUsername(animeId, username);
 
-        Rating rating = getRating(username, animeId, score, ratingOptional);
+        Rating rating = createOrUpdateRating(username, animeId, score, ratingOptional);
 
         ratingRepository.save(rating);
 
     }
 
-    private Rating getRating(String username, long animeId, int score, Optional<Rating> ratingOptional) throws AnimeNotFoundException {
+    private Rating createOrUpdateRating(String username, long animeId, int score, Optional<Rating> ratingOptional) throws AnimeNotFoundException {
         Rating rating;
         if (ratingOptional.isPresent()){
             rating = ratingOptional.get();
