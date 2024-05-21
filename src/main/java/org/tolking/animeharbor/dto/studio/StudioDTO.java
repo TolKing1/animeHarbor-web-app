@@ -1,9 +1,10 @@
-package org.tolking.animeharbor.dto;
+package org.tolking.animeharbor.dto.studio;
 
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
+import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.entities.Studio;
 import org.tolking.animeharbor.validator.annotation.UniqueStudioTitle;
 

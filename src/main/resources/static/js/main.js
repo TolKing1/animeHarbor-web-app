@@ -120,7 +120,9 @@
     /*------------------
         Niceselect
     --------------------*/
-    $('select').niceSelect();
+    $(document).ready(function() {
+        $('select').niceSelect();
+    });
 
     /*------------------
         Scroll To Top

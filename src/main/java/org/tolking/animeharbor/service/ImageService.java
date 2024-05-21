@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ImageService {
   void saveProfile(MultipartFile file, String username) throws IOFileUploadException, InvalidMimeTypeException;
-
+  void saveAnimePic(MultipartFile file, long animeId) throws IOFileUploadException, InvalidMimeTypeException;
   ImageDataDto load(long id) throws FileNotFoundException;
 
   Optional<Image> findImageByName(String name);

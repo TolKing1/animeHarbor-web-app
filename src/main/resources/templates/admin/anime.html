@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="dark" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/general :: common_header(~{::title})}">
+    <title> Admin panel: Anime</title>
+</head>
+<body>
+<!--Alert-->
+<div th:if="${#fields.hasErrors('animeRegister')}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <p th:each="error : ${#fields.errors('animeRegister')}" th:text="${error}"></p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<!-- Header Section Begin -->
+<header class="header" th:replace="~{fragments/general :: header}">
+</header>
+<!-- Header End -->
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a th:href="@{/}"><i class="fa fa-home"></i> Home</a>
+                    <span>Admin Anime</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Anime Section Begin -->
+<div class="container" style="margin-top:10px;">
+    <div class="row justify-content-between">
+        <div class="col-lg-8 col-md-8 col-sm-8">
+            <div class="section-title">
+                <h4>Anime</h4>
+            </div>
+        </div>
+        <div class="col-lg-2 col-lg-2 col-sm-2 d-flex justify-content-end">
+            <button class="btn btn-danger" data-target="#animeCreateModal" data-toggle="modal">Create</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 p-2 " style="border-radius: 5px">
+            <table class="table table-danger table-light table-striped table-bordered table-responsive" id="genreTable"
+                   style="width:100%">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Director</th>
+                    <th>Status</th>
+                    <th>Genres</th>
+                    <th>View</th>
+                    <th>Rate</th>
+                    <th class="keep-word">Released At</th>
+                    <th class="keep-word">Created At</th>
+                    <th class="keep-word">Updated At</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="anime : ${animeList}">
+                    <td th:text="${anime.id}"></td>
+                    <td th:text="${anime.title}"></td>
+                    <td th:text="${anime.type}"></td>
+                    <td th:text="${anime.director}"></td>
+                    <td th:text="${anime.status}"></td>
+                    <td>
+                        <div class="scrolling-cell">
+                            <a th:each="genre : ${anime.genre}"
+                               th:text="${genre.title}"
+                               th:href="@{/admin/genre/{id}(id = ${genre.id})}" class="btn btn-sm btn-outline-info m-1">
+                            </a>
+                        </div>
+                    </td>
+                    <td th:text="${#numbers.formatInteger(anime.viewCount       ,1,'COMMA')}"></td>
+                    <td th:text="${#numbers.formatDecimal(anime.averageRating   ,1,'COMMA',1,'POINT') + ' | ' + #numbers.formatInteger(anime.ratingCount,1,'COMMA')}"></td>
+                    <td th:text="${#temporals.format(anime.date,    'yyyy-MM-dd')}" class="keep-word"></td>
+                    <td th:text="${#temporals.format(anime.created, 'yyyy-MM-dd')}" class="keep-word"></td>
+                    <td th:text="${#temporals.format(anime.updated, 'yyyy-MM-dd')}" class="keep-word"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Director</th>
+                    <th>Status</th>
+                    <th>Genres</th>
+                    <th>View</th>
+                    <th>Rate</th>
+                    <th class="keep-word">Released At</th>
+                    <th class="keep-word">Created At</th>
+                    <th class="keep-word">Updated At</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer Section Begin -->
+<footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
+<!-- Footer Section End -->
+
+<!-- Search model Begin -->
+<div class="search-model" th:replace="~{fragments/elements :: search}"></div>
+<!-- Search model end -->
+
+<!--    Modal begin-->
+<div aria-hidden="true" aria-labelledby="animeCreateModalLabel" class="modal fade" id="animeCreateModal" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-white" id="ratingLabel">Create Anime</h5>
+                <button aria-label="Close" class="close text-white" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-white">
+                <form class="col-lg-12 col-md-12 col-sm-12 mb-4" id="genreForm" th:action="@{/admin/anime/create}"
+                      th:method="post" th:object="${animeRegister}">
+                    <div class="form-group">
+                        <label class="text-white" for="name">Title</label>
+                        <input th:field="*{title}" class="form-control" id="name"  type="text" placeholder="Enter genre title">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-white" for="description">Description</label>
+                        <textarea class="form-control" id="description" maxlength="200"
+                                  minlength="3" placeholder="Describe description"
+                                  th:field="*{description}"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-white" for="date">Released date</label>
+                        <input th:field="*{date}" class="form-control" id="date"  type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-white" for="director">Director name</label>
+                        <input th:field="*{director}" class="form-control" id="director"  type="text" placeholder="Enter director name" required>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <label class="text-white" for="type"> Type</label>
+                            <select th:field="*{type}" id="type" required>
+                                <option th:each="type : ${typeArray}"
+                                        th:text="${type.name}"
+                                        th:value="${type.name}"></option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="text-white" for="status"> Status</label>
+                            <select th:field="*{status}" id="status" required>
+                                <option th:each="status : ${statusArray}"
+                                        th:text="${status.name}"
+                                        th:value="${status.name}"></option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                    </div>
+<!--                    <div class="form-group">-->
+<!--        -->
+<!--                        <label class="text-white" for="genres"> Genres</label>-->
+<!--                        <select th:field="*{genre}" id="genres" multiple>-->
+<!--                            <option th:each="genre : ${genreList}"-->
+<!--                                    th:text="${genre.title}"-->
+<!--                                    th:value="${genre.id}"></option>-->
+<!--                        </select>-->
+<!--                        <small class="font-italic" th:errorclass="text-danger"-->
+<!--                               th:errors="*{genre}" th:if="${#fields.hasErrors('genre')}"></small>-->
+<!--                    </div>-->
+
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <label class="text-white" for="studio"> Studio</label>
+                            <select th:field="*{studio}" id="studio" required>
+                                <option th:each="studio : ${studioList}"
+                                        th:text="${studio.name}"
+                                        th:value="${studio.id}"></option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-danger m-2" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Genres
+                            </button>
+                        </div>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col-6 form-check" th:each="genreProvided : ${genreList}">
+                                        <input th:field="*{genre}"
+                                               th:value="${genreProvided.id}"
+                                               th:id="${'genre-'+ genreProvided.id}" type="checkbox" class="form-check-input">
+
+                                        <label class="form-check-label text-secondary"
+                                               th:for="${'genre-'+genreProvided.id}"
+                                               th:text="${genreProvided.title}">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-danger" form="genreForm" type="submit">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--    Modal end-->
+
+<!--Alert-->
+
+<div th:replace="~{fragments/general :: scripts}"></div>
+
+<script th:src="@{https://cdn.datatables.net/v/bs4/jq-3.7.0/dt-2.0.7/b-3.0.2/datatables.min.js}"></script>
+
+<script>
+    $('#genreTable').DataTable({
+        scrollX: true,
+        scrollY: 400
+    });
+
+</script>
+</body>
+
+</html>

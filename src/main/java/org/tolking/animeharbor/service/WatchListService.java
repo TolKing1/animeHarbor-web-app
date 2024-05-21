@@ -1,6 +1,6 @@
 package org.tolking.animeharbor.service;
 
-import org.tolking.animeharbor.dto.AnimeDTO;
+import org.tolking.animeharbor.dto.anime.AnimeDTO;
 
 import java.security.Principal;
 import java.util.List;

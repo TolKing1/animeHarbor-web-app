@@ -1326,6 +1326,22 @@ input[type="range"].star:hover::-webkit-slider-runnable-track {
 	color: #ffffff !important;
 }
 
+td div.scrolling-cell {
+	overflow: auto;
+	max-height: 100px;
+	min-width: 40px;
+}
+
+th.keep-word span,
+td.keep-word{
+	word-break: normal;
+	width: 100%;
+}
+
+.nice-select .list li,
+.nice-select span{
+	color: #3d3d3d !important;
+}
 /*---------------------
   Breadcrumb
 -----------------------*/

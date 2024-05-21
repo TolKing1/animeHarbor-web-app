@@ -3,6 +3,7 @@ package org.tolking.animeharbor.dto;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -29,6 +30,12 @@ public abstract class DTOConverter<T, D> {
         return dtoList.stream()
                 .map(this::convertToEntity)
                 .collect(Collectors.toList());
+    }
+
+    public Set<T> convertToEntitySet(Set<D> dtoSet) {
+        return dtoSet.stream()
+                .map(this::convertToEntity)
+                .collect(Collectors.toSet());
     }
 
     public List<D> convertToDtoList(List<T> entityList) {

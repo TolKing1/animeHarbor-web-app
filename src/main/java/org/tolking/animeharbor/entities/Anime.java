@@ -2,13 +2,16 @@ package org.tolking.animeharbor.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.tolking.animeharbor.entities.enums.AnimeStatus;
 import org.tolking.animeharbor.entities.enums.AnimeType;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -24,17 +27,17 @@ public class Anime extends TransactionEntity{
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Type can't be blank")
+    @NotNull(message = "Type can't be null")
     private AnimeType type;
 
-    @NotBlank(message = "Date can't be blank")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
     @NotBlank(message = "Director name can't be blank")
     private String director;
 
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Status can't be blank")
+    @NotNull(message = "Status can't be null")
     private AnimeStatus status;
 
 
@@ -43,7 +46,7 @@ public class Anime extends TransactionEntity{
 
 
     @ManyToMany(mappedBy = "animeList", fetch = FetchType.LAZY)
-    private Set<Genre> genre = new TreeSet<>(Comparator.comparing(Genre::getTitle));
+    private List<Genre> genre = new ArrayList<>();
 
     @OneToMany(mappedBy = "anime", fetch = FetchType.LAZY)
     private List<Rating> ratings = new ArrayList<>();
@@ -52,8 +55,8 @@ public class Anime extends TransactionEntity{
     @JoinColumn
     private Studio studio;
 
-    @NotBlank(message = "Image can't be empty")
     @ManyToOne
+    @NotNull
     private Image image;
 
     @Transient

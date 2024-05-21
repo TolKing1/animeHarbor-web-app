@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.tolking.animeharbor.dto.StudioDTO;
+import org.tolking.animeharbor.dto.studio.StudioDTO;
 import org.tolking.animeharbor.service.StudioService;
 
 import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_STUDIO_URL;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.tolking.animeharbor.dto.AnimeDTO;
+import org.tolking.animeharbor.dto.anime.AnimeDTO;
 import org.tolking.animeharbor.dto.genre.GenreNameDTO;
 import org.tolking.animeharbor.service.AnimeService;
 import org.tolking.animeharbor.service.GenreService;

@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.tolking.animeharbor.dto.ImageDataDto;
+import org.tolking.animeharbor.entities.Anime;
 import org.tolking.animeharbor.entities.Image;
 import org.tolking.animeharbor.entities.User;
 import org.tolking.animeharbor.entities.enums.ImageType;
 import org.tolking.animeharbor.exception.InvalidMimeTypeException;
+import org.tolking.animeharbor.repositories.AnimeRepository;
 import org.tolking.animeharbor.repositories.ImageRepository;
 import org.tolking.animeharbor.repositories.UserRepository;
 import org.tolking.animeharbor.service.ImageService;
@@ -28,6 +30,7 @@ public class ImageServiceImpl implements ImageService {
     private static final String[] ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"};
 
     private final UserRepository userRepository;
+    private final AnimeRepository animeRepository;
     private final ImageRepository imageRepository;
 
     @Override
@@ -36,25 +39,37 @@ public class ImageServiceImpl implements ImageService {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            Image image = user.getImage();
-            String extension = getFileExtension(file.getOriginalFilename());
-
-            image = createNewIfDefault(image);
-            isValidFileType(extension);
-
-            extension = validateJPG(extension);
-            try {
-                image.setData(getImageString(file));
-                image.setFilename(UUID.randomUUID() + "." + extension);
-
-                image = imageRepository.save(image);
-
-                user.setImage(image);
-            }catch (IOException e){
-                throw new IOFileUploadException("Can't save file",e);
-            }
-
+            Image image = processImageUpload(file, user.getImage());
+            user.setImage(image);
             userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void saveAnimePic(MultipartFile file, long animeId) throws IOFileUploadException, InvalidMimeTypeException {
+        Optional<Anime> optionalAnime = animeRepository.findById(animeId);
+
+        if (optionalAnime.isPresent()) {
+            Anime anime = optionalAnime.get();
+            Image image = processImageUpload(file, anime.getImage());
+            anime.setImage(image);
+            animeRepository.save(anime);
+        }
+    }
+
+    private Image processImageUpload(MultipartFile file, Image existingImage) throws IOFileUploadException, InvalidMimeTypeException {
+        String extension = getFileExtension(file.getOriginalFilename());
+        isValidFileType(extension);
+        extension = validateJPG(extension);
+
+        existingImage = createNewIfDefault(existingImage);
+
+        try {
+            existingImage.setData(getImageString(file));
+            existingImage.setFilename(UUID.randomUUID() + "." + extension);
+            return imageRepository.save(existingImage);
+        } catch (IOException e) {
+            throw new IOFileUploadException("Can't save file", e);
         }
     }
 

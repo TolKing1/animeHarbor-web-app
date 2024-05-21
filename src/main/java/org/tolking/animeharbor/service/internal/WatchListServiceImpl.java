@@ -2,7 +2,7 @@ package org.tolking.animeharbor.service.internal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tolking.animeharbor.dto.AnimeDTO;
+import org.tolking.animeharbor.dto.anime.AnimeDTO;
 import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.entities.Anime;
 import org.tolking.animeharbor.entities.User;

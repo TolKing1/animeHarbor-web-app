@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.tolking.animeharbor.dto.AnimeDTO;
+import org.tolking.animeharbor.dto.anime.AnimeDTO;
 import org.tolking.animeharbor.service.WatchListService;
 
 import java.security.Principal;

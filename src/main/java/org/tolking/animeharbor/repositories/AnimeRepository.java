@@ -14,6 +14,7 @@ import java.util.List;
 public interface AnimeRepository extends JpaRepository<Anime, Long> {
     //Index
     List<Anime> getAllBy(Pageable pageable);
+    List<Anime> getAllBy();
 
     @Query(value =
             "SELECT a.*, COALESCE(COUNT(v.anime_id), 0) AS view_count " +
