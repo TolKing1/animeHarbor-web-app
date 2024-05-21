@@ -2,6 +2,7 @@ package org.tolking.animeharbor.service.internal;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_ROLE;
 import static org.tolking.animeharbor.constant.ControllerConstant.SUPER_ADMIN_ROLE;
 import static org.tolking.animeharbor.service.seeder.ImageSeeder.DEFAULT_PROFILE_IMG;
 
@@ -107,33 +109,54 @@ public class UserServiceImpl implements UserService {
         userRepository.findById(userId)
                 .ifPresent(user -> roleRepository.findByRole(RoleType.ROLE_ADMIN)
                         .ifPresent(roles -> {
-                            if (isAdding){
-                                user.addRole(roles);
-                            }else {
-                                user.removeRole(roles);
-                            }
+                            addOrRemove(isAdding, user, roles);
                             userRepository.save(user);
                         }));
     }
 
-    @Override
-    public void enableUser(long userId) {
-        enableOrDisableUser(userId, true);
+    private static void addOrRemove(boolean isAdding, User user, Roles roles) {
+        if (isAdding){
+            user.addRole(roles);
+        }else {
+            user.removeRole(roles);
+        }
     }
 
     @Override
-    public void disableUser(long userId) {
-        enableOrDisableUser(userId, false);
+    public void enableUser(long userId, Authentication auth) {
+        enableOrDisableUser(userId, auth,true);
     }
 
-    private void enableOrDisableUser(long userId, boolean status) {
+    @Override
+    public void disableUser(long userId, Authentication auth) {
+        enableOrDisableUser(userId, auth,false);
+    }
+
+    private void enableOrDisableUser(long userId, Authentication auth, boolean status) {
+        var role = getListAuthorities(auth);
         userRepository.findById(userId)
                 .ifPresent(user -> {
-                    if (!user.hasRole(SUPER_ADMIN_ROLE)){
-                        user.setEnabled(status);
-                    }
+                    checkRole(status, user, role);
                     userRepository.save(user);
                 });
+    }
+
+    private static void checkRole(boolean status, User user, List<String> role) {
+        if (!user.hasRole(SUPER_ADMIN_ROLE)){
+            if (role.contains(SUPER_ADMIN_ROLE)){
+
+                user.setEnabled(status);
+            } else if (role.contains(ADMIN_ROLE)){
+                if (!user.hasRole(ADMIN_ROLE)){
+
+                    user.setEnabled(status);
+                }
+            }
+        }
+    }
+
+    private static List<String> getListAuthorities(Authentication auth) {
+        return auth.getAuthorities().stream().map(GrantedAuthority::toString).toList();
     }
 
     @Override
@@ -175,5 +198,6 @@ public class UserServiceImpl implements UserService {
 
         return Optional.of(userRepository.save(user));
     }
+
 
 }

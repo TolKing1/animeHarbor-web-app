@@ -2,6 +2,7 @@ package org.tolking.animeharbor.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,29 +27,29 @@ public class UserAdminController {
         return USER_VIEW;
     }
 
-    @GetMapping("/update/{id}")
     @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @GetMapping("/update/{id}")
     public String updateToAdmin(@PathVariable Long id) {
         userService.enableAdminRole(id);
         return "redirect:" + ADMIN_USER_URL;
     }
 
-    @GetMapping("/degrade/{id}")
     @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @GetMapping("/degrade/{id}")
     public String degradeFromAdmin(@PathVariable Long id) {
         userService.disableAdminRole(id);
         return "redirect:" + ADMIN_USER_URL;
     }
 
     @GetMapping("/enable/{id}")
-    public String enableUser(@PathVariable Long id) {
-        userService.enableUser(id);
+    public String enableUser(@PathVariable Long id, Authentication authentication) {
+        userService.enableUser(id, authentication);
         return "redirect:" + ADMIN_USER_URL;
     }
 
     @GetMapping("/disable/{id}")
-    public String disableUser(@PathVariable Long id) {
-        userService.disableUser(id);
+    public String disableUser(@PathVariable Long id, Authentication authentication) {
+        userService.disableUser(id, authentication);
         return "redirect:" + ADMIN_USER_URL;
     }
 }

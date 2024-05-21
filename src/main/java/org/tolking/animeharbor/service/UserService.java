@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.service;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.tolking.animeharbor.dto.PasswordDto;
 import org.tolking.animeharbor.dto.RegisterDto;
@@ -24,8 +25,8 @@ public interface UserService extends UserDetailsService {
 
     void enableAdminRole(long userId);
     void disableAdminRole(long userId);
-    void enableUser(long userId);
-    void disableUser(long userId);
+    void enableUser(long userId, Authentication authentication);
+    void disableUser(long userId, Authentication authentication);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
 }
