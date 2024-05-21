@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.tolking.animeharbor.service.seeder.ImageSeeder.DEFAULT_ANIME_IMG;
 import static org.tolking.animeharbor.service.seeder.ImageSeeder.DEFAULT_PROFILE_IMG;
 
 @Service
@@ -38,7 +39,6 @@ public class AnimeServiceImpl implements AnimeService {
     private final GenreRepository genreRepository;
     private final ImageService imageService;
     private final DTOConverter<Anime, AnimeDTO> dtoConverter;
-    private final DTOConverter<Genre, GenreNameDTO> genreNameConverter;
     private final DTOConverter<Anime, AnimeAdminPageDTO> adminPageDTOConverter;
     private final DTOConverter<Anime, AnimeRegisterDTO> registerDTOConverter;
 
@@ -57,9 +57,7 @@ public class AnimeServiceImpl implements AnimeService {
     public void saveAnime(AnimeRegisterDTO animeDTO) {
         animeRepository.findById(animeDTO.getId())
                 .ifPresentOrElse(anime -> updateExistingAnime(anime, animeDTO),
-                        () -> {
-                            saveNewAnime(animeDTO);
-                        });
+                        () -> saveNewAnime(animeDTO));
     }
 
     private void updateExistingAnime(Anime anime, AnimeRegisterDTO animeDTO) {
@@ -83,7 +81,7 @@ public class AnimeServiceImpl implements AnimeService {
     private void saveNewAnime(AnimeRegisterDTO animeDTO) {
         try {
             Anime anime = registerDTOConverter.convertToEntity(animeDTO);
-            Image image = imageService.findImageByName(DEFAULT_PROFILE_IMG)
+            Image image = imageService.findImageByName(DEFAULT_ANIME_IMG)
                     .orElseThrow(() -> new FileNotFoundException("Image Not Found: " + DEFAULT_PROFILE_IMG));
 
             anime.setGenre(getGenreList(animeDTO.getGenre(), anime));
