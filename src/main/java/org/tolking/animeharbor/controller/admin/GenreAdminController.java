@@ -29,7 +29,7 @@ public class GenreAdminController {
     @GetMapping
     public String getGenrePage(Model model) {
         model.addAttribute(GENRE_REGISTER_ATTR, new GenreNameDTO());
-        appendStudiosToModel(model);
+        appendGenresToModel(model);
         return GENRE_VIEW;
     }
 
@@ -62,7 +62,7 @@ public class GenreAdminController {
                                Model model) {
         if (result.hasErrors()) {
             model.addAttribute(GENRE_REGISTER_ATTR, genreNameDTO);
-            appendStudiosToModel(model);
+            appendGenresToModel(model);
             return GENRE_VIEW;
         }
         genreService.save(genreNameDTO);
@@ -80,7 +80,7 @@ public class GenreAdminController {
         return "redirect:" + ADMIN_GENRE_URL;
     }
 
-    private void appendStudiosToModel(Model model) {
+    private void appendGenresToModel(Model model) {
         model.addAttribute(GENRE_LIST_ATTR, genreService.getAllGenre());
     }
 }
