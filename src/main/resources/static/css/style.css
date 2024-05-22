@@ -1154,14 +1154,21 @@ ol {
 }
 
 .anime__details__btn .watch-btn.remove span {
-	background: #369ce5;
+	background: #9636e5;
 }
 
 .anime__details__btn .watch-btn.remove i {
+	background: #7028ab;
+	color: #ffffff;
+}
+.anime__details__btn .watch-btn.update span {
+	background: #369ce5;
+}
+
+.anime__details__btn .watch-btn.update i {
 	background: #369ce5;
 	color: #ffffff;
 }
-
 .anime__details__btn .watch-btn.rate span {
 	font-size: 13px;
 	color: #ffffff;

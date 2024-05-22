@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{fragments/general :: common_header(~{::title})}">
     <title th:if="${anime}" th:text="${#strings.capitalize(anime.title)}"></title>>
@@ -103,6 +103,9 @@
                             </a>
                             <a th:if="${watchlistIsExists}" th:href="@{/watchlist/remove?animeId={id}(id = ${anime.id})}" class="watch-btn remove"><span>Remove from watch list</span>
                                 <i class="fa fa-remove"></i>
+                            </a>
+                            <a sec:authorize="${hasAnyRole('ADMIN','SUPER_ADMIN')}" th:href="@{/admin/anime/{id}(id = ${anime.id})}" class="watch-btn update btn-sm"><span>Update</span>
+                                <i class="fa fa-edit"></i>
                             </a>
                             <a class="watch-btn rate ml-2" data-target="#ratingModal" data-toggle="modal" href="#"
                                type="button">

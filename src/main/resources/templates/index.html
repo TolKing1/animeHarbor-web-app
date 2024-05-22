@@ -18,38 +18,17 @@
 <section class="hero">
     <div class="container">
         <div class="hero__slider owl-carousel">
-            <div class="hero__items set-bg" th:attr="data-setbg=@{img/hero/hero-1.jpg}">
+            <div th:each="anime : ${animeHero}" class="hero__items set-bg"
+                 th:attr="data-setbg=@{/images/anime/{id}(id = ${anime.id})}">
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="hero__text">
-                            <div class="label">Adventure</div>
-                            <h2>Fate / Stay Night: Unlimited Blade Works</h2>
-                            <p>After 30 days of travel across the world...</p>
-                            <a href="#"><span>Details</span> <i class="fa fa-angle-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="hero__items set-bg" th:attr="data-setbg=@{img/hero/hero-1.jpg}">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="hero__text">
-                            <div class="label">Adventure</div>
-                            <h2>Fate / Stay Night: Unlimited Blade Works</h2>
-                            <p>After 30 days of travel across the world...</p>
-                            <a href="#"><span>Details</span> <i class="fa fa-angle-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="hero__items set-bg" th:attr="data-setbg=@{img/hero/hero-1.jpg}">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="hero__text">
-                            <div class="label">Adventure</div>
-                            <h2>Fate / Stay Night: Unlimited Blade Works</h2>
-                            <p>After 30 days of travel across the world...</p>
-                            <a href="#"><span>Details</span> <i class="fa fa-angle-right"></i></a>
+                            <div th:each="genre, i : ${anime.genre}"
+                                 th:if="${i.index < 3}"
+                                 th:text="${genre.title}" class="label" >Adventure</div>
+                            <h2 th:text="${anime.title}">Fate / Stay Night: Unlimited Blade Works</h2>
+                            <p th:text="${anime.description.length() > 50 ? #strings.substring(anime.description,0,50) : anime.description}">After 30 days of travel across the world...</p>
+                            <a th:href="@{/anime/{id}(id = ${anime.id})}"><span>Details</span> <i class="fa fa-angle-right"></i></a>
                         </div>
                     </div>
                 </div>

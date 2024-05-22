@@ -42,7 +42,6 @@ public class AnimeServiceImpl implements AnimeService {
     private final DTOConverter<Anime, AnimeAdminPageDTO> adminPageDTOConverter;
     private final DTOConverter<Anime, AnimeRegisterDTO> registerDTOConverter;
     private final DTOConverter<Studio, StudioAnimeRegisterDTO> studioDTOConverter;
-    private final DTOConverter<Genre, GenreNameDTO> genreNameDTOConverter;
 
     private static Pageable getPageable(int pageNo, int pageSize, String sortField, String sortDirection) {
         return PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
@@ -79,7 +78,7 @@ public class AnimeServiceImpl implements AnimeService {
             genreRepository.save(genre);
         }
 
-        List<Genre> genreList = getGenreList(animeDTO.getGenre(), anime);
+        List<Genre> genreList = getGenreList(animeDTO.getGenre());
 
         anime.setTitle(animeDTO.getTitle());
         anime.setDescription(animeDTO.getDescription());
@@ -99,7 +98,7 @@ public class AnimeServiceImpl implements AnimeService {
             Image image = imageService.findImageByName(DEFAULT_ANIME_IMG)
                     .orElseThrow(() -> new FileNotFoundException("Image Not Found: " + DEFAULT_PROFILE_IMG));
             anime.setStudio(studioDTOConverter.convertToEntity(animeDTO.getStudio()));
-            anime.setGenre(getGenreList(animeDTO.getGenre(), anime));
+            anime.setGenre(getGenreList(animeDTO.getGenre()));
             anime.setImage(image);
             animeRepository.save(anime);
         }catch (FileNotFoundException e){
@@ -107,7 +106,7 @@ public class AnimeServiceImpl implements AnimeService {
         }
     }
 
-    private List<Genre> getGenreList(List<GenreNameDTO> genreDTOSet, Anime anime) {
+    private List<Genre> getGenreList(List<GenreNameDTO> genreDTOSet) {
         List<Genre> genreList = new ArrayList<>();
 
         for (GenreNameDTO genreDTO : genreDTOSet) {
@@ -163,6 +162,13 @@ public class AnimeServiceImpl implements AnimeService {
         Pageable pageable = PageRequest.of(0, 6);
         List<Anime> animeList = animeRepository.getAllByPopularityForLast3Month(pageable);
 
+        return dtoConverter.convertToDtoList(animeList);
+    }
+
+    @Override
+    public List<AnimeDTO> getAllForHeroPage() {
+        Pageable pageable = PageRequest.of(0, 4);
+        List<Anime> animeList = animeRepository.getAllByOrderByAverageRating(pageable);
         return dtoConverter.convertToDtoList(animeList);
     }
 

@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.impl.IOFileUploadException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_ANIME_UR
 @Controller
 @RequestMapping(ADMIN_ANIME_URL)
 @MultipartConfig(maxFileSize = 1024*1024*10)
+@PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
 @RequiredArgsConstructor
 public class AnimeAdminController {
     private static final String ADMIN_ANIME_VIEW = "admin/anime";
@@ -68,7 +70,6 @@ public class AnimeAdminController {
     @PostMapping("/update")
     public String updateGenre(@RequestParam(name = "picture") MultipartFile multipartFile,
                               @ModelAttribute(ANIME_ATTR) @Valid AnimeRegisterDTO animeDTO,
-                              BindingResult result,
                               Model model) throws IOFileUploadException, InvalidMimeTypeException {
         animeService.saveAnime(animeDTO);
         if (!multipartFile.isEmpty()) {
@@ -108,8 +109,10 @@ public class AnimeAdminController {
 
     @ExceptionHandler({InvalidMimeTypeException.class, FileNotFoundException.class})
     public String handleFileException(RedirectAttributes model, Exception e) {
+        AnimeRegisterDTO animeDTO = (AnimeRegisterDTO) model.getAttribute(ANIME_ATTR);
         model.addFlashAttribute(PICTURE_ERROR_ATTR, e.getMessage());
         setup(model);
-        return "redirect:"+ ADMIN_ANIME_URL+"/"+"2";
+        assert animeDTO != null;
+        return "redirect:"+ ADMIN_ANIME_URL+"/"+animeDTO.getId();
     }
 }

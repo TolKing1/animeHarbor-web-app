@@ -17,6 +17,7 @@ public interface AnimeService {
     List<AnimeAdminPageDTO> getAllForAdminPage();
     List<AnimeDTO> getAllAnime(int pageNo, int pageSize, String sortField, String sortDirection);
     List<AnimeDTO> getAllForPopularityPage();
+    List<AnimeDTO> getAllForHeroPage();
     List<AnimeDTO> getAllForTopViewPage();
     List<AnimeDTO> getAllForRecentlyAddedPage();
 

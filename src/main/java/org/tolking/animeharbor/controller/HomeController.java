@@ -18,6 +18,7 @@ public class HomeController {
         model.addAttribute("animeByPopular",animeService.getAllForPopularityPage());
         model.addAttribute("animeByView",animeService.getAllForTopViewPage());
         model.addAttribute("animeByInsertDate",animeService.getAllForRecentlyAddedPage());
+        model.addAttribute("animeHero",animeService.getAllForHeroPage());
         return "index";
     }
 
