@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.service.converter;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.convert.converter.Converter;
@@ -13,9 +14,10 @@ public class StudioConverter implements Converter<String, StudioAnimeRegisterDTO
 
     @SneakyThrows
     @Override
-    public StudioAnimeRegisterDTO convert(String id) {
+    public StudioAnimeRegisterDTO convert(@Nullable  String id) {
         try {
             StudioAnimeRegisterDTO studioDTO = new StudioAnimeRegisterDTO();
+            assert id != null;
             long studioId = Long.parseLong(id);
             studioDTO.setId(studioId);
 

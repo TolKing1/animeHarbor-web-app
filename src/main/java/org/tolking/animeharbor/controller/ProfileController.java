@@ -26,7 +26,7 @@ import static org.tolking.animeharbor.constant.ControllerConstant.PROFILE_URL;
 @Controller
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
-@MultipartConfig(maxFileSize = 1024*1024*5)
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5)
 @RequestMapping(PROFILE_URL)
 public class ProfileController {
     public static final String PROFILE_VIEW = "profile";
@@ -40,8 +40,12 @@ public class ProfileController {
     private final UserService userService;
     private final ImageService imageService;
 
+    private static void addPasswordToModel(Model model) {
+        model.addAttribute(PASSWORD_ATTR, new PasswordDto());
+    }
+
     @GetMapping
-    public String profile(Model model, Principal principal){
+    public String profile(Model model, Principal principal) {
         addPasswordToModel(model);
         return setModelAttributesForProfile(principal, model);
 
@@ -60,11 +64,11 @@ public class ProfileController {
 
     @PostMapping("/picture")
     public ModelAndView updateProfilePicture(@RequestParam("picture") MultipartFile multipartFile,
-                                       ModelMap model,
-                                       Principal principal) throws Exception {
+                                             ModelMap model,
+                                             Principal principal) throws Exception {
         imageService.saveProfile(multipartFile, principal.getName());
 
-        return new ModelAndView("redirect:"+ PROFILE_URL, model);
+        return new ModelAndView("redirect:" + PROFILE_URL, model);
     }
 
     private String setModelAttributesForProfile(Principal principal, Model model) {
@@ -80,7 +84,7 @@ public class ProfileController {
         if (result.hasErrors()) {
             return true;
         } else if (!newPassword.getPassword().equals(newPassword.getConfirmPassword())) {
-            result.rejectValue("password","error.password", "Passwords are not the same");
+            result.rejectValue("password", "error.password", "Passwords are not the same");
             return true;
         } else {
             userService.updateUserPassword(principal.getName(), newPassword);
@@ -88,16 +92,11 @@ public class ProfileController {
         return false;
     }
 
-    private static void addPasswordToModel(Model model) {
-        model.addAttribute(PASSWORD_ATTR, new PasswordDto());
-    }
-
-
     @ExceptionHandler({InvalidMimeTypeException.class, FileNotFoundException.class})
     public String handleFileException(RedirectAttributes model, Exception e) {
         model.addFlashAttribute(PICTURE_ERROR_ATTR, e.getMessage());
         addPasswordToModel(model);
-        return "redirect:"+ PROFILE_URL;
+        return "redirect:" + PROFILE_URL;
     }
 
 }

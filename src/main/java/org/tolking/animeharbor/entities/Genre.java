@@ -12,9 +12,9 @@ import java.util.List;
 @Data
 @Entity
 @Table(schema = "public")
-public class Genre extends TransactionEntity{
+public class Genre extends TransactionEntity {
 
-    @Column(unique= true)
+    @Column(unique = true)
     private String title;
 
     @NotBlank(message = "Description can not be blank")
@@ -30,7 +30,7 @@ public class Genre extends TransactionEntity{
     private List<Anime> animeList = new ArrayList<>();
 
     @Transient
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return animeList.isEmpty();
     }
 }

@@ -10,13 +10,17 @@ import java.util.Optional;
 
 public interface StudioService {
     Optional<StudioDTO> getStudioById(long id);
+
     Optional<StudioUpdateDTO> getStudioByIdForUpdate(long id);
+
     Optional<Studio> findById(long id);
 
     List<StudioDTO> getAllStudios();
+
     List<StudioAnimeRegisterDTO> getAllStudioName();
 
     void save(StudioDTO studio);
+
     void update(StudioUpdateDTO studio);
 
     void delete(StudioDTO studio);

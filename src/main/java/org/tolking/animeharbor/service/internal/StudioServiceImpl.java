@@ -37,6 +37,7 @@ public class StudioServiceImpl implements StudioService {
     public Optional<Studio> findById(long id) {
         return studioRepository.findById(id);
     }
+
     @Override
     public List<StudioDTO> getAllStudios() {
         return dtoConverter.convertToDtoList(studioRepository.getAllBy());
@@ -58,6 +59,7 @@ public class StudioServiceImpl implements StudioService {
                         }
                 );
     }
+
     @Override
     public void save(StudioDTO studioDTO) {
         studioRepository.save(dtoConverter.convertToEntity(studioDTO));

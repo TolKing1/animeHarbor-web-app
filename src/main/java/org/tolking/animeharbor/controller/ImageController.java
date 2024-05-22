@@ -25,7 +25,7 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    @GetMapping({"/profile/{id}", ANIME_URL+"/{id}"})
+    @GetMapping({"/profile/{id}", ANIME_URL + "/{id}"})
     public ResponseEntity<Resource> getProfileImage(@PathVariable long id) throws IOException {
         ImageDataDto imageData = imageService.load(id);
 

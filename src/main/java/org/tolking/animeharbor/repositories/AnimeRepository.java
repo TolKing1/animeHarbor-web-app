@@ -14,6 +14,7 @@ import java.util.List;
 public interface AnimeRepository extends JpaRepository<Anime, Long> {
     //Index
     List<Anime> getAllBy(Pageable pageable);
+
     List<Anime> getAllBy();
 
     @Query(value =
@@ -68,7 +69,7 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "SELECT a.*, COALESCE(COUNT(v.anime_id), 0) as count FROM anime a " +
                     "LEFT JOIN views v on a.id = v.anime_id " +
                     "WHERE to_tsvector(a.title) @@ plainto_tsquery(:query) " +
-                    "OR LOWER(a.title) LIKE CONCAT('%', LOWER(:query), '%') "+
+                    "OR LOWER(a.title) LIKE CONCAT('%', LOWER(:query), '%') " +
                     "GROUP BY a.id " +
                     "ORDER BY count DESC "
             , nativeQuery = true)
@@ -78,7 +79,7 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "SELECT a.*, COALESCE(AVG(r.score), 0) as avg FROM anime a " +
                     "LEFT JOIN rating r on a.id = r.anime_id " +
                     "WHERE to_tsvector(a.title) @@ plainto_tsquery(:query) " +
-                    "OR LOWER(a.title) LIKE CONCAT('%', LOWER(:query), '%') "+
+                    "OR LOWER(a.title) LIKE CONCAT('%', LOWER(:query), '%') " +
                     "GROUP BY a.id " +
                     "ORDER BY avg DESC"
             , nativeQuery = true)
@@ -88,7 +89,7 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "SELECT a.*, COALESCE(AVG(r.score), 0) as avg FROM anime a " +
                     "LEFT JOIN rating r on a.id = r.anime_id " +
                     "WHERE to_tsvector(a.title) @@ plainto_tsquery(:query) " +
-                    "OR LOWER(a.title) LIKE CONCAT('%', LOWER(:query), '%') "+
+                    "OR LOWER(a.title) LIKE CONCAT('%', LOWER(:query), '%') " +
                     "GROUP BY a.id " +
                     "ORDER BY avg"
             , nativeQuery = true)

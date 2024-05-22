@@ -13,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Component
-public class UserDTO extends DTOConverter<User,UserDTO> {
+public class UserDTO extends DTOConverter<User, UserDTO> {
     private int id;
     private String username;
     private String email;

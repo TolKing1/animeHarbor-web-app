@@ -73,7 +73,7 @@ public class AnimeServiceImpl implements AnimeService {
 
     private void updateExistingAnime(Anime anime, AnimeRegisterDTO animeDTO) {
         //Remove all association
-        for (var genre : anime.getGenre()){
+        for (var genre : anime.getGenre()) {
             genre.getAnimeList().remove(anime);
             genreRepository.save(genre);
         }
@@ -101,7 +101,7 @@ public class AnimeServiceImpl implements AnimeService {
             anime.setGenre(getGenreList(animeDTO.getGenre()));
             anime.setImage(image);
             animeRepository.save(anime);
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -122,17 +122,17 @@ public class AnimeServiceImpl implements AnimeService {
 
     @Override
     public void deleteAnime(AnimeRegisterDTO animeDTO) {
-       animeRepository.findById(animeDTO.getId())
-               .ifPresent(anime -> {
-                   Image image = anime.getImage();
-                   String imageName = image.getFilename();
+        animeRepository.findById(animeDTO.getId())
+                .ifPresent(anime -> {
+                    Image image = anime.getImage();
+                    String imageName = image.getFilename();
 
-                   animeRepository.delete(anime);
+                    animeRepository.delete(anime);
 
-                   if (!imageName.equalsIgnoreCase(DEFAULT_ANIME_IMG)) {
-                       imageService.delete(image);
-                   }
-               });
+                    if (!imageName.equalsIgnoreCase(DEFAULT_ANIME_IMG)) {
+                        imageService.delete(image);
+                    }
+                });
     }
 
     @Override

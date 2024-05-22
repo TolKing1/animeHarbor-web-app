@@ -26,7 +26,7 @@ import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_ANIME_UR
 
 @Controller
 @RequestMapping(ADMIN_ANIME_URL)
-@MultipartConfig(maxFileSize = 1024*1024*10)
+@MultipartConfig(maxFileSize = 1024 * 1024 * 10)
 @PreAuthorize("hasAnyRole('ADMIN','SUPER_ADMIN')")
 @RequiredArgsConstructor
 public class AnimeAdminController {
@@ -53,7 +53,7 @@ public class AnimeAdminController {
     public String createAnime(@ModelAttribute(ANIME_REGISTER_ATTR) @Valid AnimeRegisterDTO animeDTO,
                               BindingResult result,
                               Model model) {
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             setup(model);
             appendAnimeListToModel(model);
             return ADMIN_ANIME_VIEW;
@@ -64,7 +64,7 @@ public class AnimeAdminController {
         setup(model);
         appendAnimeListToModel(model);
 
-        return "redirect:"+ADMIN_ANIME_URL;
+        return "redirect:" + ADMIN_ANIME_URL;
     }
 
     @PostMapping("/update")
@@ -76,7 +76,7 @@ public class AnimeAdminController {
             imageService.saveAnimePic(multipartFile, animeDTO.getId());
         }
         setup(model);
-        return "redirect:"+ADMIN_ANIME_URL+"/"+animeDTO.getId();
+        return "redirect:" + ADMIN_ANIME_URL + "/" + animeDTO.getId();
     }
 
     @GetMapping("/{id}")
@@ -96,6 +96,7 @@ public class AnimeAdminController {
                 .ifPresent(anime -> animeService.deleteAnime(animeDTO));
         return "redirect:" + ADMIN_ANIME_URL;
     }
+
     private void setup(Model model) {
         model.addAttribute("statusArray", AnimeStatus.values());
         model.addAttribute("typeArray", AnimeType.values());
@@ -113,6 +114,6 @@ public class AnimeAdminController {
         model.addFlashAttribute(PICTURE_ERROR_ATTR, e.getMessage());
         setup(model);
         assert animeDTO != null;
-        return "redirect:"+ ADMIN_ANIME_URL+"/"+animeDTO.getId();
+        return "redirect:" + ADMIN_ANIME_URL + "/" + animeDTO.getId();
     }
 }

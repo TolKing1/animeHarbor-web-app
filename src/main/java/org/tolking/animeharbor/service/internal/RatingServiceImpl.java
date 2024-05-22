@@ -32,7 +32,7 @@ public class RatingServiceImpl implements org.tolking.animeharbor.service.Rating
 
     private Rating createOrUpdateRating(String username, long animeId, int score, Optional<Rating> ratingOptional) throws AnimeNotFoundException {
         Rating rating;
-        if (ratingOptional.isPresent()){
+        if (ratingOptional.isPresent()) {
             rating = ratingOptional.get();
 
         } else {

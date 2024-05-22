@@ -45,7 +45,7 @@ public class WatchListController {
 
     @GetMapping("/remove")
     public String removeWatchList(@RequestParam("animeId") long animeId,
-                               Principal principal) {
+                                  Principal principal) {
         watchListService.removeFromList(animeId, principal.getName());
 
         return "redirect:%s/%d".formatted(ANIME_URL, animeId);

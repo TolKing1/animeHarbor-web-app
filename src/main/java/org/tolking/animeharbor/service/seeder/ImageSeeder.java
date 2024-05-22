@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.service.seeder;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -27,7 +28,7 @@ public class ImageSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final Logger logger = LoggerFactory.getLogger(ImageSeeder.class);
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    public void onApplicationEvent(@Nullable ContextRefreshedEvent event) {
         Optional<Image> imageProfileOptional = imageRepository.findByFilename(DEFAULT_PROFILE_IMG);
         Optional<Image> imageAnimeOptional = imageRepository.findByFilename(DEFAULT_ANIME_IMG);
 
@@ -36,17 +37,7 @@ public class ImageSeeder implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     private void imageSeeder(Optional<Image> imageOptional, String name, ImageType imageType) {
-        if (imageOptional.isPresent()) {
-            try {
-                Image image = imageOptional.get();
-                imageSave(name, imageType, image);
-
-                logger.info("IMAGE OVERWRITE: {}", name);
-            } catch (IOException e) {
-                notFoundLog(name);
-            }
-
-        }else {
+        if (imageOptional.isEmpty()) {
             try {
                 Image image = new Image();
                 imageSave(name, imageType, image);
@@ -55,6 +46,8 @@ public class ImageSeeder implements ApplicationListener<ContextRefreshedEvent> {
             } catch (IOException e) {
                 notFoundLog(name);
             }
+        } else {
+            logger.warn("IMAGE SEEDING ALREADY EXISTS: {}", name);
         }
     }
 

@@ -1,5 +1,6 @@
 package org.tolking.animeharbor.service.seeder;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,10 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final Logger logger = LoggerFactory.getLogger(RoleSeeder.class);
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    public void onApplicationEvent(@Nullable ContextRefreshedEvent contextRefreshedEvent) {
         this.loadRoles();
     }
+
     private void loadRoles() {
         List<RoleType> roleTypes = List.of(
                 RoleType.ROLE_USER,
@@ -34,7 +36,7 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
             Optional<Roles> rolesOptional = roleRepository.findByRole(roleName);
             if (rolesOptional.isPresent()) {
                 logger.info("ROLE EXISTS: {}", roleName);
-            }else {
+            } else {
                 Roles roleToCreate = new Roles();
 
                 roleToCreate.setRole(roleName);

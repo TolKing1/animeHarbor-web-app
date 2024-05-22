@@ -51,17 +51,17 @@ public class AuthController {
 
         userService.saveUser(registerDto, Provider.LOCAL);
 
-        return "redirect:"+LOGIN_URL+"?created";
+        return "redirect:" + LOGIN_URL + "?created";
     }
 
     private boolean checkIfErrorExists(RegisterDto registerDto, BindingResult result) {
         boolean flag = result.hasErrors();
         if (userService.existsByEmail(registerDto.getEmail())) {
-            result.rejectValue("email","error.email","Email already exists");
+            result.rejectValue("email", "error.email", "Email already exists");
             flag = true;
         }
-        if (userService.existsByUsername(registerDto.getUserName())){
-            result.rejectValue("userName","error.username", "Username already exists");
+        if (userService.existsByUsername(registerDto.getUserName())) {
+            result.rejectValue("userName", "error.username", "Username already exists");
             flag = true;
         }
         return flag;

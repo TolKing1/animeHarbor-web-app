@@ -60,11 +60,11 @@ public class GenreServiceImpl implements GenreService {
     public void update(GenreUpdateDTO genreUpdateDTO) {
         genreRepository.findById(genreUpdateDTO.getId())
                 .ifPresent(genre -> {
-                            genre.setTitle(genreUpdateDTO.getTitle());
-                            genre.setDescription(genreUpdateDTO.getDescription());
+                    genre.setTitle(genreUpdateDTO.getTitle());
+                    genre.setDescription(genreUpdateDTO.getDescription());
 
-                            genreRepository.save(genre);
-                        });
+                    genreRepository.save(genre);
+                });
 
     }
 

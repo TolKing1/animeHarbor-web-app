@@ -9,7 +9,7 @@ import org.tolking.animeharbor.entities.enums.ImageType;
 @Entity
 @Data
 @Table(schema = "public")
-public class Image extends TransactionEntity{
+public class Image extends TransactionEntity {
 
     private String filename;
 

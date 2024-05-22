@@ -12,10 +12,10 @@ import java.util.List;
 @Data
 @Entity
 @Table(schema = "public")
-public class Studio extends TransactionEntity{
+public class Studio extends TransactionEntity {
 
     @Size(min = 3, max = 30, message = "Length should be between 3 and 30")
-    @Column(unique= true)
+    @Column(unique = true)
     private String name;
 
     @Column(columnDefinition = "text")
@@ -26,7 +26,7 @@ public class Studio extends TransactionEntity{
     private List<Anime> animeList = new ArrayList<>();
 
     @Transient
-    public boolean isEmptyAnimeList(){
+    public boolean isEmptyAnimeList() {
         return animeList.isEmpty();
     }
 }

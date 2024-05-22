@@ -17,7 +17,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(schema = "public")
-public class Anime extends TransactionEntity{
+public class Anime extends TransactionEntity {
 
     @NotBlank(message = "Title can't be blank")
     private String title;
@@ -80,7 +80,7 @@ public class Anime extends TransactionEntity{
 
     @PreRemove
     private void removeGenreAssociations() {
-        for (Genre genre: this.genre) {
+        for (Genre genre : this.genre) {
             genre.getAnimeList().remove(this);
         }
     }
@@ -89,7 +89,7 @@ public class Anime extends TransactionEntity{
     private void addAssociations() {
         studio.getAnimeList().add(this);
 
-        for (Genre genre: this.genre) {
+        for (Genre genre : this.genre) {
             genre.getAnimeList().add(this);
         }
     }
@@ -98,7 +98,7 @@ public class Anime extends TransactionEntity{
     private void updateAssociations() {
         studio.getAnimeList().add(this);
 
-        for (Genre genre: this.genre) {
+        for (Genre genre : this.genre) {
             genre.getAnimeList().add(this);
         }
     }

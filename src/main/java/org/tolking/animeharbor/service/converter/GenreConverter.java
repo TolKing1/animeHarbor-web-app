@@ -1,25 +1,22 @@
 package org.tolking.animeharbor.service.converter;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.dto.genre.GenreNameDTO;
-import org.tolking.animeharbor.entities.Genre;
-import org.tolking.animeharbor.repositories.GenreRepository;
 
 @Component
 @RequiredArgsConstructor
 public class GenreConverter implements Converter<String, GenreNameDTO> {
-    private final GenreRepository genreRepository;
-    private final DTOConverter<Genre, GenreNameDTO> dtoConverter;
 
     @SneakyThrows
     @Override
-    public GenreNameDTO convert(String id) {
+    public GenreNameDTO convert(@Nullable String id) {
         try {
             GenreNameDTO genreNameDTO = new GenreNameDTO();
+            assert id != null;
             long genreId = Long.parseLong(id);
             genreNameDTO.setId(genreId);
 

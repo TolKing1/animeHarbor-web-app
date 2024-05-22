@@ -11,6 +11,7 @@ public interface GenreService {
     List<GenreNameDTO> getAllGenresOrderByTitle();
 
     Optional<GenreNameDTO> getByGenre(long id);
+
     Optional<GenreUpdateDTO> getByGenreForUpdate(long id);
 
     List<GenreTransactionDTO> getAllGenre();
@@ -18,5 +19,6 @@ public interface GenreService {
     void delete(GenreNameDTO genreNameDTO);
 
     void save(GenreNameDTO genreNameDTO);
+
     void update(GenreUpdateDTO genreUpdateDTO);
 }

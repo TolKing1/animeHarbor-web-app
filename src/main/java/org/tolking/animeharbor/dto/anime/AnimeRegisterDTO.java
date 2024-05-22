@@ -47,9 +47,8 @@ public class AnimeRegisterDTO extends DTOConverter<Anime, AnimeRegisterDTO> {
         return AnimeRegisterDTO.class;
     }
 
-    public boolean genreIdContains(GenreNameDTO genreDTO){
-        boolean genreFound = this.genre.stream().anyMatch(genreNameDTO -> genreNameDTO.getId() == genreDTO.getId());
-        return genreFound;
+    public boolean genreIdContains(GenreNameDTO genreDTO) {
+        return this.genre.stream().anyMatch(genreNameDTO -> genreNameDTO.getId() == genreDTO.getId());
     }
 
 

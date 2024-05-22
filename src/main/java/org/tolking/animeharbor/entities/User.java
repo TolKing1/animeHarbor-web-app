@@ -16,14 +16,14 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users", schema = "public")
-public class User extends TransactionEntity{
+public class User extends TransactionEntity {
 
     @Column(unique = true, updatable = false)
     @NotBlank(message = "Username: Can't be blank")
     @Size(min = 3, max = 30, message = "Username: Length should be between 3 and 30")
     private String username;
 
-    @Column(unique = true,updatable = false)
+    @Column(unique = true, updatable = false)
     @Email(message = "Email: Enter valid email", flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;
 
@@ -37,7 +37,7 @@ public class User extends TransactionEntity{
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean enabled;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private Image image;
 
     @ManyToMany(fetch = FetchType.EAGER)

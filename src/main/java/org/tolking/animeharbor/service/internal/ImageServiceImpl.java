@@ -34,6 +34,21 @@ public class ImageServiceImpl implements ImageService {
     private final AnimeRepository animeRepository;
     private final ImageRepository imageRepository;
 
+    private static Image createNewIfDefault(Image image, ImageType imageType) {
+        if (image.getFilename().equals(DEFAULT_PROFILE_IMG) || image.getFilename().equals(DEFAULT_ANIME_IMG)) {
+            image = new Image();
+            image.setImageType(imageType);
+        }
+        return image;
+    }
+
+    private static String validateJPG(String mimeType) {
+        if (Objects.equals(mimeType, "jpg")) {
+            mimeType = "jpeg";
+        }
+        return mimeType;
+    }
+
     @Override
     public void saveProfile(MultipartFile file, String username) throws IOFileUploadException, InvalidMimeTypeException {
         Optional<User> optionalUser = userRepository.findByUsernameEquals(username);
@@ -86,14 +101,14 @@ public class ImageServiceImpl implements ImageService {
 
             ByteArrayResource resource = new ByteArrayResource(Base64.getDecoder().decode(imageData.getData()));
 
-            return new ImageDataDto(resource , mimeType);
-        }else {
+            return new ImageDataDto(resource, mimeType);
+        } else {
             throw new FileNotFoundException("Image not found");
         }
     }
 
     @Override
-    public void delete(Image image){
+    public void delete(Image image) {
         imageRepository.delete(image);
     }
 
@@ -105,39 +120,24 @@ public class ImageServiceImpl implements ImageService {
     private String getImageString(MultipartFile multipartFile) throws IOException {
 
         try {
-            byte[] imageBytes = IOUtils.toByteArray( multipartFile.getInputStream());
-            return  Base64.getEncoder().encodeToString(imageBytes);
-        }catch (Exception e) {
+            byte[] imageBytes = IOUtils.toByteArray(multipartFile.getInputStream());
+            return Base64.getEncoder().encodeToString(imageBytes);
+        } catch (Exception e) {
             throw new IOException("Can't read image string");
         }
-    }
-
-    private static Image createNewIfDefault(Image image, ImageType imageType) {
-        if (image.getFilename().equals(DEFAULT_PROFILE_IMG) || image.getFilename().equals(DEFAULT_ANIME_IMG)){
-            image = new Image();
-            image.setImageType(imageType);
-        }
-        return image;
     }
 
     private String getFileExtension(String fileName) {
         return StringUtils.getFilenameExtension(fileName);
     }
 
-    private static String validateJPG(String mimeType) {
-        if (Objects.equals(mimeType, "jpg")) {
-            mimeType = "jpeg";
-        }
-        return mimeType;
-    }
-
     private void isValidFileType(String fileExtension) throws InvalidMimeTypeException {
         try {
-            if (!Arrays.asList(ALLOWED_EXTENSIONS).contains(fileExtension.toLowerCase())){
+            if (!Arrays.asList(ALLOWED_EXTENSIONS).contains(fileExtension.toLowerCase())) {
                 throw new Exception();
             }
-        }catch (Exception e){
-            throw new InvalidMimeTypeException("File type not supported:"+fileExtension);
+        } catch (Exception e) {
+            throw new InvalidMimeTypeException("File type not supported:" + fileExtension);
         }
     }
 }

@@ -17,18 +17,14 @@ import static org.tolking.animeharbor.constant.ControllerConstant.SEARCH_URL;
 @RequiredArgsConstructor
 public class SearchController {
 
-    private final AnimeService animeService;
-
     private static final String SEARCH_VIEW = "search";
-
     private static final String QUERY_ATTR = "query";
     private static final String ANIME_PAGE_ATTR = "animePage";
     private static final String SORT_BY_ATTR = "sortBy";
     private static final String SORT_DIRECTION_ATTR = "sortDirection";
-
     private static final String FORM_NAME_ATTR = "formName";
     private static final String FORM_NAME = "paginate";
-
+    private final AnimeService animeService;
     private final int pageSize = 12;
 
     @GetMapping
@@ -37,7 +33,7 @@ public class SearchController {
                          @RequestParam(defaultValue = "created") String sortBy,
                          @RequestParam(defaultValue = "desc") String sortDirection,
                          Model model) {
-        Page<AnimeDTO> animePage = animeService.searchAnime(query,pageNo,pageSize,sortBy,sortDirection);
+        Page<AnimeDTO> animePage = animeService.searchAnime(query, pageNo, pageSize, sortBy, sortDirection);
 
         model.addAttribute(ANIME_PAGE_ATTR, animePage);
 

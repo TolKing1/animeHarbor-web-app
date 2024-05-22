@@ -52,6 +52,32 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    private static void addOrRemove(boolean isAdding, User user, Roles roles) {
+        if (isAdding) {
+            user.addRole(roles);
+        } else {
+            user.removeRole(roles);
+        }
+    }
+
+    private static void checkRole(boolean status, User user, List<String> role) {
+        if (!user.hasRole(SUPER_ADMIN_ROLE)) {
+            if (role.contains(SUPER_ADMIN_ROLE)) {
+
+                user.setEnabled(status);
+            } else if (role.contains(ADMIN_ROLE)) {
+                if (!user.hasRole(ADMIN_ROLE)) {
+
+                    user.setEnabled(status);
+                }
+            }
+        }
+    }
+
+    private static List<String> getListAuthorities(Authentication auth) {
+        return auth.getAuthorities().stream().map(GrantedAuthority::toString).toList();
+    }
+
     @Override
     public List<UserDTO> getUsers() {
         return userDTOConverter.convertToDtoList(userRepository.getAllBy());
@@ -114,22 +140,14 @@ public class UserServiceImpl implements UserService {
                         }));
     }
 
-    private static void addOrRemove(boolean isAdding, User user, Roles roles) {
-        if (isAdding){
-            user.addRole(roles);
-        }else {
-            user.removeRole(roles);
-        }
-    }
-
     @Override
     public void enableUser(long userId, Authentication auth) {
-        enableOrDisableUser(userId, auth,true);
+        enableOrDisableUser(userId, auth, true);
     }
 
     @Override
     public void disableUser(long userId, Authentication auth) {
-        enableOrDisableUser(userId, auth,false);
+        enableOrDisableUser(userId, auth, false);
     }
 
     private void enableOrDisableUser(long userId, Authentication auth, boolean status) {
@@ -139,24 +157,6 @@ public class UserServiceImpl implements UserService {
                     checkRole(status, user, role);
                     userRepository.save(user);
                 });
-    }
-
-    private static void checkRole(boolean status, User user, List<String> role) {
-        if (!user.hasRole(SUPER_ADMIN_ROLE)){
-            if (role.contains(SUPER_ADMIN_ROLE)){
-
-                user.setEnabled(status);
-            } else if (role.contains(ADMIN_ROLE)){
-                if (!user.hasRole(ADMIN_ROLE)){
-
-                    user.setEnabled(status);
-                }
-            }
-        }
-    }
-
-    private static List<String> getListAuthorities(Authentication auth) {
-        return auth.getAuthorities().stream().map(GrantedAuthority::toString).toList();
     }
 
     @Override

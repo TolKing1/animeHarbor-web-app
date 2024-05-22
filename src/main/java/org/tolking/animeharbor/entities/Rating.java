@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Range;
 @Data
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"anime_id", "user_id"}), schema = "public")
-public class Rating extends TransactionEntity{
+public class Rating extends TransactionEntity {
 
     @ManyToOne
     @JoinColumn
@@ -19,7 +19,7 @@ public class Rating extends TransactionEntity{
     @JoinColumn
     private User user;
 
-    @Range(min = 0,max = 10,message = "Please choose rating between 0 and 10")
+    @Range(min = 0, max = 10, message = "Please choose rating between 0 and 10")
     @JoinColumn
     private int score;
 

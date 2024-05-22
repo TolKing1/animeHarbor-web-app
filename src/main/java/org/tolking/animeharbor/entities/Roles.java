@@ -12,9 +12,9 @@ import java.util.List;
 @Data
 @Entity
 @Table(schema = "public")
-public class Roles extends TransactionEntity{
+public class Roles extends TransactionEntity {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(unique = true, nullable = false)

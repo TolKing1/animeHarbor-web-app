@@ -16,17 +16,26 @@ import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
     List<UserDTO> getUsers();
+
     UserDetailDTO findByUsername(String username);
+
     Optional<User> findByEmail(String email);
+
     User findById(long id);
 
     Optional<User> saveUser(RegisterDto registerDto, Provider provider) throws RoleNotFoundException, FileNotFoundException;
+
     void updateUserPassword(String username, PasswordDto passwordDto);
 
     void enableAdminRole(long userId);
+
     void disableAdminRole(long userId);
+
     void enableUser(long userId, Authentication authentication);
+
     void disableUser(long userId, Authentication authentication);
+
     boolean existsByUsername(String username);
+
     boolean existsByEmail(String email);
 }

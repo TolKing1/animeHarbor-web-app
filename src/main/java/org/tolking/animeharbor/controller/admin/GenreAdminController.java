@@ -47,8 +47,8 @@ public class GenreAdminController {
 
     @PostMapping("/update")
     public String updateGenre(@ModelAttribute(GENRE_ATTR) @Valid GenreUpdateDTO genreUpdateDTO,
-                               BindingResult result,
-                               Model model) {
+                              BindingResult result,
+                              Model model) {
         if (result.hasErrors()) {
             model.addAttribute(GENRE_ATTR, genreUpdateDTO);
             return GENRE_DETAILS_VIEW;
@@ -59,8 +59,8 @@ public class GenreAdminController {
 
     @PostMapping("/create")
     public String createGenre(@ModelAttribute(GENRE_REGISTER_ATTR) @Valid GenreNameDTO genreNameDTO,
-                               BindingResult result,
-                               Model model) {
+                              BindingResult result,
+                              Model model) {
         if (result.hasErrors()) {
             model.addAttribute(GENRE_REGISTER_ATTR, genreNameDTO);
             appendGenresToModel(model);
