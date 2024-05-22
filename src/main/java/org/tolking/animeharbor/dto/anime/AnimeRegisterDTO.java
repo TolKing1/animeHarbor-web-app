@@ -7,9 +7,10 @@ import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import org.tolking.animeharbor.dto.DTOConverter;
+import org.tolking.animeharbor.dto.ImageDTO;
 import org.tolking.animeharbor.dto.genre.GenreNameDTO;
+import org.tolking.animeharbor.dto.studio.StudioAnimeRegisterDTO;
 import org.tolking.animeharbor.entities.Anime;
-import org.tolking.animeharbor.entities.Studio;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,7 +34,8 @@ public class AnimeRegisterDTO extends DTOConverter<Anime, AnimeRegisterDTO> {
     @NotBlank(message = "Status can't be blank")
     private String status;
     private List<GenreNameDTO> genre = new ArrayList<>();
-    private Studio studio;
+    private StudioAnimeRegisterDTO studio;
+    private ImageDTO image;
 
     @Override
     protected Class<Anime> getTypeEntity() {
@@ -44,4 +46,11 @@ public class AnimeRegisterDTO extends DTOConverter<Anime, AnimeRegisterDTO> {
     protected Class<AnimeRegisterDTO> getTypeDTO() {
         return AnimeRegisterDTO.class;
     }
+
+    public boolean genreIdContains(GenreNameDTO genreDTO){
+        boolean genreFound = this.genre.stream().anyMatch(genreNameDTO -> genreNameDTO.getId() == genreDTO.getId());
+        return genreFound;
+    }
+
+
 }

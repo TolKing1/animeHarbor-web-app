@@ -54,8 +54,8 @@
                     <td th:text="${genre.id}"></td>
                     <td><a th:href="@{/admin/genre/{id}(id = ${genre.id})}" th:text="${genre.title}"></a></td>
                     <td th:text="${genre.description}">Description</td>
-                    <td th:text="${#temporals.format(genre.created,'dd-MM-yyyy HH:mm')}">Created At</td>
-                    <td th:text="${#temporals.format(genre.updated,'dd-MM-yyyy HH:mm')}">Updated At</td>
+                    <td th:text="${#temporals.format(genre.created, 'yyyy-MM-dd')}">Created At</td>
+                    <td th:text="${#temporals.format(genre.updated, 'yyyy-MM-dd')}">Updated At</td>
                 </tr>
                 </tbody>
                 <tfoot>

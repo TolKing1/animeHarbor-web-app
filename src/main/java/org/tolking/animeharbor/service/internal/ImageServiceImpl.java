@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
+import static org.tolking.animeharbor.service.seeder.ImageSeeder.DEFAULT_ANIME_IMG;
 import static org.tolking.animeharbor.service.seeder.ImageSeeder.DEFAULT_PROFILE_IMG;
 
 @Service
@@ -39,7 +40,7 @@ public class ImageServiceImpl implements ImageService {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            Image image = processImageUpload(file, user.getImage());
+            Image image = processImageUpload(file, user.getImage(), ImageType.PROFILE);
             user.setImage(image);
             userRepository.save(user);
         }
@@ -51,18 +52,18 @@ public class ImageServiceImpl implements ImageService {
 
         if (optionalAnime.isPresent()) {
             Anime anime = optionalAnime.get();
-            Image image = processImageUpload(file, anime.getImage());
+            Image image = processImageUpload(file, anime.getImage(), ImageType.ANIME);
             anime.setImage(image);
             animeRepository.save(anime);
         }
     }
 
-    private Image processImageUpload(MultipartFile file, Image existingImage) throws IOFileUploadException, InvalidMimeTypeException {
+    private Image processImageUpload(MultipartFile file, Image existingImage, ImageType imageType) throws IOFileUploadException, InvalidMimeTypeException {
         String extension = getFileExtension(file.getOriginalFilename());
         isValidFileType(extension);
         extension = validateJPG(extension);
 
-        existingImage = createNewIfDefault(existingImage);
+        existingImage = createNewIfDefault(existingImage, imageType);
 
         try {
             existingImage.setData(getImageString(file));
@@ -92,6 +93,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public void delete(Image image){
+        imageRepository.delete(image);
+    }
+
+    @Override
     public Optional<Image> findImageByName(String name) {
         return imageRepository.findByFilename(name);
     }
@@ -106,10 +112,10 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    private static Image createNewIfDefault(Image image) {
-        if (image.getFilename().equals(DEFAULT_PROFILE_IMG)){
+    private static Image createNewIfDefault(Image image, ImageType imageType) {
+        if (image.getFilename().equals(DEFAULT_PROFILE_IMG) || image.getFilename().equals(DEFAULT_ANIME_IMG)){
             image = new Image();
-            image.setImageType(ImageType.PROFILE);
+            image.setImageType(imageType);
         }
         return image;
     }

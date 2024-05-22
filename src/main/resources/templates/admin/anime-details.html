@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/general :: common_header(~{::title})}">
+    <title>Edit genre</title>>
+</head>
+
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header" th:replace="~{fragments/general :: header}">
+</header>
+<!-- Header End -->
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a th:href="@{/}"><i class="fa fa-home"></i>Home</a>
+                    <a th:href="@{/admin/anime}">Admin Anime</a>
+                    <span th:text="${anime.title}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Profile Form Section Begin -->
+<section class="profile-form p-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="section-title">
+                    <h4>Update Anime: <span th:text="${anime.title}"></span></h4>
+                </div>
+                <div class="row justify-content-center">
+
+                    <!-- Anime Form -->
+                    <form th:action="@{/admin/anime/update}"
+                          th:method="post" th:object="${anime}" class="col-lg-12 col-md-12 col-sm-12 mb-4" id="genreForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label class="text-white" for="name">ID</label>
+                            <input th:field="*{id}" class="form-control" readonly>
+                            <label class="text-white" for="name">Title</label>
+                            <input th:field="*{title}" class="form-control" id="name"  type="text" placeholder="Enter genre title">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="description">Description</label>
+                            <textarea class="form-control" id="description" maxlength="200"
+                                      minlength="3" placeholder="Describe description"
+                                      th:field="*{description}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="date">Released date</label>
+                            <input th:field="*{date}" class="form-control" id="date"  type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="director">Director name</label>
+                            <input th:field="*{director}" class="form-control" id="director"  type="text" placeholder="Enter director name" required>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-6">
+                                <label class="text-white" for="type"> Type</label>
+                                <select th:field="*{type}" id="type" required>
+                                    <option th:each="type : ${typeArray}"
+                                            th:text="${type.name}"
+                                            th:value="${type.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="text-white" for="status"> Status</label>
+                                <select th:field="*{status}" id="status" required>
+                                    <option th:each="status : ${statusArray}"
+                                            th:text="${status.name}"
+                                            th:value="${status.name}"
+                                            th:selected="${anime.status.equals(status.name())}"></option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-6">
+                                <label class="text-white" for="studios"> Studio</label>
+                                <select th:field="*{studio}" id="studios" required>
+                                    <option th:each="studio : ${studioList}"
+                                            th:selected="${studio.id == anime.studio.id}"
+                                            th:text="${studio.name}"
+                                            th:value="${studio.id}"></option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-danger m-2" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    Genres
+                                </button>
+                            </div>
+                            <div class="collapse col-12" id="collapseExample">
+                                <div class="card card-body">
+                                    <div class="row">
+                                        <div class="col-6 form-check" th:each="genreProvided : ${genreList}">
+                                            <input th:type="checkbox" th:field="*{genre}"
+                                                   th:value="${genreProvided.id}"
+                                                   th:attr="checked=${anime.genreIdContains(genreProvided)} ? 'checked'"
+                                                   th:id="${'genre-'+ genreProvided.id}"  class="form-check-input">
+                                                    <!-- thymeleaf can't check value (also tried with th:checked)-->
+
+                                            <label class="form-check-label text-secondary"
+                                                   th:for="${'genre-'+genreProvided.id}"
+                                                   th:text="${genreProvided.title}">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-6 col-md-12">
+                                <label class="text-white" for="anime-picture">Anime Picture</label><br>
+                                <input accept="image/png, image/jpeg, image/jpg" class="form-control-file" id="anime-picture"
+                                       th:class="text-primary"
+                                       th:name="picture"
+                                       type="file">
+                                <small class="text-danger font-italic" th:if="${pictureError}"
+                                       th:text="${pictureError}"></small>
+                            </div>
+                            <div class="col-6 col-md-12">
+                                <h4 class="text-white">Your current picture:</h4><br>
+                                <img alt="Profile Picture" class="p-1 img-fluid"
+                                     th:src="@{/images/anime/{id} (id = ${anime.image.id})}" >
+                            </div>
+                        </div>
+
+                        <button class="btn btn-danger" type="submit">Update</button>
+                        <button class="btn btn-warning" form="delete" type="submit">Delete
+                        </button>
+                    </form>
+
+                    <form id="delete" th:action="@{/admin/anime/delete}"
+                          th:method="POST"
+                          th:object="${anime}">
+                        <input th:field="*{id}" type="hidden">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Profile Form Section End -->
+
+
+<!-- Footer Section Begin -->
+<footer class="footer" th:replace="~{fragments/general :: footer}"></footer>
+<!-- Footer Section End -->
+
+<!-- Search model Begin -->
+<div class="search-model" th:replace="~{fragments/elements :: search}"></div>
+<!-- Search model end -->
+
+<!-- Toast Begin -->
+<div th:replace="~{fragments/elements :: toastCreate}"></div>
+<!-- Toast end -->
+
+<!-- Toast Begin -->
+<div th:replace="~{fragments/elements :: toastLogout}"></div>
+<!-- Toast end -->
+
+<div th:replace="~{fragments/general :: scripts}"></div>
+
+
+</body>
+
+</html>

@@ -41,21 +41,25 @@ public class Anime extends TransactionEntity{
     private AnimeStatus status;
 
 
-    @OneToMany(mappedBy = "anime", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "anime", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Views> views = new ArrayList<>();
 
 
     @ManyToMany(mappedBy = "animeList", fetch = FetchType.LAZY)
     private List<Genre> genre = new ArrayList<>();
 
-    @OneToMany(mappedBy = "anime", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "anime", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Rating> ratings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "anime", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
+
 
     @ManyToOne
     @JoinColumn
     private Studio studio;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @NotNull
     private Image image;
 
@@ -73,4 +77,21 @@ public class Anime extends TransactionEntity{
     public double getAverageRating() {
         return ratings.stream().mapToDouble(Rating::getScore).average().orElse(0.0);
     }
+
+    @PreRemove
+    private void removeGenreAssociations() {
+        for (Genre genre: this.genre) {
+            genre.getAnimeList().remove(this);
+        }
+    }
+
+    @PrePersist
+    private void addAssociations() {
+        studio.getAnimeList().add(this);
+
+        for (Genre genre: this.genre) {
+            genre.getAnimeList().add(this);
+        }
+    }
+
 }

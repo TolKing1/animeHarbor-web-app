@@ -24,7 +24,10 @@ public class StudioServiceImpl implements StudioService {
         Optional<Studio> studioOptional = studioRepository.findById(id);
         return studioOptional.map(dtoConverter::convertToDto);
     }
-
+    @Override
+    public Optional<Studio> findById(long id) {
+        return studioRepository.findById(id);
+    }
     @Override
     public List<StudioDTO> getAllStudios() {
         return dtoConverter.convertToDtoList(studioRepository.getAllBy());

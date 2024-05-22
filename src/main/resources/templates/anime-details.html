@@ -69,7 +69,7 @@
                                         </li>
                                         <li>
                                             <span>Release date:</span>
-                                            <b th:text="${#temporals.formatISO(anime.date)}"></b>
+                                            <b th:text="${#temporals.format(anime.date,'YYYY-MM-dd')}"></b>
                                         </li>
                                         <li>
                                             <span>Status:</span>

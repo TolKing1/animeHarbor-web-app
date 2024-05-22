@@ -11,15 +11,16 @@ import org.tolking.animeharbor.dto.anime.AnimeAdminPageDTO;
 import org.tolking.animeharbor.dto.anime.AnimeDTO;
 import org.tolking.animeharbor.dto.anime.AnimeRegisterDTO;
 import org.tolking.animeharbor.dto.genre.GenreNameDTO;
+import org.tolking.animeharbor.dto.studio.StudioAnimeRegisterDTO;
 import org.tolking.animeharbor.entities.Anime;
 import org.tolking.animeharbor.entities.Genre;
 import org.tolking.animeharbor.entities.Image;
+import org.tolking.animeharbor.entities.Studio;
 import org.tolking.animeharbor.entities.enums.AnimeStatus;
 import org.tolking.animeharbor.entities.enums.AnimeType;
 import org.tolking.animeharbor.exception.GenreNotFoundException;
 import org.tolking.animeharbor.repositories.AnimeRepository;
 import org.tolking.animeharbor.repositories.GenreRepository;
-import org.tolking.animeharbor.repositories.StudioRepository;
 import org.tolking.animeharbor.service.AnimeService;
 import org.tolking.animeharbor.service.ImageService;
 
@@ -35,12 +36,14 @@ import static org.tolking.animeharbor.service.seeder.ImageSeeder.DEFAULT_PROFILE
 @RequiredArgsConstructor
 public class AnimeServiceImpl implements AnimeService {
     private final AnimeRepository animeRepository;
-    private final StudioRepository studioRepository;
     private final GenreRepository genreRepository;
     private final ImageService imageService;
+
     private final DTOConverter<Anime, AnimeDTO> dtoConverter;
     private final DTOConverter<Anime, AnimeAdminPageDTO> adminPageDTOConverter;
     private final DTOConverter<Anime, AnimeRegisterDTO> registerDTOConverter;
+    private final DTOConverter<Studio, StudioAnimeRegisterDTO> studioDTOConverter;
+    private final DTOConverter<Genre, GenreNameDTO> genreNameDTOConverter;
 
     private static Pageable getPageable(int pageNo, int pageSize, String sortField, String sortDirection) {
         return PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
@@ -48,9 +51,19 @@ public class AnimeServiceImpl implements AnimeService {
 
     @Override
     public Optional<AnimeDTO> getAnimeById(long id) {
-        Optional<Anime> animeOptional = animeRepository.findById(id);
+        Optional<Anime> animeOptional = getAnimeOptional(id);
 
         return animeOptional.map(dtoConverter::convertToDto);
+    }
+
+    @Override
+    public Optional<AnimeRegisterDTO> getAnimeByIdForAdmin(long id) {
+        Optional<Anime> animeOptional = getAnimeOptional(id);
+        return animeOptional.map(registerDTOConverter::convertToDto);
+    }
+
+    private Optional<Anime> getAnimeOptional(long id) {
+        return animeRepository.findById(id);
     }
 
     @Override
@@ -61,21 +74,24 @@ public class AnimeServiceImpl implements AnimeService {
     }
 
     private void updateExistingAnime(Anime anime, AnimeRegisterDTO animeDTO) {
-        long studioId = animeDTO.getStudio().getId();
-        studioRepository.findById(studioId).ifPresent(studio -> {
-            List<Genre> genreList = getGenreList(animeDTO.getGenre(), anime);
+        //Remove all association
+        for (var genre : anime.getGenre()){
+            genre.getAnimeList().remove(anime);
+            genreRepository.save(genre);
+        }
 
-            anime.setTitle(animeDTO.getTitle());
-            anime.setDescription(animeDTO.getDescription());
-            anime.setType(AnimeType.valueOf(animeDTO.getType()));
-            anime.setDate(animeDTO.getDate());
-            anime.setDirector(animeDTO.getDirector());
-            anime.setStatus(AnimeStatus.valueOf(animeDTO.getStatus()));
-            anime.setGenre(genreList);
-            anime.setStudio(studio);
+        List<Genre> genreList = getGenreList(animeDTO.getGenre(), anime);
 
-            animeRepository.save(anime);
-        });
+        anime.setTitle(animeDTO.getTitle());
+        anime.setDescription(animeDTO.getDescription());
+        anime.setType(AnimeType.valueOf(animeDTO.getType()));
+        anime.setDate(animeDTO.getDate());
+        anime.setDirector(animeDTO.getDirector());
+        anime.setStatus(AnimeStatus.valueOf(animeDTO.getStatus()));
+        anime.setGenre(genreList);
+        anime.setStudio(studioDTOConverter.convertToEntity(animeDTO.getStudio()));
+
+        animeRepository.save(anime);
     }
 
     private void saveNewAnime(AnimeRegisterDTO animeDTO) {
@@ -83,8 +99,8 @@ public class AnimeServiceImpl implements AnimeService {
             Anime anime = registerDTOConverter.convertToEntity(animeDTO);
             Image image = imageService.findImageByName(DEFAULT_ANIME_IMG)
                     .orElseThrow(() -> new FileNotFoundException("Image Not Found: " + DEFAULT_PROFILE_IMG));
-
-            anime.setGenre(getGenreList(animeDTO.getGenre(), anime));
+            anime.setStudio(studioDTOConverter.convertToEntity(animeDTO.getStudio()));
+            anime.setGenre(genreNameDTOConverter.convertToEntityList(animeDTO.getGenre()));
             anime.setImage(image);
             animeRepository.save(anime);
         }catch (FileNotFoundException e){
@@ -94,17 +110,33 @@ public class AnimeServiceImpl implements AnimeService {
 
     private List<Genre> getGenreList(List<GenreNameDTO> genreDTOSet, Anime anime) {
         List<Genre> genreList = new ArrayList<>();
+
         for (GenreNameDTO genreDTO : genreDTOSet) {
             try {
                 Genre genre = genreRepository.findById(genreDTO.getId())
                         .orElseThrow(() -> new GenreNotFoundException("Can't find genre by id:" + genreDTO.getId()));
-                genre.getAnimeList().add(anime);
+                genre.getAnimeList().add(anime); //In m2m we have to add related entity in both entities
                 genreList.add(genre);
             } catch (GenreNotFoundException ignored) {
             }
 
         }
         return genreList;
+    }
+
+    @Override
+    public void deleteAnime(AnimeRegisterDTO animeDTO) {
+       animeRepository.findById(animeDTO.getId())
+               .ifPresent(anime -> {
+                   Image image = anime.getImage();
+                   String imageName = image.getFilename();
+
+                   animeRepository.delete(anime);
+
+                   if (!imageName.equalsIgnoreCase(DEFAULT_ANIME_IMG)) {
+                       imageService.delete(image);
+                   }
+               });
     }
 
     @Override

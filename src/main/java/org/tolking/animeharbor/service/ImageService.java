@@ -13,6 +13,7 @@ public interface ImageService {
   void saveProfile(MultipartFile file, String username) throws IOFileUploadException, InvalidMimeTypeException;
   void saveAnimePic(MultipartFile file, long animeId) throws IOFileUploadException, InvalidMimeTypeException;
   ImageDataDto load(long id) throws FileNotFoundException;
+  void delete(Image image);
 
   Optional<Image> findImageByName(String name);
 

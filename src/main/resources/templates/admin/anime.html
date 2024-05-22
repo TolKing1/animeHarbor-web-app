@@ -65,7 +65,7 @@
                 <tbody>
                 <tr th:each="anime : ${animeList}">
                     <td th:text="${anime.id}"></td>
-                    <td th:text="${anime.title}"></td>
+                    <td><a th:text="${anime.title}" th:href="@{anime/{id}(id = ${anime.id})}"></a></td>
                     <td th:text="${anime.type}"></td>
                     <td th:text="${anime.director}"></td>
                     <td th:text="${anime.status}"></td>
@@ -80,8 +80,8 @@
                     <td th:text="${#numbers.formatInteger(anime.viewCount       ,1,'COMMA')}"></td>
                     <td th:text="${#numbers.formatDecimal(anime.averageRating   ,1,'COMMA',1,'POINT') + ' | ' + #numbers.formatInteger(anime.ratingCount,1,'COMMA')}"></td>
                     <td th:text="${#temporals.format(anime.date,    'yyyy-MM-dd')}" class="keep-word"></td>
-                    <td th:text="${#temporals.format(anime.created, 'yyyy-MM-dd')}" class="keep-word"></td>
-                    <td th:text="${#temporals.format(anime.updated, 'yyyy-MM-dd')}" class="keep-word"></td>
+                    <td th:text="${#temporals.format(anime.created, 'yyyy-MM-dd HH:mm')}" class="keep-word"></td>
+                    <td th:text="${#temporals.format(anime.updated, 'yyyy-MM-dd HH:mm')}" class="keep-word"></td>
                 </tr>
                 </tbody>
                 <tfoot>
@@ -167,18 +167,6 @@
                     <div class="form-group">
 
                     </div>
-<!--                    <div class="form-group">-->
-<!--        -->
-<!--                        <label class="text-white" for="genres"> Genres</label>-->
-<!--                        <select th:field="*{genre}" id="genres" multiple>-->
-<!--                            <option th:each="genre : ${genreList}"-->
-<!--                                    th:text="${genre.title}"-->
-<!--                                    th:value="${genre.id}"></option>-->
-<!--                        </select>-->
-<!--                        <small class="font-italic" th:errorclass="text-danger"-->
-<!--                               th:errors="*{genre}" th:if="${#fields.hasErrors('genre')}"></small>-->
-<!--                    </div>-->
-
                     <div class="form-group row">
                         <div class="col-6">
                             <label class="text-white" for="studio"> Studio</label>

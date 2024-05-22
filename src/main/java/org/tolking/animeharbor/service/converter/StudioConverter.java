@@ -4,29 +4,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import org.tolking.animeharbor.dto.DTOConverter;
-import org.tolking.animeharbor.dto.studio.StudioDTO;
-import org.tolking.animeharbor.entities.Studio;
-import org.tolking.animeharbor.exception.StudioNotFoundException;
-import org.tolking.animeharbor.repositories.StudioRepository;
+import org.tolking.animeharbor.dto.studio.StudioAnimeRegisterDTO;
 
 @Component
 @RequiredArgsConstructor
-public class StudioConverter implements Converter<String, Studio> {
-    private final StudioRepository studioRepository;
-    private final DTOConverter<Studio, StudioDTO> dtoConverter;
+public class StudioConverter implements Converter<String, StudioAnimeRegisterDTO> {
+
 
     @SneakyThrows
     @Override
-    public Studio convert(String id) {
-        Long studioId = null;
+    public StudioAnimeRegisterDTO convert(String id) {
         try {
-            studioId = Long.valueOf(id);
+            StudioAnimeRegisterDTO studioDTO = new StudioAnimeRegisterDTO();
+            long studioId = Long.parseLong(id);
+            studioDTO.setId(studioId);
+
+            return studioDTO;
         } catch (NumberFormatException e) {
             throw new RuntimeException(e);
         }
-        Long finalStudioId = studioId;
 
-        return studioRepository.findById(studioId).orElseThrow( ()->  new StudioNotFoundException("Can't find Studio by id:"+ finalStudioId));
     }
 }

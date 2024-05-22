@@ -54,8 +54,8 @@
                     <td th:text="${studio.id}"></td>
                     <td><a th:href="@{/admin/studio/{id}(id = ${studio.id})}" th:text="${studio.name}"></a></td>
                     <td th:text="${studio.description}">Description</td>
-                    <td th:text="${#temporals.format(studio.created,'dd-MM-yyyy HH:mm')}">Created At</td>
-                    <td th:text="${#temporals.format(studio.updated,'dd-MM-yyyy HH:mm')}">Updated At</td>
+                    <td th:text="${#temporals.format(studio.created,'yyyy-MM-dd HH:mm')}">Created At</td>
+                    <td th:text="${#temporals.format(studio.updated,'yyyy-MM-dd HH:mm')}">Updated At</td>
                 </tr>
                 </tbody>
                 <tfoot>

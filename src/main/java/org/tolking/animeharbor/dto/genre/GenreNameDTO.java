@@ -31,4 +31,5 @@ public class GenreNameDTO extends DTOConverter<Genre, GenreNameDTO> {
     protected Class<GenreNameDTO> getTypeDTO() {
         return GenreNameDTO.class;
     }
+
 }
