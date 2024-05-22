@@ -94,4 +94,13 @@ public class Anime extends TransactionEntity{
         }
     }
 
+    @PreUpdate
+    private void updateAssociations() {
+        studio.getAnimeList().add(this);
+
+        for (Genre genre: this.genre) {
+            genre.getAnimeList().add(this);
+        }
+    }
+
 }

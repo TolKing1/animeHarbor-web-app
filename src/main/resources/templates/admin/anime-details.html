@@ -66,7 +66,7 @@
                             <input th:field="*{director}" class="form-control" id="director"  type="text" placeholder="Enter director name" required>
                         </div>
                         <div class="form-group row">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <label class="text-white" for="type"> Type</label>
                                 <select th:field="*{type}" id="type" required>
                                     <option th:each="type : ${typeArray}"
@@ -74,7 +74,7 @@
                                             th:value="${type.name}"></option>
                                 </select>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <label class="text-white" for="status"> Status</label>
                                 <select th:field="*{status}" id="status" required>
                                     <option th:each="status : ${statusArray}"
@@ -86,8 +86,8 @@
 
                         </div>
                         <div class="form-group row">
-                            <div class="col-6">
-                                <label class="text-white" for="studios"> Studio</label>
+                            <div class="col-12 col-md-6">
+                                <label class="text-white" for="studios"> Studio: <span th:text="${anime.studio.name}"></span></label>
                                 <select th:field="*{studio}" id="studios" required>
                                     <option th:each="studio : ${studioList}"
                                             th:selected="${studio.id == anime.studio.id}"
@@ -103,8 +103,17 @@
                             <div class="collapse col-12" id="collapseExample">
                                 <div class="card card-body">
                                     <div class="row">
-                                        <div class="col-6 form-check" th:each="genreProvided : ${genreList}">
-                                            <input th:type="checkbox" th:field="*{genre}"
+                                        <div class="col-12">
+                                            <h3 class="text-info">Current selected genres:</h3>
+                                            <ul class="p-2">
+                                                <li th:each="genre : ${anime.genre}" th:text="${genre.title}" class="text-secondary"></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-12">
+                                            <h3 class="text-danger">Select desired genres:</h3>
+                                        </div>
+                                        <div class="col-12 col-md-6 form-check" th:each="genreProvided : ${genreList}">
+                                            <input type="checkbox" th:type="checkbox" th:field="*{genre}"
                                                    th:value="${genreProvided.id}"
                                                    th:attr="checked=${anime.genreIdContains(genreProvided)} ? 'checked'"
                                                    th:id="${'genre-'+ genreProvided.id}"  class="form-check-input">
@@ -130,7 +139,7 @@
                                        th:text="${pictureError}"></small>
                             </div>
                             <div class="col-6 col-md-12">
-                                <h4 class="text-white">Your current picture:</h4><br>
+                                <h4 class="text-white">Current anime picture:</h4><br>
                                 <img alt="Profile Picture" class="p-1 img-fluid"
                                      th:src="@{/images/anime/{id} (id = ${anime.image.id})}" >
                             </div>

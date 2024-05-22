@@ -18,7 +18,6 @@ import org.tolking.animeharbor.entities.Image;
 import org.tolking.animeharbor.entities.Studio;
 import org.tolking.animeharbor.entities.enums.AnimeStatus;
 import org.tolking.animeharbor.entities.enums.AnimeType;
-import org.tolking.animeharbor.exception.GenreNotFoundException;
 import org.tolking.animeharbor.repositories.AnimeRepository;
 import org.tolking.animeharbor.repositories.GenreRepository;
 import org.tolking.animeharbor.service.AnimeService;
@@ -100,7 +99,7 @@ public class AnimeServiceImpl implements AnimeService {
             Image image = imageService.findImageByName(DEFAULT_ANIME_IMG)
                     .orElseThrow(() -> new FileNotFoundException("Image Not Found: " + DEFAULT_PROFILE_IMG));
             anime.setStudio(studioDTOConverter.convertToEntity(animeDTO.getStudio()));
-            anime.setGenre(genreNameDTOConverter.convertToEntityList(animeDTO.getGenre()));
+            anime.setGenre(getGenreList(animeDTO.getGenre(), anime));
             anime.setImage(image);
             animeRepository.save(anime);
         }catch (FileNotFoundException e){
@@ -112,14 +111,12 @@ public class AnimeServiceImpl implements AnimeService {
         List<Genre> genreList = new ArrayList<>();
 
         for (GenreNameDTO genreDTO : genreDTOSet) {
-            try {
-                Genre genre = genreRepository.findById(genreDTO.getId())
-                        .orElseThrow(() -> new GenreNotFoundException("Can't find genre by id:" + genreDTO.getId()));
-                genre.getAnimeList().add(anime); //In m2m we have to add related entity in both entities
-                genreList.add(genre);
-            } catch (GenreNotFoundException ignored) {
-            }
+            Optional<Genre> optionalGenre = genreRepository.findById(genreDTO.getId());
 
+            if (optionalGenre.isPresent()) {
+                Genre genre = optionalGenre.get();
+                genreList.add(genre);
+            }
         }
         return genreList;
     }
