@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.tolking.animeharbor.dto.studio.StudioDTO;
+import org.tolking.animeharbor.dto.studio.StudioUpdateDTO;
 import org.tolking.animeharbor.service.StudioService;
 
 import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_STUDIO_URL;
@@ -35,7 +36,7 @@ public class StudioAdminController {
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") long id, Model model) {
-        return studioService.getStudioById(id)
+        return studioService.getStudioByIdForUpdate(id)
                 .map(studio -> {
                     model.addAttribute(STUDIO_ATTR, studio);
                     model.addAttribute(STUDIO_IS_EMPTY_ATTR, studio.isEmptyAnimeList());
@@ -45,14 +46,14 @@ public class StudioAdminController {
     }
 
     @PostMapping("/update")
-    public String updateStudio(@ModelAttribute(STUDIO_ATTR) @Valid StudioDTO studioDTO,
+    public String updateStudio(@ModelAttribute(STUDIO_ATTR) @Valid StudioUpdateDTO studioDTO,
                                BindingResult result,
                                Model model) {
         if (result.hasErrors()) {
             model.addAttribute(STUDIO_ATTR, studioDTO);
             return STUDIO_DETAILS_VIEW;
         }
-        studioService.updateOrSave(studioDTO);
+        studioService.update(studioDTO);
         return "redirect:" + studioDTO.getId();
     }
 
@@ -65,7 +66,7 @@ public class StudioAdminController {
             appendStudiosToModel(model);
             return STUDIO_VIEW;
         }
-        studioService.updateOrSave(studioDTO);
+        studioService.save(studioDTO);
         return "redirect:" + ADMIN_STUDIO_URL;
     }
 

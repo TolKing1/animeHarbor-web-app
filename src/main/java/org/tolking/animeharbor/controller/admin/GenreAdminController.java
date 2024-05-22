@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.tolking.animeharbor.dto.genre.GenreNameDTO;
+import org.tolking.animeharbor.dto.genre.GenreUpdateDTO;
 import org.tolking.animeharbor.service.GenreService;
 
 import static org.tolking.animeharbor.constant.ControllerConstant.ADMIN_GENRE_URL;
@@ -35,7 +36,7 @@ public class GenreAdminController {
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") long id, Model model) {
-        return genreService.getByGenre(id)
+        return genreService.getByGenreForUpdate(id)
                 .map(genre -> {
                     model.addAttribute(GENRE_ATTR, genre);
                     model.addAttribute(GENRE_IS_EMPTY_ATTR, genre.isEmpty());
@@ -45,15 +46,15 @@ public class GenreAdminController {
     }
 
     @PostMapping("/update")
-    public String updateGenre(@ModelAttribute(GENRE_ATTR) @Valid GenreNameDTO genreNameDTO,
+    public String updateGenre(@ModelAttribute(GENRE_ATTR) @Valid GenreUpdateDTO genreUpdateDTO,
                                BindingResult result,
                                Model model) {
         if (result.hasErrors()) {
-            model.addAttribute(GENRE_ATTR, genreNameDTO);
+            model.addAttribute(GENRE_ATTR, genreUpdateDTO);
             return GENRE_DETAILS_VIEW;
         }
-        genreService.save(genreNameDTO);
-        return "redirect:" + genreNameDTO.getId();
+        genreService.update(genreUpdateDTO);
+        return "redirect:" + genreUpdateDTO.getId();
     }
 
     @PostMapping("/create")

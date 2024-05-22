@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.dto.studio.StudioAnimeRegisterDTO;
 import org.tolking.animeharbor.dto.studio.StudioDTO;
+import org.tolking.animeharbor.dto.studio.StudioUpdateDTO;
 import org.tolking.animeharbor.entities.Studio;
 import org.tolking.animeharbor.repositories.StudioRepository;
 import org.tolking.animeharbor.service.StudioService;
@@ -18,12 +19,20 @@ public class StudioServiceImpl implements StudioService {
     private final StudioRepository studioRepository;
     private final DTOConverter<Studio, StudioDTO> dtoConverter;
     private final DTOConverter<Studio, StudioAnimeRegisterDTO> animeRegisterDTOConverter;
+    private final DTOConverter<Studio, StudioUpdateDTO> updateDTOConverter;
 
     @Override
     public Optional<StudioDTO> getStudioById(long id) {
         Optional<Studio> studioOptional = studioRepository.findById(id);
         return studioOptional.map(dtoConverter::convertToDto);
     }
+
+    @Override
+    public Optional<StudioUpdateDTO> getStudioByIdForUpdate(long id) {
+        Optional<Studio> studioOptional = studioRepository.findById(id);
+        return studioOptional.map(updateDTOConverter::convertToDto);
+    }
+
     @Override
     public Optional<Studio> findById(long id) {
         return studioRepository.findById(id);
@@ -39,16 +48,19 @@ public class StudioServiceImpl implements StudioService {
     }
 
     @Override
-    public void updateOrSave(StudioDTO studioDTO) {
+    public void update(StudioUpdateDTO studioDTO) {
         studioRepository.findById(studioDTO.getId())
-                .ifPresentOrElse(studio -> {
+                .ifPresent(studio -> {
                             studio.setName(studioDTO.getName());
                             studio.setDescription(studioDTO.getDescription());
 
                             studioRepository.save(studio);
-                        },
-                        () -> studioRepository.save(dtoConverter.convertToEntity(studioDTO))
+                        }
                 );
+    }
+    @Override
+    public void save(StudioDTO studioDTO) {
+        studioRepository.save(dtoConverter.convertToEntity(studioDTO));
     }
 
     @Override

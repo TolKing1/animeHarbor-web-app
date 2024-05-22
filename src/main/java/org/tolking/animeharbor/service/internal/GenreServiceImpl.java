@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.tolking.animeharbor.dto.DTOConverter;
 import org.tolking.animeharbor.dto.genre.GenreNameDTO;
 import org.tolking.animeharbor.dto.genre.GenreTransactionDTO;
+import org.tolking.animeharbor.dto.genre.GenreUpdateDTO;
 import org.tolking.animeharbor.entities.Genre;
 import org.tolking.animeharbor.repositories.GenreRepository;
 import org.tolking.animeharbor.service.GenreService;
@@ -18,6 +19,7 @@ public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
     private final DTOConverter<Genre, GenreNameDTO> dtoConverterWithoutList;
     private final DTOConverter<Genre, GenreTransactionDTO> dtoConverterTransaction;
+    private final DTOConverter<Genre, GenreUpdateDTO> genreUpdateDTOConverter;
 
     @Override
     public List<GenreNameDTO> getAllGenresOrderByTitle() {
@@ -29,6 +31,12 @@ public class GenreServiceImpl implements GenreService {
     public Optional<GenreNameDTO> getByGenre(long id) {
         Optional<Genre> genreOptional = genreRepository.findById(id);
         return genreOptional.map(dtoConverterWithoutList::convertToDto);
+    }
+
+    @Override
+    public Optional<GenreUpdateDTO> getByGenreForUpdate(long id) {
+        Optional<Genre> genreOptional = genreRepository.findById(id);
+        return genreOptional.map(genreUpdateDTOConverter::convertToDto);
     }
 
     @Override
@@ -44,15 +52,19 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public void save(GenreNameDTO genreNameDTO) {
-        genreRepository.findById(genreNameDTO.getId())
-                .ifPresentOrElse(genre -> {
-                            genre.setTitle(genreNameDTO.getTitle());
-                            genre.setDescription(genreNameDTO.getDescription());
+        genreRepository.save(dtoConverterWithoutList.convertToEntity(genreNameDTO));
+
+    }
+
+    @Override
+    public void update(GenreUpdateDTO genreUpdateDTO) {
+        genreRepository.findById(genreUpdateDTO.getId())
+                .ifPresent(genre -> {
+                            genre.setTitle(genreUpdateDTO.getTitle());
+                            genre.setDescription(genreUpdateDTO.getDescription());
 
                             genreRepository.save(genre);
-                        },
-                        () -> genreRepository.save(dtoConverterWithoutList.convertToEntity(genreNameDTO))
-                );
+                        });
 
     }
 
