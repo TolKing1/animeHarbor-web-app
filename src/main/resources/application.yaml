@@ -12,9 +12,9 @@ logging:
 
 spring:
   datasource:
-    url:  jdbc:postgresql:${DATABASE_URL}
-    username: ${USERNAME}
-    password: ${PASSWORD}
+    url:  jdbc:postgresql:${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jooq:
     sql-dialect:  org.hibernate.dialect.PostgreSQLDialect
   jpa:
@@ -37,3 +37,18 @@ spring:
               - email
               - profile
 
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url:  jdbc:postgresql://localhost:5432/harbor-test
+    username: postgres
+    password: 123
+  jooq:
+    sql-dialect:  org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    hibernate:
+      ddl-auto: create
