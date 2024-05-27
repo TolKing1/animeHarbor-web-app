@@ -466,6 +466,7 @@ ol {
 .header__right li .dropdown {
 	position: absolute;
 	top: 82px;
+	left: 0;
 	width: 150px;
 	background: #ffffff;
 	text-align: left;
