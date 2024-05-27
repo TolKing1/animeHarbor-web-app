@@ -72,11 +72,7 @@ public class AnimeServiceImpl implements AnimeService {
     }
 
     private void updateExistingAnime(Anime anime, AnimeRegisterDTO animeDTO) {
-        //Remove all association
-        for (var genre : anime.getGenre()) {
-            genre.getAnimeList().remove(anime);
-            genreRepository.save(genre);
-        }
+        removeGenreAssociation(anime);
 
         List<Genre> genreList = getGenreList(animeDTO.getGenre());
 
@@ -90,6 +86,12 @@ public class AnimeServiceImpl implements AnimeService {
         anime.setStudio(studioDTOConverter.convertToEntity(animeDTO.getStudio()));
 
         animeRepository.save(anime);
+    }
+
+    private static void removeGenreAssociation(Anime anime) {
+        anime.getGenre().forEach(genre -> {
+            genre.getAnimeList().remove(anime);
+        });
     }
 
     private void saveNewAnime(AnimeRegisterDTO animeDTO) {
