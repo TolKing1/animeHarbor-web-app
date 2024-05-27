@@ -88,9 +88,10 @@ public class AnimeServiceImpl implements AnimeService {
         animeRepository.save(anime);
     }
 
-    private static void removeGenreAssociation(Anime anime) {
+    private void removeGenreAssociation(Anime anime) {
         anime.getGenre().forEach(genre -> {
             genre.getAnimeList().remove(anime);
+            genreRepository.save(genre);
         });
     }
 
